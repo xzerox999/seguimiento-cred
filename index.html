@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema Web de Seguimiento CRED - IPRESS San Sebastián</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- Carga de SheetJS para exportar a Excel 100% gratis en el cliente -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- BARRA LATERAL (SIDEBAR) -->
+    <aside class="sidebar">
+      <div class="brand-section">
+        <div class="brand-icon">🏥</div>
+        <div class="brand-title">Seguimiento CRED</div>
+      </div>
+      
+      <nav style="flex-grow: 1;">
+        <ul class="menu-list">
+          <li class="menu-item active">
+            <a href="#dashboard">
+              <span>📋</span> Panel Principal
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="#registro-paciente">
+              <span>👶</span> Registrar Niño
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="#reportes">
+              <span>📊</span> Reportes y Excel
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="#ajustes">
+              <span>⚙️</span> Ajustes / API
+            </a>
+          </li>
+        </ul>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="sync-status">
+          <span>📡</span> <span id="sync-time">Sincronizado localmente</span>
+        </div>
+        <button class="btn-sync" id="sync-sidebar-btn">
+          <span>🔄</span> Sincronizar
+        </button>
+      </div>
+    </aside>
+
+    <!-- ÁREA DE CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+      
+      <!-- NOTIFICACIÓN DE ESTADO SIN CONEXIÓN -->
+      <div class="offline-banner" id="offline-banner">
+        <span>⚠️</span> Trabajando en modo local (Sin internet). Los cambios se guardarán y sincronizarán automáticamente al recuperar conexión.
+      </div>
+
+      <!-- ==================== VISTA: DASHBOARD ==================== -->
+      <section id="dashboard" class="view-section active">
+        <div class="page-header">
+          <div class="page-title">
+            <h1>Panel de Control</h1>
+            <p>Bienvenido al Sistema de Seguimiento CRED - IPRESS San Sebastián</p>
+          </div>
+          <a href="#registro-paciente" class="btn btn-primary">
+            <span>➕</span> Registrar Nuevo Niño
+          </a>
+        </div>
+
+        <!-- Tarjetas de Estadísticas -->
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Total Pacientes</span>
+              <div class="stat-icon primary">👥</div>
+            </div>
+            <div class="stat-value" id="stat-total-pacientes">0</div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Niños a Término</span>
+              <div class="stat-icon secondary">🌱</div>
+            </div>
+            <div class="stat-value" id="stat-termino">0</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">BPN / Prematuros</span>
+              <div class="stat-icon warning">🍼</div>
+            </div>
+            <div class="stat-value" id="stat-bpn">0</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Controles Pendientes</span>
+              <div class="stat-icon accent">⏳</div>
+            </div>
+            <div class="stat-value" id="stat-pendientes">0</div>
+          </div>
+        </div>
+
+        <!-- Buscador y Lista de Pacientes -->
+        <div class="card">
+          <div class="card-title">🔍 Búsqueda de Pacientes</div>
+          <div class="action-bar">
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" class="search-input" id="global-search" placeholder="Buscar por DNI, Nombres y Apellidos, o Historia Clínica...">
+            </div>
+          </div>
+          
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>HC</th>
+                  <th>DNI/CNV</th>
+                  <th>Nombres y Apellidos</th>
+                  <th>Sexo</th>
+                  <th>F. Nacimiento</th>
+                  <th>Edad</th>
+                  <th>Tipo Seguimiento</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="pacientes-table-body">
+                <!-- Se rellena dinámicamente con JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== VISTA: REGISTRO PACIENTE ==================== -->
+      <section id="registro-paciente" class="view-section">
+        <div class="page-header">
+          <div class="page-title">
+            <h1>Registrar Nuevo Niño</h1>
+            <p>Ingresa los datos generales del paciente para iniciar el seguimiento</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <!-- Pasos del Wizard -->
+          <div class="wizard-steps">
+            <div class="wizard-step-line"></div>
+            <div class="step-item active" id="step-1">
+              <div class="step-indicator">1</div>
+              <div class="step-label">Datos del Niño</div>
+            </div>
+            <div class="step-item" id="step-2">
+              <div class="step-indicator">2</div>
+              <div class="step-label">Datos de la Madre</div>
+            </div>
+            <div class="step-item" id="step-3">
+              <div class="step-indicator">3</div>
+              <div class="step-label">Clasificación CRED</div>
+            </div>
+          </div>
+
+          <form id="registro-paciente-form" onsubmit="return false;">
+            
+            <!-- PASO 1: Datos del Niño -->
+            <div class="wizard-panel active" id="step-panel-1">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="reg-hc">N° Historia Clínica *</label>
+                  <input type="text" id="reg-hc" placeholder="Ej: 26490-D" required>
+                </div>
+                <div class="form-group">
+                  <label for="reg-dni">N° DNI (Niño)</label>
+                  <input type="text" id="reg-dni" placeholder="8 dígitos" maxlength="8">
+                </div>
+                <div class="form-group">
+                  <label for="reg-cnv">N° CNV (Cód. Nacido Vivo)</label>
+                  <input type="text" id="reg-cnv" placeholder="Ej: 94497072">
+                </div>
+                <div class="form-group full-width">
+                  <label for="reg-nombres">Nombres y Apellidos Completos *</label>
+                  <input type="text" id="reg-nombres" placeholder="Ej: JUAN PEREZ GOMEZ" required>
+                </div>
+                <div class="form-group">
+                  <label for="reg-fecha-nac">Fecha de Nacimiento *</label>
+                  <input type="date" id="reg-fecha-nac" required>
+                </div>
+                <div class="form-group">
+                  <label for="reg-sexo">Sexo *</label>
+                  <select id="reg-sexo" required>
+                    <option value="">Seleccione...</option>
+                    <option value="M">Masculino (M)</option>
+                    <option value="F">Femenino (F)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="reg-peso">Peso al nacer (kg)</label>
+                  <input type="number" step="0.001" id="reg-peso" placeholder="Ej: 3.250">
+                </div>
+                <div class="form-group">
+                  <label for="reg-sem-gest">Semanas de Gestación</label>
+                  <input type="number" id="reg-sem-gest" placeholder="Ej: 39">
+                </div>
+                <div class="form-group">
+                  <label for="reg-distrito">Distrito *</label>
+                  <select id="reg-distrito" required>
+                    <option value="SAN SEBASTIAN">San Sebastián</option>
+                    <option value="CUSCO">Cusco</option>
+                    <option value="WANCHAQ">Wanchaq</option>
+                    <option value="SANTIAGO">Santiago</option>
+                    <option value="SAN JERONIMO">San Jerónimo</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="reg-comunidad">Comunidad / Sector</label>
+                  <input type="text" id="reg-comunidad" placeholder="Ej: Los Nogales">
+                </div>
+              </div>
+            </div>
+
+            <!-- PASO 2: Datos de la Madre -->
+            <div class="wizard-panel" id="step-panel-2">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="reg-dni-madre">DNI de la Madre</label>
+                  <input type="text" id="reg-dni-madre" placeholder="8 dígitos" maxlength="8">
+                </div>
+                <div class="form-group full-width">
+                  <label for="reg-nombre-madre">Nombres y Apellidos de la Madre</label>
+                  <input type="text" id="reg-nombre-madre" placeholder="Ej: MARIA GOMEZ QUISPE">
+                </div>
+                <div class="form-group">
+                  <label for="reg-celular-madre">Número de Celular</label>
+                  <input type="tel" id="reg-celular-madre" placeholder="Ej: 984157626">
+                </div>
+              </div>
+            </div>
+
+            <!-- PASO 3: Clasificación CRED -->
+            <div class="wizard-panel" id="step-panel-3">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="reg-eess">Establecimiento de Salud (E.E.S.S)</label>
+                  <input type="text" id="reg-eess" value="IPRESS SAN SEBASTIAN" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="reg-tipo-seguimiento">Tipo de Seguimiento / Programa CRED *</label>
+                  <select id="reg-tipo-seguimiento" required>
+                    <option value="termino">Seguimiento Niños a Término</option>
+                    <option value="bpn">Seguimiento Niñ@ BPN Prematuros</option>
+                  </select>
+                </div>
+              </div>
+              <div style="margin-top: 20px; background-color: var(--primary-light); padding: 15px; border-radius: var(--radius-md); font-size: 14px; color: var(--primary);">
+                💡 El tipo de seguimiento determinará los controles programados en su línea de tiempo (por ejemplo, los controles de 3 y 4 años solo aplican a BPN/Prematuros).
+              </div>
+            </div>
+
+            <!-- Botones de Acción del Formulario -->
+            <div class="form-actions">
+              <button type="button" class="btn btn-outline" id="prev-step-btn" style="display: none;">Atrás</button>
+              <button type="button" class="btn btn-primary" id="next-step-btn" style="margin-left: auto;">Siguiente</button>
+            </div>
+
+          </form>
+        </div>
+      </section>
+
+      <!-- ==================== VISTA: TIMELINE CRED ==================== -->
+      <section id="seguimiento-cred" class="view-section">
+        <div class="page-header">
+          <div class="page-title">
+            <h1>Seguimiento CRED (Control de Crecimiento)</h1>
+            <p>Registra y visualiza los controles integrales del niño</p>
+          </div>
+          <a href="#dashboard" class="btn btn-outline">
+            <span>⬅️</span> Volver
+          </a>
+        </div>
+
+        <div id="cred-paciente-info">
+          <!-- Se carga dinámicamente con JS -->
+        </div>
+
+        <div class="card">
+          <!-- Pestañas de edad para simplificar las 290 columnas -->
+          <div class="tab-container" id="cred-tabs">
+            <!-- Se carga dinámicamente con JS -->
+          </div>
+
+          <!-- Contenedor del Timeline -->
+          <div id="cred-timeline-container">
+            <!-- Se carga dinámicamente con JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== VISTA: TIMELINE ANEMIA ==================== -->
+      <section id="seguimiento-anemia" class="view-section">
+        <div class="page-header">
+          <div class="page-title">
+            <h1>Módulo de Anemia y Suplementación</h1>
+            <p>Tratamiento, dosaje de HB, visitas domiciliarias y suplementación post-recuperación</p>
+          </div>
+          <a href="#dashboard" class="btn btn-outline">
+            <span>⬅️</span> Volver
+          </a>
+        </div>
+
+        <div id="anemia-paciente-info">
+          <!-- Se carga dinámicamente con JS -->
+        </div>
+
+        <div class="card">
+          <div class="tab-container" id="anemia-tabs">
+            <!-- Se carga dinámicamente con JS -->
+          </div>
+
+          <!-- Contenedor del Timeline Anemia -->
+          <div id="anemia-timeline-container">
+            <!-- Se carga dinámicamente con JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== VISTA: REPORTES Y EXCEL ==================== -->
+      <section id="reportes" class="view-section">
+        <div class="page-header">
+          <div class="page-title">
+            <h1>Reportes y Exportación</h1>
+            <p>Genera reportes masivos compatibles con el formato Excel de la Red de Salud</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📦 Exportar a Excel original del MINSA</div>
+          <div id="reportes-stats-container">
+            <!-- Se carga dinámicamente -->
+          </div>
+          <button class="btn btn-primary mt-4" id="export-excel-btn">
+            <span>📥</span> Descargar Excel Completo
+          </button>
+        </div>
+      </section>
+
+      <!-- ==================== VISTA: CONFIGURACIÓN / AJUSTES ==================== -->
+      <section id="ajustes" class="view-section">
+        <div class="page-header">
+          <div class="page-title">
+            <h1>Configuración del Sistema</h1>
+            <p>Configura la comunicación con la base de datos de Google Sheets</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🔗 Conexión a la Base de Datos en Google Sheets</div>
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label for="api-url-input">URL de la Web App de Google Apps Script</label>
+              <input type="text" id="api-url-input" placeholder="https://script.google.com/macros/s/.../exec">
+              <span style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
+                Esta dirección se obtiene al "Desplegar como aplicación Web" el código en tu hoja de Google Sheets.
+              </span>
+            </div>
+          </div>
+          <button class="btn btn-primary" id="save-api-btn">Guardar Ajustes</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📖 Guía de Despliegue Rápido (100% Gratis)</div>
+          <div style="font-size: 14px; line-height: 1.6; color: var(--text-main);">
+            <ol style="margin-left: 20px;">
+              <li>Crea una nueva hoja de cálculo en tu cuenta de Google <strong>(estadisticamrcusco@gmail.com)</strong>.</li>
+              <li>Ve a <strong>Extensiones > Apps Script</strong>.</li>
+              <li>Pega el código del archivo <code>google_apps_script.js</code> que se encuentra en la carpeta del proyecto.</li>
+              <li>Haz clic en <strong>Implementar > Nueva implementación</strong>.</li>
+              <li>Selecciona Tipo: <strong>Aplicación web</strong>.</li>
+              <li>Configura: Ejecutar como <strong>"Yo (tu cuenta)"</strong> y Quién tiene acceso: <strong>"Cualquiera"</strong>.</li>
+              <li>Haz clic en Implementar, autoriza los permisos necesarios y copia la <strong>URL de la aplicación web</strong>.</li>
+              <li>Pega esa URL arriba y guarda los ajustes. ¡Listo para sincronizar!</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- ==================== DIÁLOGOS Y MODALES ==================== -->
+  
+  <!-- MODAL: REGISTRAR/EDITAR CONTROL CRED -->
+  <div class="dialog-overlay" id="control-dialog">
+    <div class="dialog-box">
+      <div class="dialog-header">
+        <div>📝 Registrar Control: <span id="modal-actividad-title">Control</span></div>
+        <button class="dialog-close">&times;</button>
+      </div>
+      <div class="form-grid" style="grid-template-columns: 1fr;">
+        <!-- Inputs ocultos informativos -->
+        <input type="hidden" id="modal-mes-control">
+        <input type="hidden" id="modal-fecha-prog">
+        
+        <div class="form-group">
+          <label for="modal-fecha-real">Fecha de Realización *</label>
+          <input type="date" id="modal-fecha-real" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="modal-valor">Valor (Días / Resultado / TA / PR)</label>
+          <input type="text" id="modal-valor" placeholder="Ej: 7 días, TA, PR, SI, NO">
+        </div>
+        
+        <div class="form-group">
+          <label for="modal-obs">Observaciones</label>
+          <textarea id="modal-obs" rows="3" placeholder="Ingresa alguna observación relevante..."></textarea>
+        </div>
+      </div>
+      <div class="form-actions" style="margin-top: 20px; padding-top: 15px;">
+        <button class="btn btn-outline dialog-cancel-btn">Cancelar</button>
+        <button class="btn btn-primary" id="save-control-btn" style="margin-left: auto;">Guardar Control</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: REGISTRAR/EDITAR CONTROL ANEMIA -->
+  <div class="dialog-overlay" id="anemia-dialog">
+    <div class="dialog-box">
+      <div class="dialog-header">
+        <div>🩸 Registrar Control de Anemia</div>
+        <button class="dialog-close">&times;</button>
+      </div>
+      <div class="form-grid" style="grid-template-columns: 1fr;">
+        <input type="hidden" id="modal-anemia-fase">
+        <input type="hidden" id="modal-anemia-ciclo">
+        <input type="hidden" id="modal-anemia-actividad">
+        
+        <div class="form-group">
+          <label for="modal-anemia-fecha-real">Fecha de Realización *</label>
+          <input type="date" id="modal-anemia-fecha-real" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="modal-anemia-valor">Valor (Hb / Días / Dosis / TA / PR)</label>
+          <input type="text" id="modal-anemia-valor" placeholder="Ej: Hb 11.2, 30 días, etc.">
+        </div>
+        
+        <div class="form-group">
+          <label for="modal-anemia-obs">Observaciones</label>
+          <textarea id="modal-anemia-obs" rows="3" placeholder="Ej: Toleró bien el sulfato ferroso, etc."></textarea>
+        </div>
+      </div>
+      <div class="form-actions" style="margin-top: 20px; padding-top: 15px;">
+        <button class="btn btn-outline dialog-cancel-btn">Cancelar</button>
+        <button class="btn btn-primary" id="save-anemia-btn" style="margin-left: auto;">Guardar Registro</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS DEL PROYECTO -->
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

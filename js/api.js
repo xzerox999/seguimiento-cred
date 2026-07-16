@@ -91,7 +91,6 @@ const Api = {
     }
   },
 
-  // ENVIAR CAMBIOS PENDIENTES AL SERVIDOR (Sincronización de subida)
   async uploadPending() {
     if (!this.hasConfiguredApi()) return { success: false, error: "API no configurada" };
     
@@ -108,14 +107,16 @@ const Api = {
       
       const response = await fetch(this.getApiUrl(), {
         method: 'POST',
-        mode: 'no-cors', // Evitar bloqueos CORS típicos en redireccionamientos de Apps Script
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain' }, // Evita preflight previendo bloqueos de CORS
         body: JSON.stringify(payload)
       });
 
-      // NOTA: Con mode 'no-cors', el browser no lee el cuerpo de la respuesta por seguridad,
-      // pero si no hay error de red, asumimos que se envió. Para asegurar mayor control de errores, 
-      // limpiamos la cola. Si hay red, Google Apps Script procesará esto en lote de forma exitosa.
+      if (!response.ok) throw new Error("Error al comunicarse con la base de datos.");
+      
+      const resText = await response.text();
+      const result = JSON.parse(resText);
+      
+      if (result.error) throw new Error(result.error);
       
       // Limpiar la cola de sincronización local ya que se envió con éxito
       this.saveSyncQueue({
@@ -201,11 +202,18 @@ const Api = {
   saveSeguimientoCredLocal(seguimiento) {
     const db = this.getLocalDb();
     
+    // Normalizar campos del seguimiento antes de procesar y guardar
+    seguimiento.actividad = Utils.normalizeActName(seguimiento.actividad);
+    seguimiento.mes_control = Utils.normalizeMesControl(seguimiento.mes_control);
+    
+    const targetActNormalized = Utils.normalizeActName(seguimiento.actividad);
+    const targetMesNormalized = Utils.normalizeMesControl(seguimiento.mes_control);
+    
     // Buscar si ya existe para evitar duplicar
     const index = db.seguimientoCred.findIndex(s => 
       String(s.dni_paciente) === String(seguimiento.dni_paciente) &&
-      String(s.mes_control) === String(seguimiento.mes_control) &&
-      String(s.actividad) === String(seguimiento.actividad)
+      Utils.normalizeMesControl(s.mes_control) === targetMesNormalized &&
+      Utils.normalizeActName(s.actividad) === targetActNormalized
     );
     
     if (index !== -1) {
@@ -218,12 +226,12 @@ const Api = {
     }
     this.saveLocalDb(db);
     
-    // Encolar
+    // Encolar para subir
     const queue = this.getSyncQueue();
     const qIndex = queue.seguimientoCred.findIndex(s => 
       String(s.dni_paciente) === String(seguimiento.dni_paciente) &&
-      String(s.mes_control) === String(seguimiento.mes_control) &&
-      String(s.actividad) === String(seguimiento.actividad)
+      Utils.normalizeMesControl(s.mes_control) === targetMesNormalized &&
+      Utils.normalizeActName(s.actividad) === targetActNormalized
     );
     
     if (qIndex !== -1) {
@@ -246,11 +254,15 @@ const Api = {
   saveSeguimientoAnemiaLocal(seguimiento) {
     const db = this.getLocalDb();
     
+    // Normalizar la actividad
+    seguimiento.actividad = Utils.normalizeActName(seguimiento.actividad);
+    const targetActNormalized = Utils.normalizeActName(seguimiento.actividad);
+    
     const index = db.seguimientoAnemia.findIndex(s => 
       String(s.dni_paciente) === String(seguimiento.dni_paciente) &&
       String(s.fase) === String(seguimiento.fase) &&
       String(s.ciclo) === String(seguimiento.ciclo) &&
-      String(s.actividad) === String(seguimiento.actividad)
+      Utils.normalizeActName(s.actividad) === targetActNormalized
     );
     
     if (index !== -1) {
@@ -269,7 +281,7 @@ const Api = {
       String(s.dni_paciente) === String(seguimiento.dni_paciente) &&
       String(s.fase) === String(seguimiento.fase) &&
       String(s.ciclo) === String(seguimiento.ciclo) &&
-      String(s.actividad) === String(seguimiento.actividad)
+      Utils.normalizeActName(s.actividad) === targetActNormalized
     );
     
     if (qIndex !== -1) {

@@ -499,13 +499,16 @@ const App = {
     listEl.className = 'timeline';
     
     actividades.forEach(act => {
+      const targetActNormalized = Utils.normalizeActName(act.name);
+      const targetMesNormalized = Utils.normalizeMesControl(act.mes || "RN");
+
       // Buscar si el paciente ya tiene registrado este seguimiento
       const segRealizado = seguimientos.find(s => 
-        String(s.actividad) === String(act.name) && 
-        (act.mes ? String(s.mes_control) === String(act.mes) : true)
+        Utils.normalizeActName(s.actividad) === targetActNormalized && 
+        Utils.normalizeMesControl(s.mes_control) === targetMesNormalized
       );
       
-      const hasCompleted = !!(segRealizado && segRealizado.fecha_realizada);
+      const hasCompleted = !!(segRealizado && (segRealizado.fecha_realizada || segRealizado.valor));
       const isPending = !hasCompleted;
       
       const ev = document.createElement('div');
@@ -528,8 +531,8 @@ const App = {
             </p>
             ${hasCompleted ? `
               <p style="font-size: 13px; color: var(--secondary); font-weight: 500; margin-top: 6px;">
-                ✅ Realizado el: ${Utils.formatDateToShow(segRealizado.fecha_realizada)} 
-                ${segRealizado.valor ? `| <strong>Valor:</strong> ${segRealizado.valor}` : ''}
+                ✅ ${segRealizado.fecha_realizada ? `Realizado el: ${Utils.formatDateToShow(segRealizado.fecha_realizada)}` : 'Registrado'} 
+                ${(segRealizado.valor && segRealizado.actividad.toLowerCase() !== 'nacimiento' && !segRealizado.actividad.toLowerCase().includes('lugar')) ? `| <strong>Valor:</strong> ${segRealizado.valor}` : (segRealizado.valor ? `: ${segRealizado.valor}` : '')}
               </p>
               ${segRealizado.observacion ? `<p style="font-size: 12px; font-style: italic; margin-top: 2px;">"Obs: ${segRealizado.observacion}"</p>` : ''}
             ` : `
@@ -539,7 +542,7 @@ const App = {
             `}
           </div>
           <div class="event-actions">
-            <button class="btn btn-primary" style="padding: 8px 16px; font-size: 13px;" onclick="App.openRegisterControlModal('${act.name}', '${mesCont}', '${fechaSug}', '${segRealizado ? segRealizado.fecha_realizada : ''}', '${segRealizado ? segRealizado.valor : ''}', '${segRealizado ? segRealizado.observacion : ''}')">
+            <button class="btn btn-primary" style="padding: 8px 16px; font-size: 13px;" onclick="App.openRegisterControlModal('${act.name}', '${act.mes || ''}', '${fechaSug}', '${segRealizado ? segRealizado.fecha_realizada : ''}', '${segRealizado ? segRealizado.valor : ''}', '${segRealizado ? segRealizado.observacion : ''}')">
               ${hasCompleted ? '✏️ Editar' : '➕ Registrar'}
             </button>
           </div>
@@ -605,6 +608,7 @@ const App = {
     
     Api.saveSeguimientoCredLocal(seguimiento);
     document.getElementById('control-dialog').classList.remove('active');
+    alert("¡Control guardado correctamente!");
     
     // Recargar timeline
     this.renderTimelineCred(this.activeTimelineTab);
@@ -714,13 +718,14 @@ const App = {
           else return;
         }
 
+        const targetActNormalized = Utils.normalizeActName(act);
         const segRealizado = seguimientos.find(s => 
           String(s.fase) === String(fase) && 
           String(s.ciclo) === String(ciclo) && 
-          String(s.actividad).startsWith(act)
+          Utils.normalizeActName(s.actividad).startsWith(targetActNormalized)
         );
         
-        const hasCompleted = !!(segRealizado && segRealizado.fecha_realizada);
+        const hasCompleted = !!(segRealizado && (segRealizado.fecha_realizada || segRealizado.valor));
         
         const ev = document.createElement('div');
         ev.className = `timeline-event ${hasCompleted ? 'completed' : 'pending'}`;
@@ -733,7 +738,7 @@ const App = {
               <p>Seguimiento para: ${ciclo}</p>
               ${hasCompleted ? `
                 <p style="font-size: 13px; color: var(--secondary); font-weight: 500; margin-top: 6px;">
-                  ✅ Realizado el: ${Utils.formatDateToShow(segRealizado.fecha_realizada)} 
+                  ✅ ${segRealizado.fecha_realizada ? `Realizado el: ${Utils.formatDateToShow(segRealizado.fecha_realizada)}` : 'Registrado'} 
                   ${segRealizado.valor ? `| <strong>Valor:</strong> ${segRealizado.valor}` : ''}
                 </p>
                 ${segRealizado.observacion ? `<p style="font-size: 12px; font-style: italic; margin-top: 2px;">"Obs: ${segRealizado.observacion}"</p>` : ''}
@@ -795,6 +800,7 @@ const App = {
     
     Api.saveSeguimientoAnemiaLocal(seguimiento);
     document.getElementById('anemia-dialog').classList.remove('active');
+    alert("¡Control de anemia guardado correctamente!");
     
     this.renderTimelineAnemia(fase);
   },

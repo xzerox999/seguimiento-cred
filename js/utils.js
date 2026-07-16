@@ -52,24 +52,35 @@ const Utils = {
   // Formatear fecha para mostrar (DD/MM/AAAA)
   formatDateToShow(dateStr) {
     if (!dateStr) return "-";
+    const str = String(dateStr).trim();
+    if (!str || str === "None" || str === "null" || str === "-") return "-";
+    
+    // Si ya tiene formato correcto (DD/MM/AAAA)
+    if (str.includes('/') && str.split('/').length === 3) return str;
+    
     // Extraer solo la parte de fecha en caso de ISO
-    const cleanDate = dateStr.split('T')[0];
+    const cleanDate = str.split('T')[0];
     const parts = cleanDate.split('-');
-    if (parts.length !== 3) return dateStr;
+    if (parts.length !== 3) return str;
     return `${parts[2]}/${parts[1]}/${parts[0]}`;
   },
   
   // Formatear fecha para inputs de tipo Date (AAAA-MM-DD)
   formatDateToInput(dateStr) {
     if (!dateStr) return "";
-    return dateStr.split('T')[0];
+    const str = String(dateStr).trim();
+    if (!str || str === "None" || str === "null") return "";
+    return str.split('T')[0];
   },
 
   // Calcular diferencia en días
   daysBetween(dateStr1, dateStr2) {
     if (!dateStr1 || !dateStr2) return 0;
-    const d1 = new Date(dateStr1.split('T')[0]);
-    const d2 = new Date(dateStr2.split('T')[0]);
+    const str1 = String(dateStr1).split('T')[0];
+    const str2 = String(dateStr2).split('T')[0];
+    const d1 = new Date(str1);
+    const d2 = new Date(str2);
+    if (isNaN(d1.getTime()) || isNaN(d2.getTime())) return 0;
     const diffTime = Math.abs(d2 - d1);
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   },
@@ -94,14 +105,16 @@ const Utils = {
   // Obtener fecha límite programada para cada control CRED basado en fecha de nacimiento
   calculateScheduledDate(birthDateStr, mesControl) {
     if (!birthDateStr) return "";
-    const birth = new Date(birthDateStr.split('T')[0]);
+    const str = String(birthDateStr).trim();
+    if (!str || str === "None" || str === "null") return "";
+    const birth = new Date(str.split('T')[0]);
     
     // Mapear los meses de control a cantidad de días o meses
     let targetDate = new Date(birth);
     
     if (mesControl === "RN") {
       // Retorna fecha del nacimiento
-      return birthDateStr.split('T')[0];
+      return str.split('T')[0];
     }
     
     // Analizar el string del mes de control
@@ -149,5 +162,111 @@ const Utils = {
     
     targetDate.setMonth(targetDate.getMonth() + addMonths);
     return targetDate.toISOString().split('T')[0];
+  },
+
+  // Normalizar nombre de actividad para comparaciones robustas
+  normalizeActName(name) {
+    if (!name) return "";
+    let clean = String(name)
+      .toUpperCase()
+      .replace(/[\r\n]+/g, " ") // Reemplazar saltos de línea por espacio
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Eliminar acentos/diacríticos
+      .replace(/[^A-Z0-9 ]/g, "") // Mantener solo caracteres alfanuméricos y espacios
+      .replace(/\s+/g, " ") // Colapsar espacios múltiples
+      .trim();
+
+    // Normalizaciones específicas para Consejería
+    if (clean.includes("CONSEJERIA LACTANCIA MATERNA EXCLUSIVA")) {
+      return "CONSEJERIA LACTANCIA MATERNA EXCLUSIVA";
+    }
+    if (clean.includes("CONSEJERIA ALIMENTACION COMPLEMENTARIA")) {
+      return "CONSEJERIA ALIMENTACION COMPLEMENTARIA";
+    }
+    if (clean.includes("ORIENTACION NUTRICIONAL")) {
+      // Unificar nombres largos de consejería nutricional
+      return "CONSEJERIA ORIENTACION NUTRICIONAL";
+    }
+
+    // Normalizaciones específicas para Días
+    if (clean.includes("DIAS DE DIFERENCIA")) {
+      clean = clean.replace("DIAS DE DIFERENCIA", "");
+    }
+    if (clean.startsWith("DIAS ")) {
+      // Ej: "DIAS 2" -> "DIAS 2", "DIAS" -> "DIAS"
+      return clean.trim();
+    }
+    if (clean === "DIAS") {
+      return "DIAS";
+    }
+    
+    // Normalizar dosis de HIERRO (ej: "HIERRO SF 2" -> "HIERRO SF 2", etc.)
+    if (clean.startsWith("HIERRO SF") || clean.startsWith("HIERRO SF ")) {
+      const numMatch = clean.match(/\d+/);
+      const num = numMatch ? numMatch[0] : "";
+      return ("HIERRO SF " + num).trim();
+    }
+
+    return clean;
+  },
+
+  // Normalizar mes_control para mapear correctamente del Excel al Catálogo
+  normalizeMesControl(mes) {
+    if (!mes) return "RN";
+    const clean = String(mes)
+      .toUpperCase()
+      .replace(/[\r\n]+/g, " ")
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^A-Z0-9 ]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    // Mapear variaciones del recién nacido
+    if (["LUGAR", "VACUNA", "CONTROL RN", "TAMIZAJES EN EL RECIEN NACIDO", "RN", "RECIEN NACIDO"].includes(clean)) {
+      return "RN";
+    }
+
+    // Mapear meses específicos
+    if (clean === "1 MES") return "1 MES";
+    if (clean === "2 MESES") return "2 MESES";
+    if (clean === "3 MESES") return "3 MESES";
+    if (clean === "4 MESES") return "4 MESES";
+    if (clean === "5 MESES") return "5 MESES";
+    if (clean === "6 MESES") return "6 MESES";
+    if (clean === "7 MESES") return "7 MESES";
+    if (clean === "8 MESES") return "8 MESES";
+    if (clean === "9 MESES") return "9 MESES";
+    if (clean === "10 MESES") return "10 MESES";
+    if (clean === "11 MESES") return "11 MESES";
+
+    // Mapear 1 año y fracciones
+    if (["CRED 1 ANIO", "CRED 1 ANO", "12 MESES", "1 ANIO", "1 ANO"].includes(clean)) {
+      return "12 MESES";
+    }
+    if (["1 ANIO 3 MESES", "1 ANO 3 MESES", "15 MESES"].includes(clean)) {
+      return "15 MESES";
+    }
+    if (["1 ANIO 6 MESES", "1 ANO 6 MESES", "18 MESES", "1ANIO 6 MESES", "1ANO 6 MESES"].includes(clean)) {
+      return "18 MESES";
+    }
+
+    // Mapear 2 años y fracciones
+    if (["CRED 2 ANIOS", "CRED 2 ANOS", "24 MESES", "2 ANIOS", "2 ANOS"].includes(clean)) {
+      return "24 MESES";
+    }
+    if (["2 ANIOS 6 MESES", "2 ANO 6 MESES", "2 ANOS 6 MESES", "30 MESES"].includes(clean)) {
+      return "30 MESES";
+    }
+
+    // Mapear 3 y 4 años
+    if (["CRED 3 ANIOS", "CRED 3 ANOS", "3 ANIOS", "3 ANOS", "36 MESES"].includes(clean)) {
+      return "36 MESES";
+    }
+    if (["CRED 4 ANIOS", "CRED 4 ANOS", "4 ANIOS", "4 ANOS", "48 MESES"].includes(clean)) {
+      return "48 MESES";
+    }
+
+    // Por defecto, retornar el valor limpio
+    return clean;
   }
 };
+

@@ -6,6 +6,190 @@ document.addEventListener('DOMContentLoaded', () => {
   App.init();
 });
 
+// Arrays compartidos para controles desde 1 AÑO (idénticos para Término y Prematuro)
+const shared1Anio = [
+  { name: 'PAIS 1', type: 'date', mes: 'CRED 1 AÑO', desc: 'Registro PAIS 1' },
+  { name: 'dias 1', type: 'auto', mes: 'CRED 1 AÑO', desc: 'Registro dias 1' },
+  { name: 'CRED  1', type: 'date', mes: 'CRED 1 AÑO', desc: 'Fecha CRED  1' },
+  { name: '1ra  Sesion estimulacion temprana', type: 'date', mes: 'CRED 1 AÑO', desc: 'Registro 1ra  Sesion estimulacion temprana' },
+  { name: 'TAM. VIF', type: 'date', mes: 'CRED 1 AÑO', desc: 'Registro TAM. VIF' },
+  { name: 'EX OJOS', type: 'date', mes: 'CRED 1 AÑO', desc: 'Registro EX OJOS' },
+  { name: 'EV. ODONTOLOGICA', type: 'date', mes: 'CRED 1 AÑO', desc: 'Registro EV. ODONTOLOGICA' },
+  { name: 'TEST GRAHAM', type: 'date', mes: 'CRED 1 AÑO', desc: 'Registro TEST GRAHAM' },
+  { name: 'SPR  1°', type: 'date', mes: 'CRED 1 AÑO', desc: 'Fecha SPR  1°' },
+  { name: 'NEUMO  3°', type: 'date', mes: 'CRED 1 AÑO', desc: 'Fecha NEUMO  3°' },
+  { name: 'VARICELA', type: 'date', mes: 'CRED 1 AÑO', desc: 'Registro VARICELA' },
+  { name: 'INFLUENZA PEDIATRICA', type: 'date', mes: 'CRED 1 AÑO', desc: 'Registro INFLUENZA PEDIATRICA' },
+  { name: 'Vitamina VA1  200.000 UI', type: 'date', mes: 'CRED 1 AÑO', desc: 'Registro Vitamina VA1  200.000 UI' },
+  { name: 'DOSAJE  HB  Dx', type: 'date', mes: 'CRED 1 AÑO', desc: 'Registro DOSAJE  HB  Dx' },
+  { name: 'TA  suplementacion', type: 'date', mes: 'CRED 1 AÑO', desc: 'Registro TA  suplementacion' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)        4', type: 'date', mes: 'CRED 1 AÑO', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)        4' },
+  { name: 'DX ANEMIA SI O NO', type: 'select', mes: 'CRED 1 AÑO', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] },
+  { name: 'dias  2', type: 'auto', mes: '1 AÑO   3 MESES', desc: 'Registro dias  2' },
+  { name: 'CRED 2°', type: 'date', mes: '1 AÑO   3 MESES', desc: 'Fecha CRED 2°' },
+  { name: '2da  Sesion estimulacion temprana', type: 'date', mes: '1 AÑO   3 MESES', desc: 'Registro 2da  Sesion estimulacion temprana' },
+  { name: 'AMA', type: 'date', mes: '1 AÑO   3 MESES', desc: 'Registro AMA' },
+  { name: 'HEPATITIS  A', type: 'date', mes: '1 AÑO   3 MESES', desc: 'Registro HEPATITIS  A' },
+  { name: 'DOSAJE  HB  Dx', type: 'date', mes: '1 AÑO   3 MESES', desc: 'Registro DOSAJE  HB  Dx' },
+  { name: 'HIERRO SF 1', type: 'date', mes: '1 AÑO   3 MESES', desc: 'Registro HIERRO SF 1' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)        1', type: 'date', mes: '1 AÑO   3 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)        1' },
+  { name: 'dias 3', type: 'auto', mes: '1 AÑO  4 MESES', desc: 'Registro dias 3' },
+  { name: 'HIERRO SF 2', type: 'date', mes: '1 AÑO  4 MESES', desc: 'Registro HIERRO SF 2' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)         2', type: 'date', mes: '1 AÑO  4 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)         2' },
+  { name: 'dias 4', type: 'auto', mes: '1 AÑO  5 MESES', desc: 'Registro dias 4' },
+  { name: 'HIERRO SF 3', type: 'date', mes: '1 AÑO  5 MESES', desc: 'Registro HIERRO SF 3' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)           3', type: 'date', mes: '1 AÑO  5 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)           3' },
+  { name: 'dias       5', type: 'auto', mes: '1AÑO 6 MESES', desc: 'Registro dias       5' },
+  { name: 'CRED 3°', type: 'date', mes: '1AÑO 6 MESES', desc: 'Fecha CRED 3°' },
+  { name: '3ra  Sesion estimulacion temprana', type: 'date', mes: '1AÑO 6 MESES', desc: 'Registro 3ra  Sesion estimulacion temprana' },
+  { name: 'TAM. VIF', type: 'date', mes: '1AÑO 6 MESES', desc: 'Registro TAM. VIF' },
+  { name: 'EX OJOS', type: 'date', mes: '1AÑO 6 MESES', desc: 'Registro EX OJOS' },
+  { name: 'EV. ODONTOLOGICA', type: 'date', mes: '1AÑO 6 MESES', desc: 'Registro EV. ODONTOLOGICA' },
+  { name: 'SPR  2°', type: 'date', mes: '1AÑO 6 MESES', desc: 'Fecha SPR  2°' },
+  { name: 'IPV  1° REF', type: 'date', mes: '1AÑO 6 MESES', desc: 'Registro IPV  1° REF' },
+  { name: 'DPT  1° REF', type: 'date', mes: '1AÑO 6 MESES', desc: 'Registro DPT  1° REF' },
+  { name: 'Vitamina   VA2   200.000UI', type: 'date', mes: '1AÑO 6 MESES', desc: 'Registro Vitamina   VA2   200.000UI' },
+  { name: 'DOSAJE HB  c1', type: 'date', mes: '1AÑO 6 MESES', desc: 'Registro DOSAJE HB  c1' },
+  { name: 'HIERRO SF 4', type: 'date', mes: '1AÑO 6 MESES', desc: 'Registro HIERRO SF 4' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)             4', type: 'date', mes: '1AÑO 6 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)             4' },
+  { name: 'DX ANEMIA SI O NO', type: 'select', mes: '1AÑO 6 MESES', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] },
+  { name: 'dias      6', type: 'auto', mes: '1 AÑO  7 MESES', desc: 'Registro dias      6' },
+  { name: 'HIERRO SF 5', type: 'date', mes: '1 AÑO  7 MESES', desc: 'Registro HIERRO SF 5' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)            5', type: 'date', mes: '1 AÑO  7 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)            5' },
+  { name: 'dias       7', type: 'auto', mes: '1AÑO  8 MESES', desc: 'Registro dias       7' },
+  { name: '4ta  Sesion estimulacion temprana', type: 'date', mes: '1AÑO  8 MESES', desc: 'Registro 4ta  Sesion estimulacion temprana' },
+  { name: 'HIERRO SF 6', type: 'date', mes: '1AÑO  8 MESES', desc: 'Registro HIERRO SF 6' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)              6', type: 'date', mes: '1AÑO  8 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)              6' },
+  { name: 'PAIS  TA', type: 'date', mes: '1 AÑO 9 MESES', desc: 'Registro PAIS  TA' },
+  { name: 'dias        8', type: 'auto', mes: '1 AÑO 9 MESES', desc: 'Registro dias        8' },
+  { name: 'CRED 4°', type: 'date', mes: '1 AÑO 9 MESES', desc: 'Fecha CRED 4°' },
+  { name: 'DOSAJE  HB  c2', type: 'date', mes: '1 AÑO 9 MESES', desc: 'Registro DOSAJE  HB  c2' },
+  { name: 'TA  suplementacion', type: 'date', mes: '1 AÑO 9 MESES', desc: 'Registro TA  suplementacion' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)            7', type: 'date', mes: '1 AÑO 9 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)            7' },
+  { name: 'DX ANEMIA SI O NO', type: 'select', mes: '1 AÑO 9 MESES', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] }
+];
+
+const shared2Anios = [
+  { name: 'PAIS  1', type: 'date', mes: 'CRED  2 AÑOS', desc: 'Registro PAIS  1' },
+  { name: 'dias   1', type: 'auto', mes: 'CRED  2 AÑOS', desc: 'Registro dias   1' },
+  { name: 'CRED  1', type: 'date', mes: 'CRED  2 AÑOS', desc: 'Fecha CRED  1' },
+  { name: '1ra  Sesion estimulacion temprana', type: 'date', mes: 'CRED  2 AÑOS', desc: 'Registro 1ra  Sesion estimulacion temprana' },
+  { name: 'INFLUENZA PEDIATRICA', type: 'date', mes: 'CRED  2 AÑOS', desc: 'Registro INFLUENZA PEDIATRICA' },
+  { name: 'ANTIPARASITARIO  1 FCO', type: 'date', mes: 'CRED  2 AÑOS', desc: 'Registro ANTIPARASITARIO  1 FCO' },
+  { name: 'TEST DE GRAHAM', type: 'date', mes: 'CRED  2 AÑOS', desc: 'Registro TEST DE GRAHAM' },
+  { name: 'EX. PARASITOSIS', type: 'date', mes: 'CRED  2 AÑOS', desc: 'Registro EX. PARASITOSIS' },
+  { name: 'TAM. VIF', type: 'date', mes: 'CRED  2 AÑOS', desc: 'Registro TAM. VIF' },
+  { name: 'EX OJOS', type: 'date', mes: 'CRED  2 AÑOS', desc: 'Registro EX OJOS' },
+  { name: 'EV. ODONTOLOGICA', type: 'date', mes: 'CRED  2 AÑOS', desc: 'Registro EV. ODONTOLOGICA' },
+  { name: 'Vitamina  VA1 200.000UI', type: 'date', mes: 'CRED  2 AÑOS', desc: 'Registro Vitamina  VA1 200.000UI' },
+  { name: 'DOSAJE HB       Dx', type: 'date', mes: 'CRED  2 AÑOS', desc: 'Registro DOSAJE HB       Dx' },
+  { name: 'HIERRO SF  1', type: 'date', mes: 'CRED  2 AÑOS', desc: 'Registro HIERRO SF  1' },
+  { name: 'DX ANEMIA SI O NO', type: 'select', mes: 'CRED  2 AÑOS', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          1', type: 'date', mes: 'CRED  2 AÑOS', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          1' },
+  { name: 'dias           2', type: 'auto', mes: '2 AÑOS  1 MES', desc: 'Registro dias           2' },
+  { name: 'HIERRO SF  2', type: 'date', mes: '2 AÑOS  1 MES', desc: 'Registro HIERRO SF  2' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          2', type: 'date', mes: '2 AÑOS  1 MES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          2' },
+  { name: 'dias            3', type: 'auto', mes: '2 AÑOS 2 MESES', desc: 'Registro dias            3' },
+  { name: 'HIERRO SF  3', type: 'date', mes: '2 AÑOS 2 MESES', desc: 'Registro HIERRO SF  3' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          3', type: 'date', mes: '2 AÑOS 2 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          3' },
+  { name: 'dias       4', type: 'auto', mes: '2 AÑOS  3 MESES', desc: 'Registro dias       4' },
+  { name: 'HIERRO SF4', type: 'date', mes: '2 AÑOS  3 MESES', desc: 'Registro HIERRO SF4' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)         4', type: 'date', mes: '2 AÑOS  3 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)         4' },
+  { name: 'dias              5', type: 'auto', mes: '2 AÑOS  4 MESES', desc: 'Registro dias              5' },
+  { name: 'HIERRO SF5', type: 'date', mes: '2 AÑOS  4 MESES', desc: 'Registro HIERRO SF5' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          5', type: 'date', mes: '2 AÑOS  4 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          5' },
+  { name: 'dias               6', type: 'auto', mes: '2 AÑOS  5 MESES', desc: 'Registro dias               6' },
+  { name: 'HIERRO SF6', type: 'date', mes: '2 AÑOS  5 MESES', desc: 'Registro HIERRO SF6' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          6', type: 'date', mes: '2 AÑOS  5 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          6' },
+  { name: 'PAIS  TA', type: 'date', mes: '2 AÑOS 6 MESES', desc: 'Registro PAIS  TA' },
+  { name: 'dias                7', type: 'auto', mes: '2 AÑOS 6 MESES', desc: 'Registro dias                7' },
+  { name: 'CRED  2', type: 'date', mes: '2 AÑOS 6 MESES', desc: 'Fecha CRED  2' },
+  { name: '2da  Sesion estimulacion temprana  2', type: 'date', mes: '2 AÑOS 6 MESES', desc: 'Registro 2da  Sesion estimulacion temprana  2' },
+  { name: 'ANTIPARASITARIO  2 FCO', type: 'date', mes: '2 AÑOS 6 MESES', desc: 'Registro ANTIPARASITARIO  2 FCO' },
+  { name: 'TAM. VIF      2', type: 'date', mes: '2 AÑOS 6 MESES', desc: 'Registro TAM. VIF      2' },
+  { name: 'EX OJOS', type: 'date', mes: '2 AÑOS 6 MESES', desc: 'Registro EX OJOS' },
+  { name: 'EV. ODONTOLOGICA', type: 'date', mes: '2 AÑOS 6 MESES', desc: 'Registro EV. ODONTOLOGICA' },
+  { name: 'Vitamina  VA2             200.000UI', type: 'date', mes: '2 AÑOS 6 MESES', desc: 'Registro Vitamina  VA2             200.000UI' },
+  { name: 'DOSAJE  HB      c1', type: 'date', mes: '2 AÑOS 6 MESES', desc: 'Registro DOSAJE  HB      c1' },
+  { name: 'TA suplementacion', type: 'date', mes: '2 AÑOS 6 MESES', desc: 'Registro TA suplementacion' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          7', type: 'date', mes: '2 AÑOS 6 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          7' },
+  { name: 'DX ANEMIA SI O NO', type: 'select', mes: '2 AÑOS 6 MESES', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] }
+];
+
+const shared3Anios = [
+  { name: 'PAIS  1', type: 'date', mes: 'CRED 3 AÑOS', desc: 'Registro PAIS  1' },
+  { name: 'dias                                 1', type: 'auto', mes: 'CRED 3 AÑOS', desc: 'Registro dias                                 1' },
+  { name: 'CRED 1', type: 'date', mes: 'CRED 3 AÑOS', desc: 'Fecha CRED 1' },
+  { name: 'Sesion estimulacion temprana', type: 'date', mes: 'CRED 3 AÑOS', desc: 'Registro Sesion estimulacion temprana' },
+  { name: 'INFLUENZA adulto', type: 'date', mes: 'CRED 3 AÑOS', desc: 'Registro INFLUENZA adulto' },
+  { name: 'ANTIPARASITARIO   1 FCO', type: 'date', mes: 'CRED 3 AÑOS', desc: 'Registro ANTIPARASITARIO   1 FCO' },
+  { name: 'TEST DE GRAHAM', type: 'date', mes: 'CRED 3 AÑOS', desc: 'Registro TEST DE GRAHAM' },
+  { name: 'EX. PARASITOSIS', type: 'date', mes: 'CRED 3 AÑOS', desc: 'Registro EX. PARASITOSIS' },
+  { name: 'TAM. VIF', type: 'date', mes: 'CRED 3 AÑOS', desc: 'Registro TAM. VIF' },
+  { name: 'EX OJOS', type: 'date', mes: 'CRED 3 AÑOS', desc: 'Registro EX OJOS' },
+  { name: 'EV. ODONTOLOGICA', type: 'date', mes: 'CRED 3 AÑOS', desc: 'Registro EV. ODONTOLOGICA' },
+  { name: 'Vitamina  VA1      200.000UI', type: 'date', mes: 'CRED 3 AÑOS', desc: 'Registro Vitamina  VA1      200.000UI' },
+  { name: 'DOSAJE  HB Dx', type: 'date', mes: 'CRED 3 AÑOS', desc: 'Registro DOSAJE  HB Dx' },
+  { name: 'HIERRO  SF1', type: 'date', mes: 'CRED 3 AÑOS', desc: 'Registro HIERRO  SF1' },
+  { name: 'DX ANEMIA SI O NO', type: 'select', mes: 'CRED 3 AÑOS', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)              1', type: 'date', mes: 'CRED 3 AÑOS', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)              1' },
+  { name: 'dias                                 2', type: 'auto', mes: '3 AÑOS 1 MES', desc: 'Registro dias                                 2' },
+  { name: 'HIERRO  SF2', type: 'date', mes: '3 AÑOS 1 MES', desc: 'Registro HIERRO  SF2' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)               2', type: 'date', mes: '3 AÑOS 1 MES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)               2' },
+  { name: 'dias                3', type: 'auto', mes: '3 AÑOS 2 MESES', desc: 'Registro dias                3' },
+  { name: 'HIERRO  SF3', type: 'date', mes: '3 AÑOS 2 MESES', desc: 'Registro HIERRO  SF3' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)                3', type: 'date', mes: '3 AÑOS 2 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)                3' },
+  { name: 'dias              4', type: 'auto', mes: '3 AÑOS 3 MESES', desc: 'Registro dias              4' },
+  { name: 'DOSAJE  HB  c1', type: 'date', mes: '3 AÑOS 3 MESES', desc: 'Registro DOSAJE  HB  c1' },
+  { name: 'TA suplementacion', type: 'date', mes: '3 AÑOS 3 MESES', desc: 'Registro TA suplementacion' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)                 4', type: 'date', mes: '3 AÑOS 3 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)                 4' },
+  { name: 'PAIS TA', type: 'date', mes: '3 AÑOS 6 MESES', desc: 'Registro PAIS TA' },
+  { name: 'dias               5', type: 'auto', mes: '3 AÑOS 6 MESES', desc: 'Registro dias               5' },
+  { name: 'CRED 2', type: 'date', mes: '3 AÑOS 6 MESES', desc: 'Fecha CRED 2' },
+  { name: 'ANTIPARASITARIO  2 FCO', type: 'date', mes: '3 AÑOS 6 MESES', desc: 'Registro ANTIPARASITARIO  2 FCO' },
+  { name: 'Vitamina  VA2', type: 'date', mes: '3 AÑOS 6 MESES', desc: 'Registro Vitamina  VA2' },
+  { name: 'TAM. VIF', type: 'date', mes: '3 AÑOS 6 MESES', desc: 'Registro TAM. VIF' },
+  { name: 'EX OJOS       2', type: 'date', mes: '3 AÑOS 6 MESES', desc: 'Registro EX OJOS       2' },
+  { name: 'EV. ODONTOLOGICA', type: 'date', mes: '3 AÑOS 6 MESES', desc: 'Registro EV. ODONTOLOGICA' }
+];
+
+const shared4Anios = [
+  { name: 'PAIS  1', type: 'date', mes: 'CRED 4 AÑOS', desc: 'Registro PAIS  1' },
+  { name: 'dias                                 1', type: 'auto', mes: 'CRED 4 AÑOS', desc: 'Registro dias                                 1' },
+  { name: 'CRED 1', type: 'date', mes: 'CRED 4 AÑOS', desc: 'Fecha CRED 1' },
+  { name: 'Sesion estimulacion temprana', type: 'date', mes: 'CRED 4 AÑOS', desc: 'Registro Sesion estimulacion temprana' },
+  { name: 'INFLUENZA adulto', type: 'date', mes: 'CRED 4 AÑOS', desc: 'Registro INFLUENZA adulto' },
+  { name: 'ANTIPARASITARIO   1 FCO', type: 'date', mes: 'CRED 4 AÑOS', desc: 'Registro ANTIPARASITARIO   1 FCO' },
+  { name: 'TEST DE GRAHAM', type: 'date', mes: 'CRED 4 AÑOS', desc: 'Registro TEST DE GRAHAM' },
+  { name: 'EX. PARASITOSIS', type: 'date', mes: 'CRED 4 AÑOS', desc: 'Registro EX. PARASITOSIS' },
+  { name: 'TAM. VIF', type: 'date', mes: 'CRED 4 AÑOS', desc: 'Registro TAM. VIF' },
+  { name: 'EX  OJOS', type: 'date', mes: 'CRED 4 AÑOS', desc: 'Registro EX  OJOS' },
+  { name: 'EV. ODONTOLOGICA', type: 'date', mes: 'CRED 4 AÑOS', desc: 'Registro EV. ODONTOLOGICA' },
+  { name: 'Vitamina  VA1      200.000UI', type: 'date', mes: 'CRED 4 AÑOS', desc: 'Registro Vitamina  VA1      200.000UI' },
+  { name: 'DOSAJE  HB Dx', type: 'date', mes: 'CRED 4 AÑOS', desc: 'Registro DOSAJE  HB Dx' },
+  { name: 'HIERRO  SF1', type: 'date', mes: 'CRED 4 AÑOS', desc: 'Registro HIERRO  SF1' },
+  { name: 'DX ANEMIA SI O NO', type: 'select', mes: 'CRED 4 AÑOS', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)              1', type: 'date', mes: 'CRED 4 AÑOS', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)              1' },
+  { name: 'dias                                 2', type: 'auto', mes: '4 AÑOS 1 MES', desc: 'Registro dias                                 2' },
+  { name: 'HIERRO  SF2', type: 'date', mes: '4 AÑOS 1 MES', desc: 'Registro HIERRO  SF2' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)               2', type: 'date', mes: '4 AÑOS 1 MES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)               2' },
+  { name: 'dias                3', type: 'auto', mes: '4 AÑOS 2 MESES', desc: 'Registro dias                3' },
+  { name: 'HIERRO  SF3', type: 'date', mes: '4 AÑOS 2 MESES', desc: 'Registro HIERRO  SF3' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)                3', type: 'date', mes: '4 AÑOS 2 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)                3' },
+  { name: 'dias              4', type: 'auto', mes: '4 AÑOS 3 MESES', desc: 'Registro dias              4' },
+  { name: 'DOSAJE  HB  c1', type: 'date', mes: '4 AÑOS 3 MESES', desc: 'Registro DOSAJE  HB  c1' },
+  { name: 'TA suplementacion', type: 'date', mes: '4 AÑOS 3 MESES', desc: 'Registro TA suplementacion' },
+  { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)                 4', type: 'date', mes: '4 AÑOS 3 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)                 4' },
+  { name: 'PAIS TA', type: 'date', mes: '4 AÑOS 6 MESES', desc: 'Registro PAIS TA' },
+  { name: 'dias               5', type: 'auto', mes: '4 AÑOS 6 MESES', desc: 'Registro dias               5' },
+  { name: 'CRED 2', type: 'date', mes: '4 AÑOS 6 MESES', desc: 'Fecha CRED 2' },
+  { name: 'ANTIPARASITARIO   2 FCO', type: 'date', mes: '4 AÑOS 6 MESES', desc: 'Registro ANTIPARASITARIO   2 FCO' },
+  { name: 'Vitamina  VA2       200.000UI', type: 'date', mes: '4 AÑOS 6 MESES', desc: 'Registro Vitamina  VA2       200.000UI' },
+  { name: 'TAM. VIF', type: 'date', mes: '4 AÑOS 6 MESES', desc: 'Registro TAM. VIF' },
+  { name: 'EX OJOS', type: 'date', mes: '4 AÑOS 6 MESES', desc: 'Registro EX OJOS' },
+  { name: 'EV. ODONTOLOGICA', type: 'date', mes: '4 AÑOS 6 MESES', desc: 'Registro EV. ODONTOLOGICA' }
+];
+
 const App = {
   currentView: 'dashboard',
   selectedPaciente: null,
@@ -13,130 +197,228 @@ const App = {
   
   // Catálogo de controles CRED Niños a Término
   credTerminoActividades: {
-    "RN": [
-      { name: "NACIMIENTO", type: "text", desc: "Lugar de nacimiento (Regional, H. Lorena, etc.)" },
-      { name: "BCG", type: "date", desc: "Fecha Vacuna BCG" },
-      { name: "HVB", type: "date", desc: "Fecha Vacuna HVB" },
-      { name: "PAIS 1", type: "text", desc: "Resultado PAIS 1" },
-      { name: "1º CRED", type: "date", desc: "Fecha 1º CRED Recién Nacido" },
-      { name: "dias", type: "text", desc: "Días de diferencia al control (sugerido 7 días)" },
-      { name: "TAM. VIF.", type: "date", desc: "Tamizaje Violencia Intrafamiliar" },
-      { name: "EX. OJOS", type: "date", desc: "Examen de Ojos" },
-      { name: "2º CRED", type: "date", desc: "Fecha 2º CRED" },
-      { name: "dias 2", type: "text", desc: "Días de diferencia al control (sugerido 14 días)" },
-      { name: "PAIS TA", type: "text", desc: "PAIS Tamizaje" },
-      { name: "3º CRED", type: "date", desc: "Fecha 3º CRED" },
-      { name: "dias 3", type: "text", desc: "Días de diferencia al control (sugerido 21 días)" },
-      { name: "TAMIZAJE NEONATAL", type: "date", desc: "Fecha de Tamizaje Neonatal" },
-      { name: "dias 5", type: "text", desc: "Días del Tamizaje" },
-      { name: "LUGAR", type: "text", desc: "Lugar del Tamizaje" },
-      { name: "TAMIZAJE HIPOACUSIA", type: "select", options: ["NO", "SI", "OBSERVADO"], desc: "Tamizaje Hipoacusia" },
-      { name: "TAMIZAJE CATARATA", type: "select", options: ["NO", "SI", "OBSERVADO"], desc: "Tamizaje Catarata" },
-      { name: "TAMIZAJE CARDIACO", type: "select", options: ["NO", "SI", "OBSERVADO"], desc: "Tamizaje Cardíaco" }
+    'RN': [
+      { name: 'NACIMIENTO', type: 'text', mes: 'LUGAR', desc: 'Registro NACIMIENTO' },
+      { name: 'BCG', type: 'date', mes: 'VACUNA', desc: 'Fecha BCG' },
+      { name: 'HVB', type: 'date', mes: 'VACUNA', desc: 'Fecha HVB' },
+      { name: 'dias', type: 'auto', mes: 'VACUNA', desc: 'Registro dias' },
+      { name: 'PAIS 1', type: 'date', mes: 'CONTROL RN', desc: 'Registro PAIS 1' },
+      { name: '1° CRED', type: 'date', mes: 'CONTROL RN', desc: 'Fecha 1° CRED' },
+      { name: 'dias', type: 'auto', mes: 'CONTROL RN', desc: 'Registro dias' },
+      { name: 'TAM. VIF.', type: 'date', mes: 'CONTROL RN', desc: 'Registro TAM. VIF.' },
+      { name: 'EX. OJOS', type: 'date', mes: 'CONTROL RN', desc: 'Registro EX. OJOS' },
+      { name: '2° CRED', type: 'date', mes: 'CONTROL RN', desc: 'Fecha 2° CRED' },
+      { name: 'dias 2', type: 'auto', mes: 'CONTROL RN', desc: 'Registro dias 2' },
+      { name: 'PAIS TA', type: 'date', mes: 'CONTROL RN', desc: 'Registro PAIS TA' },
+      { name: '3° CRED', type: 'date', mes: 'CONTROL RN', desc: 'Fecha 3° CRED' },
+      { name: 'dias 3', type: 'auto', mes: 'CONTROL RN', desc: 'Registro dias 3' },
+      { name: 'TAMIZAJE NEONATAL', type: 'date', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro TAMIZAJE NEONATAL' },
+      { name: 'dias 5', type: 'auto', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro dias 5' },
+      { name: 'LUGAR', type: 'text', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro LUGAR' },
+      { name: 'TAMIZAJE HIPOACUSIA', type: 'select', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro TAMIZAJE HIPOACUSIA', options: ["NO", "SI", "OBSERVADO"] },
+      { name: 'TAMIZAJE CATARATA', type: 'select', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro TAMIZAJE CATARATA', options: ["NO", "SI", "OBSERVADO"] },
+      { name: 'TAMIZAJE CARDIACO', type: 'select', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro TAMIZAJE CARDIACO', options: ["NO", "SI", "OBSERVADO"] },
+      { name: 'DE 2-7 DIAS  RN', type: 'auto', mes: 'VISITA DOMICIL.', desc: 'Registro DE 2-7 DIAS  RN' },
+      { name: 'ATENCION EN OTRO EESS', type: 'date', mes: 'OBSERVACION', desc: 'Registro ATENCION EN OTRO EESS' },
+      { name: 'DESPUES DE 7 DIAS DEL  SF  V.D. 1', type: 'auto', mes: 'VISITA DOMICIL.  1', desc: 'Registro DESPUES DE 7 DIAS DEL  SF  V.D. 1' },
+      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE    SF   V.D. 2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE    SF   V.D. 2' },
+      { name: 'DESPUES DE 7 DIAS DEL SF   V.D. 1', type: 'auto', mes: 'VISITA DOMICIL. 1', desc: 'Registro DESPUES DE 7 DIAS DEL SF   V.D. 1' },
+      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE   SF   V.D.2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE   SF   V.D.2' },
+      { name: 'DESPUES DE 7 DIAS DEL SF    V.D.3', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  3', desc: 'Registro DESPUES DE 7 DIAS DEL SF    V.D.3' },
+      { name: 'DESPUES DE 7 DIAS DEL SF       V.D. 1', type: 'auto', mes: 'VISITA DOMICIL.  1', desc: 'Registro DESPUES DE 7 DIAS DEL SF       V.D. 1' },
+      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE  SF      V.D. 2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION 2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE  SF      V.D. 2' },
+      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE  SF       V,D.3', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  3', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE  SF       V,D.3' },
+      { name: 'DESPUES DE 7 DIAS DEL SF       V.D. 1', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION 1', desc: 'Registro DESPUES DE 7 DIAS DEL SF       V.D. 1' },
+      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE  SF           V.D. 2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE  SF           V.D. 2' },
+      { name: 'DESPUES DE 7 DIAS DEL SF               V.D. 1', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION   1', desc: 'Registro DESPUES DE 7 DIAS DEL SF               V.D. 1' },
+      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE   SF 2  V.D. 2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION   2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE   SF 2  V.D. 2' },
+      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE   SF    V.D. 3', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION   3', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE   SF    V.D. 3' },
+      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE   SF 2 V.D. 2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION   2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE   SF 2 V.D. 2' },
+      { name: 'DESPUES DE 7 DIAS DEL SF  V.D.1', type: 'auto', mes: 'VISITA DOMICIL. 1', desc: 'Registro DESPUES DE 7 DIAS DEL SF  V.D.1' },
+      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE  SF   V.D.2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE  SF   V.D.2' },
+      { name: 'DESPUES DE 7 DIAS DEL  SF  V.D. 1', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  3', desc: 'Registro DESPUES DE 7 DIAS DEL  SF  V.D. 1' }
     ],
-    "1-11 MESES": [
-      // 1 MES
-      { name: "PAIS  1", type: "date", mes: "1 MES", desc: "PAIS 1 Mes" },
-      { name: "dias", type: "text", mes: "1 MES", desc: "Días" },
-      { name: "CRED 1º", type: "date", mes: "1 MES", desc: "CRED 1 Mes" },
-      { name: "1ra  Sesion estimulacion temprana", type: "date", mes: "1 MES", desc: "1ra Estimulación" },
-      { name: "TAM. VIF", type: "date", mes: "1 MES", desc: "TAM VIF" },
-      { name: "CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA ", type: "date", mes: "1 MES", desc: "Consejería LME" },
-      // 2 MESES
-      { name: "dias  2", type: "text", mes: "2 MESES", desc: "Días" },
-      { name: "CRED  2º", type: "date", mes: "2 MESES", desc: "CRED 2 Meses" },
-      { name: "2da  Sesion estimulacion temprana", type: "date", mes: "2 MESES", desc: "2da Estimulación" },
-      { name: "PENTA  1º", type: "date", mes: "2 MESES", desc: "PENTA 1" },
-      { name: "IPV  1º", type: "date", mes: "2 MESES", desc: "IPV 1" },
-      { name: "NEUMO 1º", type: "date", mes: "2 MESES", desc: "NEUMO 1" },
-      { name: "ROTA  1º", type: "date", mes: "2 MESES", desc: "ROTA 1" },
-      { name: "CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  ", type: "date", mes: "2 MESES", desc: "Consejería LME" },
-      // 3 MESES
-      { name: "dias  3", type: "text", mes: "3 MESES", desc: "Días" },
-      { name: "CRED 3º", type: "date", mes: "3 MESES", desc: "CRED 3 Meses" },
-      { name: "EX. OJOS ", type: "date", mes: "3 MESES", desc: "Examen de Ojos" },
-      { name: "CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA   ", type: "date", mes: "3 MESES", desc: "Consejería LME" },
-      // 4 MESES
-      { name: "dias  4", type: "text", mes: "4 MESES", desc: "Días" },
-      { name: "CRED 4º", type: "date", mes: "4 MESES", desc: "CRED 4 Meses" },
-      { name: "3ra  Sesion estimulacion temprana", type: "date", mes: "4 MESES", desc: "3ra Estimulación" },
-      { name: "PENTA  2º", type: "date", mes: "4 MESES", desc: "PENTA 2" },
-      { name: "IPV  2º", type: "date", mes: "4 MESES", desc: "IPV 2" },
-      { name: "NEUMO 2º", type: "date", mes: "4 MESES", desc: "NEUMO 2" },
-      { name: "ROTA  2º", type: "date", mes: "4 MESES", desc: "ROTA 2" },
-      { name: "HIERRO PREVENTIVO  1 ", type: "date", mes: "4 MESES", desc: "Hierro Preventivo 1" },
-      { name: "CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA    ", type: "date", mes: "4 MESES", desc: "Consejería LME" },
-      // 5 MESES
-      { name: "dias  5", type: "text", mes: "5 MESES", desc: "Días" },
-      { name: "CRED 5º", type: "date", mes: "5 MESES", desc: "CRED 5 Meses" },
-      { name: "4ta Sesion estimulacion temprana", type: "date", mes: "5 MESES", desc: "4ta Estimulación" },
-      { name: "HIERRO PREVENTIVO  2 ", type: "date", mes: "5 MESES", desc: "Hierro Preventivo 2" },
-      { name: "CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA     ", type: "date", mes: "5 MESES", desc: "Consejería LME" },
-      { name: "VISITA DOMICILIARIA 1", type: "date", mes: "5 MESES", desc: "Visita Domiciliaria 1" },
-      // 6 MESES
-      { name: "dias   6", type: "text", mes: "6 MESES", desc: "Días" },
-      { name: "CRED 6º", type: "date", mes: "6 MESES", desc: "CRED 6 Meses" },
-      { name: "5ta Sesion estimulacion temprana", type: "date", mes: "6 MESES", desc: "5ta Estimulación" },
-      { name: "PENTA  3º", type: "date", mes: "6 MESES", desc: "PENTA 3" },
-      { name: "APO  1º", type: "date", mes: "6 MESES", desc: "APO 1" },
-      { name: "HIERRO PREVENTIVO  3 ", type: "date", mes: "6 MESES", desc: "Hierro Preventivo 3" },
-      { name: "DOSAJE HB  Dx ", type: "date", mes: "6 MESES", desc: "Dosaje HB Dx" },
-      { name: "TAM VIF 6m", type: "date", mes: "6 MESES", desc: "TAM VIF" },
-      { name: "CONSEJERIA ALIMENTACION COMPLEMENTARIA", type: "date", mes: "6 MESES", desc: "Consejería AC" },
-      { name: "VISITA DOMICIL 1", type: "date", mes: "6 MESES", desc: "Visita Domicil 1" },
-      // 7 MESES
-      { name: "dias  7", type: "text", mes: "7 MESES", desc: "Días" },
-      { name: "CRED 7º", type: "date", mes: "7 MESES", desc: "CRED 7 Meses" },
-      { name: "6ta Sesion estimulacion temprana", type: "date", mes: "7 MESES", desc: "6ta Estimulación" },
-      { name: "HIERRO PREVENTIVO 4", type: "date", mes: "7 MESES", desc: "Hierro Preventivo 4" },
-      { name: "CONSEJERIA ALIMENTACION COMPLEMENTARIA ", type: "date", mes: "7 MESES", desc: "Consejería AC" },
-      // 8 MESES
-      { name: "dias  8", type: "text", mes: "8 MESES", desc: "Días" },
-      { name: "CRED 8º", type: "date", mes: "8 MESES", desc: "CRED 8 Meses" },
-      { name: "7ma Sesion estimulacion temprana", type: "date", mes: "8 MESES", desc: "7ma Estimulación" },
-      { name: "HIERRO PREVENTIVO 5", type: "date", mes: "8 MESES", desc: "Hierro Preventivo 5" },
-      { name: "CONSEJERIA ALIMENTACION COMPLEMENTARIA  ", type: "date", mes: "8 MESES", desc: "Consejería AC" },
-      { name: "VISITA DOMICILIARIA 2", type: "date", mes: "8 MESES", desc: "Visita Domiciliaria 2" },
-      // 9 MESES
-      { name: "dias  9", type: "text", mes: "9 MESES", desc: "Días" },
-      { name: "CRED 9º", type: "date", mes: "9 MESES", desc: "CRED 9 Meses" },
-      { name: "8va Sesion estimulacion temprana", type: "date", mes: "9 MESES", desc: "8va Estimulación" },
-      { name: "HIERRO PREVENTIVO 6", type: "date", mes: "9 MESES", desc: "Hierro Preventivo 6" },
-      { name: "CONSEJERIA ALIMENTACION COMPLEMENTARIA   ", type: "date", mes: "9 MESES", desc: "Consejería AC" },
-      // 10 MESES
-      { name: "dias  10", type: "text", mes: "10 MESES", desc: "Días" },
-      { name: "CRED 10º", type: "date", mes: "10 MESES", desc: "CRED 10 Meses" },
-      { name: "9na Sesion estimulacion temprana", type: "date", mes: "10 MESES", desc: "9na Estimulación" },
-      { name: "CONSEJERIA ALIMENTACION COMPLEMENTARIA    ", type: "date", mes: "10 MESES", desc: "Consejería AC" },
-      // 11 MESES
-      { name: "dias  11", type: "text", mes: "11 MESES", desc: "Días" },
-      { name: "CRED 11º", type: "date", mes: "11 MESES", desc: "CRED 11 Meses" },
-      { name: "10ma Sesion estimulacion temprana", type: "date", mes: "11 MESES", desc: "10ma Estimulación" },
-      { name: "CONSEJERIA ALIMENTACION COMPLEMENTARIA     ", type: "date", mes: "11 MESES", desc: "Consejería AC" }
+    '1-11 MESES': [
+      { name: 'PAIS  1', type: 'date', mes: '1 MES', desc: 'Registro PAIS  1' },
+      { name: 'dias', type: 'auto', mes: '1 MES', desc: 'Registro dias' },
+      { name: 'CRED 1°', type: 'date', mes: '1 MES', desc: 'Fecha CRED 1°' },
+      { name: '1ra  Sesion estimulacion temprana', type: 'date', mes: '1 MES', desc: 'Registro 1ra  Sesion estimulacion temprana' },
+      { name: 'TAM. VIF', type: 'date', mes: '1 MES', desc: 'Registro TAM. VIF' },
+      { name: 'EV. ODONTOLOGICA', type: 'date', mes: '1 MES', desc: 'Registro EV. ODONTOLOGICA' },
+      { name: 'CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  1', type: 'date', mes: '1 MES', desc: 'Registro CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  1' },
+      { name: 'dias  2', type: 'auto', mes: '2 MESES', desc: 'Registro dias  2' },
+      { name: 'CRED  2°', type: 'date', mes: '2 MESES', desc: 'Fecha CRED  2°' },
+      { name: '2da  Sesion estimulacion temprana', type: 'date', mes: '2 MESES', desc: 'Registro 2da  Sesion estimulacion temprana' },
+      { name: 'PENTA  1°', type: 'date', mes: '2 MESES', desc: 'Fecha PENTA  1°' },
+      { name: 'IPV  1°', type: 'date', mes: '2 MESES', desc: 'Registro IPV  1°' },
+      { name: 'NEUMO 1°', type: 'date', mes: '2 MESES', desc: 'Fecha NEUMO 1°' },
+      { name: 'ROTA  1°', type: 'date', mes: '2 MESES', desc: 'Fecha ROTA  1°' },
+      { name: 'CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  2', type: 'date', mes: '2 MESES', desc: 'Registro CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  2' },
+      { name: 'dias  3', type: 'auto', mes: '3 MESES', desc: 'Registro dias  3' },
+      { name: 'CRED 3°', type: 'date', mes: '3 MESES', desc: 'Fecha CRED 3°' },
+      { name: 'EX. OJOS', type: 'date', mes: '3 MESES', desc: 'Registro EX. OJOS' },
+      { name: 'CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  3', type: 'date', mes: '3 MESES', desc: 'Registro CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  3' },
+      { name: 'dias  4', type: 'auto', mes: '4 MESES', desc: 'Registro dias  4' },
+      { name: 'CRED 4°', type: 'date', mes: '4 MESES', desc: 'Fecha CRED 4°' },
+      { name: '3ra  Sesion estimulacion temprana', type: 'date', mes: '4 MESES', desc: 'Registro 3ra  Sesion estimulacion temprana' },
+      { name: 'PENTA  2°', type: 'date', mes: '4 MESES', desc: 'Fecha PENTA  2°' },
+      { name: 'IPV  2°', type: 'date', mes: '4 MESES', desc: 'Registro IPV  2°' },
+      { name: 'NEUMO 2°', type: 'date', mes: '4 MESES', desc: 'Fecha NEUMO 2°' },
+      { name: 'ROTA  2°', type: 'date', mes: '4 MESES', desc: 'Fecha ROTA  2°' },
+      { name: 'HIERRO  SF 1', type: 'date', mes: '4 MESES', desc: 'Registro HIERRO  SF 1' },
+      { name: 'CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  4', type: 'date', mes: '4 MESES', desc: 'Registro CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  4' },
+      { name: 'dias  5', type: 'auto', mes: '5 MESES', desc: 'Registro dias  5' },
+      { name: 'REAJUSTE DE DOSIS  PO', type: 'date', mes: '5 MESES', desc: 'Registro REAJUSTE DE DOSIS  PO' },
+      { name: 'CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  5', type: 'date', mes: '5 MESES', desc: 'Registro CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  5' },
+      { name: 'dias  6', type: 'auto', mes: '6 MESES', desc: 'Registro dias  6' },
+      { name: 'CRED 5°', type: 'date', mes: '6 MESES', desc: 'Fecha CRED 5°' },
+      { name: '4ta  Sesion estimulacion temprana', type: 'date', mes: '6 MESES', desc: 'Registro 4ta  Sesion estimulacion temprana' },
+      { name: 'EV. ODONTOLOGICA', type: 'date', mes: '6 MESES', desc: 'Registro EV. ODONTOLOGICA' },
+      { name: 'PENTA  3°', type: 'date', mes: '6 MESES', desc: 'Fecha PENTA  3°' },
+      { name: 'IPV  3°', type: 'date', mes: '6 MESES', desc: 'Registro IPV  3°' },
+      { name: 'INFLUENZA PEDIATRICA 1°', type: 'date', mes: '6 MESES', desc: 'Registro INFLUENZA PEDIATRICA 1°' },
+      { name: 'Vitamina VA 1 100.000 UI', type: 'date', mes: '6 MESES', desc: 'Registro Vitamina VA 1 100.000 UI' },
+      { name: 'DOSAJE  HB  Dx', type: 'date', mes: '6 MESES', desc: 'Registro DOSAJE  HB  Dx' },
+      { name: 'TA suplementacion', type: 'date', mes: '6 MESES', desc: 'Registro TA suplementacion' },
+      { name: 'HIERRO  SF 12', type: 'date', mes: '6 MESES', desc: 'Registro HIERRO  SF 12' },
+      { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)  1', type: 'date', mes: '6 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)  1' },
+      { name: 'DX ANEMIA SI O NO', type: 'select', mes: '6 MESES', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] },
+      { name: 'dias  7', type: 'auto', mes: '7 MESES', desc: 'Registro dias  7' },
+      { name: 'CRED 6°', type: 'date', mes: '7 MESES', desc: 'Fecha CRED 6°' },
+      { name: '5ta  Sesion estimulacion temprana', type: 'date', mes: '7 MESES', desc: 'Registro 5ta  Sesion estimulacion temprana' },
+      { name: 'INFLUENZA PEDIATRICA  2°', type: 'date', mes: '7 MESES', desc: 'Registro INFLUENZA PEDIATRICA  2°' },
+      { name: 'TAM. VIF', type: 'date', mes: '7 MESES', desc: 'Registro TAM. VIF' },
+      { name: 'REAJUSTE DE DOSIS  SF1', type: 'date', mes: '7 MESES', desc: 'Registro REAJUSTE DE DOSIS  SF1' },
+      { name: 'dias  8', type: 'auto', mes: '8 MESES', desc: 'Registro dias  8' },
+      { name: 'HIERRO  SF 2', type: 'date', mes: '8 MESES', desc: 'Registro HIERRO  SF 2' },
+      { name: 'EX. OJOS', type: 'date', mes: '8 MESES', desc: 'Registro EX. OJOS' },
+      { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)    2', type: 'date', mes: '8 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)    2' },
+      { name: 'dias  9', type: 'auto', mes: '9 MESES', desc: 'Registro dias  9' },
+      { name: 'CRED 7°', type: 'date', mes: '9 MESES', desc: 'Fecha CRED 7°' },
+      { name: '6ta  Sesion estimulacion temprana2', type: 'date', mes: '9 MESES', desc: 'Registro 6ta  Sesion estimulacion temprana2' },
+      { name: 'DOSAJE HB c1 a los 90 dias del CRED de 6 meses', type: 'auto', mes: '9 MESES', desc: 'Fecha DOSAJE HB c1 a los 90 dias del CRED de 6 meses' },
+      { name: 'REAJUSTE DE DOSIS SF2', type: 'date', mes: '9 MESES', desc: 'Registro REAJUSTE DE DOSIS SF2' },
+      { name: 'DX ANEMIA SI O NO', type: 'select', mes: '9 MESES', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] },
+      { name: 'dias  10', type: 'auto', mes: '10 MESES', desc: 'Registro dias  10' },
+      { name: 'HIERRO  SF 3', type: 'date', mes: '10 MESES', desc: 'Registro HIERRO  SF 3' },
+      { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)      3', type: 'date', mes: '10 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)      3' },
+      { name: 'dias  11', type: 'auto', mes: '11 MESES', desc: 'Registro dias  11' },
+      { name: 'REAJUSTE DE DOSIS SF3', type: 'date', mes: '11 MESES', desc: 'Registro REAJUSTE DE DOSIS SF3' }
     ],
-    "1 AÑO": [
-      { name: "CRED 1 AÑO", type: "date", mes: "12 MESES", desc: "CRED 1 Año" },
-      { name: "SPR 1º", type: "date", mes: "12 MESES", desc: "Vacuna SPR 1" },
-      { name: "NEUMO 3º", type: "date", mes: "12 MESES", desc: "Vacuna NEUMO 3" },
-      { name: "VARICELA", type: "date", mes: "12 MESES", desc: "Vacuna Varicela" },
-      { name: "DOSAJE HB 1 AÑO", type: "date", mes: "12 MESES", desc: "Dosaje HB" },
-      { name: "SUPLEMENTACION MULTIMICRONUTRIENTES 1", type: "date", mes: "12 MESES", desc: "Multimicronutrientes 1" },
-      // 15 MESES
-      { name: "CRED 15m", type: "date", mes: "15 MESES", desc: "CRED 15m" },
-      { name: "AMA", type: "date", mes: "15 MESES", desc: "Vacuna Fiebre Amarilla" },
-      { name: "SUPLEMENTACION MULTIMICRONUTRIENTES 2", type: "date", mes: "15 MESES", desc: "Multimicronutrientes 2" },
-      // 18 MESES
-      { name: "CRED 18m", type: "date", mes: "18 MESES", desc: "CRED 18m" },
-      { name: "SPR 2º", type: "date", mes: "18 MESES", desc: "Vacuna SPR 2" },
-      { name: "DPT 1º REFUERZO", type: "date", mes: "18 MESES", desc: "DPT Refuerzo 1" },
-      { name: "APO 1º REFUERZO", type: "date", mes: "18 MESES", desc: "APO Refuerzo 1" },
-      { name: "SUPLEMENTACION MULTIMICRONUTRIENTES 3", type: "date", mes: "18 MESES", desc: "Multimicronutrientes 3" }
+    '1 AÑO': shared1Anio,
+    '2 AÑOS': shared2Anios,
+    '3 AÑOS': shared3Anios,
+    '4 AÑOS': shared4Anios
+  },
+
+  // Catálogo de controles CRED Niños Prematuros / BPN
+  credPrematurosActividades: {
+    'RN': [
+      { name: 'NACIMIENTO', type: 'text', mes: 'LUGAR', desc: 'Registro NACIMIENTO' },
+      { name: 'BCG', type: 'date', mes: 'VACUNA', desc: 'Fecha BCG' },
+      { name: 'HVB', type: 'date', mes: 'VACUNA', desc: 'Fecha HVB' },
+      { name: 'dias', type: 'auto', mes: 'VACUNA', desc: 'Registro dias' },
+      { name: 'PAIS 1', type: 'date', mes: 'CONTROL RN', desc: 'Registro PAIS 1' },
+      { name: '1° CRED', type: 'date', mes: 'CONTROL RN', desc: 'Fecha 1° CRED' },
+      { name: 'dias', type: 'auto', mes: 'CONTROL RN', desc: 'Registro dias' },
+      { name: 'TAM. VIF.', type: 'date', mes: 'CONTROL RN', desc: 'Registro TAM. VIF.' },
+      { name: 'EX. OJOS', type: 'date', mes: 'CONTROL RN', desc: 'Registro EX. OJOS' },
+      { name: '2° CRED', type: 'date', mes: 'CONTROL RN', desc: 'Fecha 2° CRED' },
+      { name: 'dias 2', type: 'auto', mes: 'CONTROL RN', desc: 'Registro dias 2' },
+      { name: 'PAIS TA', type: 'date', mes: 'CONTROL RN', desc: 'Registro PAIS TA' },
+      { name: '3° CRED', type: 'date', mes: 'CONTROL RN', desc: 'Fecha 3° CRED' },
+      { name: 'dias 3', type: 'auto', mes: 'CONTROL RN', desc: 'Registro dias 3' },
+      { name: 'TAMIZAJE NEONATAL PRIMERA', type: 'date', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro TAMIZAJE NEONATAL PRIMERA' },
+      { name: 'SEGUNDA', type: 'date', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro SEGUNDA' },
+      { name: 'dias 5', type: 'auto', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro dias 5' },
+      { name: 'LUGAR', type: 'text', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro LUGAR' },
+      { name: 'TAMIZAJE HIPOACUSIA', type: 'select', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro TAMIZAJE HIPOACUSIA', options: ["NO", "SI", "OBSERVADO"] },
+      { name: 'TAMIZAJE CATARATA', type: 'select', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro TAMIZAJE CATARATA', options: ["NO", "SI", "OBSERVADO"] },
+      { name: 'TAMIZAJE CARDIACO', type: 'select', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro TAMIZAJE CARDIACO', options: ["NO", "SI", "OBSERVADO"] },
+      { name: 'DE 2-7 DIAS  RN', type: 'auto', mes: 'VISITA DOMICIL.', desc: 'Registro DE 2-7 DIAS  RN' },
+      { name: 'ATENCION EN OTRO EESS', type: 'date', mes: 'OBSERVACION', desc: 'Registro ATENCION EN OTRO EESS' }
     ],
-    "2 AÑOS": [
-      { name: "CRED 2 AÑOS", type: "date", mes: "24 MESES", desc: "CRED 2 Años" },
-      { name: "DOSAJE HB 2 AÑOS", type: "date", mes: "24 MESES", desc: "Dosaje HB" },
-      { name: "CRED 2 AÑOS 6 MESES", type: "date", mes: "30 MESES", desc: "CRED 2.5 Años" }
-    ]
+    '1-11 MESES': [
+      { name: 'PAIS  1', type: 'date', mes: '1 MES', desc: 'Registro PAIS  1' },
+      { name: 'dias', type: 'auto', mes: '1 MES', desc: 'Registro dias' },
+      { name: 'CRED 1°', type: 'date', mes: '1 MES', desc: 'Fecha CRED 1°' },
+      { name: '1ra  Sesion estimulacion temprana', type: 'date', mes: '1 MES', desc: 'Registro 1ra  Sesion estimulacion temprana' },
+      { name: 'TAM. VIF', type: 'date', mes: '1 MES', desc: 'Registro TAM. VIF' },
+      { name: 'EV. ODONTOLOGICA', type: 'date', mes: '1 MES', desc: 'Registro EV. ODONTOLOGICA' },
+      { name: 'DOSAJE HB  a los 30 dias  de vida', type: 'auto', mes: '1 MES', desc: 'Registro DOSAJE HB  a los 30 dias  de vida' },
+      { name: 'HIERRO   PO1', type: 'date', mes: '1 MES', desc: 'Registro HIERRO   PO1' },
+      { name: 'CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  1', type: 'date', mes: '1 MES', desc: 'Registro CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  1' },
+      { name: 'DESPUES DE 7 DIAS DEL SF  V.D.1', type: 'auto', mes: 'VISITA DOMICIL. 1', desc: 'Registro DESPUES DE 7 DIAS DEL SF  V.D.1' },
+      { name: 'dias  2', type: 'auto', mes: '2 MESES', desc: 'Registro dias  2' },
+      { name: 'CRED  2°', type: 'date', mes: '2 MESES', desc: 'Fecha CRED  2°' },
+      { name: '2da  Sesion estimulacion temprana', type: 'date', mes: '2 MESES', desc: 'Registro 2da  Sesion estimulacion temprana' },
+      { name: 'PENTA  1°', type: 'date', mes: '2 MESES', desc: 'Fecha PENTA  1°' },
+      { name: 'IPV  1°', type: 'date', mes: '2 MESES', desc: 'Registro IPV  1°' },
+      { name: 'NEUMO 1°', type: 'date', mes: '2 MESES', desc: 'Fecha NEUMO 1°' },
+      { name: 'ROTA  1°', type: 'date', mes: '2 MESES', desc: 'Fecha ROTA  1°' },
+      { name: 'REAJUSTE DE DOSIS PO', type: 'date', mes: '2 MESES', desc: 'Registro REAJUSTE DE DOSIS PO' },
+      { name: 'CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  2', type: 'date', mes: '2 MESES', desc: 'Registro CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  2' },
+      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE  SF   V.D.2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE  SF   V.D.2' },
+      { name: 'dias  3', type: 'auto', mes: '3 MESES', desc: 'Registro dias  3' },
+      { name: 'CRED 3°', type: 'date', mes: '3 MESES', desc: 'Fecha CRED 3°' },
+      { name: 'REAJUSTE DE DOSIS PO', type: 'date', mes: '3 MESES', desc: 'Registro REAJUSTE DE DOSIS PO' },
+      { name: 'CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  3', type: 'date', mes: '3 MESES', desc: 'Registro CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  3' },
+      { name: 'dias  4', type: 'auto', mes: '4 MESES', desc: 'Registro dias  4' },
+      { name: 'CRED 4°', type: 'date', mes: '4 MESES', desc: 'Fecha CRED 4°' },
+      { name: '3ra  Sesion estimulacion temprana', type: 'date', mes: '4 MESES', desc: 'Registro 3ra  Sesion estimulacion temprana' },
+      { name: 'PENTA  2°', type: 'date', mes: '4 MESES', desc: 'Fecha PENTA  2°' },
+      { name: 'IPV  2°', type: 'date', mes: '4 MESES', desc: 'Registro IPV  2°' },
+      { name: 'NEUMO 2°', type: 'date', mes: '4 MESES', desc: 'Fecha NEUMO 2°' },
+      { name: 'ROTA  2°', type: 'date', mes: '4 MESES', desc: 'Fecha ROTA  2°' },
+      { name: 'DOSAJE  HB a los 90 dias despues de CRED  de 1 mes', type: 'auto', mes: '4 MESES', desc: 'Fecha DOSAJE  HB a los 90 dias despues de CRED  de 1 mes' },
+      { name: 'HIERRO  PO 2', type: 'date', mes: '4 MESES', desc: 'Registro HIERRO  PO 2' },
+      { name: 'CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  4', type: 'date', mes: '4 MESES', desc: 'Registro CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  4' },
+      { name: 'DESPUES DE 7 DIAS DEL  SF  V.D. 1', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  3', desc: 'Registro DESPUES DE 7 DIAS DEL  SF  V.D. 1' },
+      { name: 'dias  5', type: 'auto', mes: '5 MESES', desc: 'Registro dias  5' },
+      { name: 'REAJUSTE DE DOSIS  PO', type: 'date', mes: '5 MESES', desc: 'Registro REAJUSTE DE DOSIS  PO' },
+      { name: 'CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  5', type: 'date', mes: '5 MESES', desc: 'Registro CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  5' },
+      { name: 'dias  6', type: 'auto', mes: '6 MESES', desc: 'Registro dias  6' },
+      { name: 'CRED 5°', type: 'date', mes: '6 MESES', desc: 'Fecha CRED 5°' },
+      { name: '4ta  Sesion estimulacion temprana', type: 'date', mes: '6 MESES', desc: 'Registro 4ta  Sesion estimulacion temprana' },
+      { name: 'EV. ODONTOLOGICA', type: 'date', mes: '6 MESES', desc: 'Registro EV. ODONTOLOGICA' },
+      { name: 'PENTA  3°', type: 'date', mes: '6 MESES', desc: 'Fecha PENTA  3°' },
+      { name: 'IPV  3°', type: 'date', mes: '6 MESES', desc: 'Registro IPV  3°' },
+      { name: 'INFLUENZA PEDIATRICA 1°', type: 'date', mes: '6 MESES', desc: 'Registro INFLUENZA PEDIATRICA 1°' },
+      { name: 'Vitamina VA 1 100.000 UI', type: 'date', mes: '6 MESES', desc: 'Registro Vitamina VA 1 100.000 UI' },
+      { name: 'DOSAJE  HB  Dx', type: 'date', mes: '6 MESES', desc: 'Registro DOSAJE  HB  Dx' },
+      { name: 'TA suplementacion', type: 'date', mes: '6 MESES', desc: 'Registro TA suplementacion' },
+      { name: 'HIERRO  SF 1', type: 'date', mes: '6 MESES', desc: 'Registro HIERRO  SF 1' },
+      { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)  1', type: 'date', mes: '6 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)  1' },
+      { name: 'DX ANEMIA SI O NO', type: 'select', mes: '6 MESES', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] },
+      { name: 'DESPUES DE 7 DIAS DEL SF   V.D. 1', type: 'auto', mes: 'VISITA DOMICIL. 1', desc: 'Registro DESPUES DE 7 DIAS DEL SF   V.D. 1' },
+      { name: 'dias  7', type: 'auto', mes: '7 MESES', desc: 'Registro dias  7' },
+      { name: 'CRED 6°', type: 'date', mes: '7 MESES', desc: 'Fecha CRED 6°' },
+      { name: '5ta  Sesion estimulacion temprana', type: 'date', mes: '7 MESES', desc: 'Registro 5ta  Sesion estimulacion temprana' },
+      { name: 'INFLUENZA PEDIATRICA  2°', type: 'date', mes: '7 MESES', desc: 'Registro INFLUENZA PEDIATRICA  2°' },
+      { name: 'TAM. VIF', type: 'date', mes: '7 MESES', desc: 'Registro TAM. VIF' },
+      { name: 'REAJUSTE DE DOSIS  SF1', type: 'date', mes: '7 MESES', desc: 'Registro REAJUSTE DE DOSIS  SF1' },
+      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE   SF   V.D.2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE   SF   V.D.2' },
+      { name: 'dias  8', type: 'auto', mes: '8 MESES', desc: 'Registro dias  8' },
+      { name: 'HIERRO  SF 2', type: 'date', mes: '8 MESES', desc: 'Registro HIERRO  SF 2' },
+      { name: 'EX. OJOS', type: 'date', mes: '8 MESES', desc: 'Registro EX. OJOS' },
+      { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)    2', type: 'date', mes: '8 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)    2' },
+      { name: 'DESPUES DE 7 DIAS DEL SF    V.D.3', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  3', desc: 'Registro DESPUES DE 7 DIAS DEL SF    V.D.3' },
+      { name: 'dias  9', type: 'auto', mes: '9 MESES', desc: 'Registro dias  9' },
+      { name: 'CRED 7°', type: 'date', mes: '9 MESES', desc: 'Fecha CRED 7°' },
+      { name: '6ta  Sesion estimulacion temprana2', type: 'date', mes: '9 MESES', desc: 'Registro 6ta  Sesion estimulacion temprana2' },
+      { name: 'DOSAJE HB c1 a los 90 dias del CRED de 6 meses', type: 'auto', mes: '9 MESES', desc: 'Fecha DOSAJE HB c1 a los 90 dias del CRED de 6 meses' },
+      { name: 'REAJUSTE DE DOSIS SF2', type: 'date', mes: '9 MESES', desc: 'Registro REAJUSTE DE DOSIS SF2' },
+      { name: 'DX ANEMIA SI O NO', type: 'select', mes: '9 MESES', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] },
+      { name: 'dias  10', type: 'auto', mes: '10 MESES', desc: 'Registro dias  10' },
+      { name: 'HIERRO  SF 3', type: 'date', mes: '10 MESES', desc: 'Registro HIERRO  SF 3' },
+      { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)      3', type: 'date', mes: '10 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)      3' },
+      { name: 'dias  11', type: 'auto', mes: '11 MESES', desc: 'Registro dias  11' },
+      { name: 'REAJUSTE DE DOSIS SF3', type: 'date', mes: '11 MESES', desc: 'Registro REAJUSTE DE DOSIS SF3' }
+    ],
+    '1 AÑO': shared1Anio,
+    '2 AÑOS': shared2Anios,
+    '3 AÑOS': shared3Anios,
+    '4 AÑOS': shared4Anios
   },
 
   // Inicialización de la App
@@ -149,7 +431,7 @@ const App = {
     
     // Si no tiene la API configurada, sugerir configurarla en los ajustes
     if (!Api.hasConfiguredApi()) {
-      alert("Por favor, configure la URL de su API de Google Sheets en la sección de 'Ajustes' para permitir la sincronización en la nube.");
+      Utils.showAlert("Configuración Requerida", "Por favor, configure la URL de su API de Google Sheets en la sección de 'Ajustes' para permitir la sincronización en la nube.", "warning");
       window.location.hash = "#ajustes";
     } else {
       // Intentar sincronizar al iniciar
@@ -213,7 +495,7 @@ const App = {
     document.getElementById('save-api-btn').addEventListener('click', () => {
       const url = document.getElementById('api-url-input').value.trim();
       Api.setApiUrl(url);
-      alert("URL de API guardada exitosamente.");
+      Utils.showToast("URL de API guardada exitosamente.", "success");
       window.location.hash = "#dashboard";
       this.syncData();
     });
@@ -248,7 +530,7 @@ const App = {
           const fechaNac = document.getElementById('reg-fecha-nac').value.trim();
           
           if (!hc || !nombres || !fechaNac) {
-            alert("Por favor completa los campos obligatorios: Historia Clínica, Nombres y Fecha de Nacimiento.");
+            Utils.showAlert("Campos Obligatorios", "Por favor completa los campos obligatorios:\nHistoria Clínica, Nombres y Fecha de Nacimiento.", "error");
             return;
           }
         }
@@ -308,10 +590,10 @@ const App = {
       this.updateDashboardStats();
       this.renderPacientesList('');
       // Mostrar toast sutil
-      alert(`Sincronización completa!\nDatos subidos: ${res.uploaded} registros.\nTotal pacientes en base de datos: ${res.downloaded}.`);
+      Utils.showAlert("Sincronización Exitosa", `Datos subidos: ${res.uploaded} registros.\nTotal pacientes en base de datos: ${res.downloaded}.`, "success");
     } else {
       statusText.innerText = 'Error al sincronizar';
-      alert(`Error de sincronización: ${res.error || 'Servidor no disponible'}. Trabajando en modo Offline local.`);
+      Utils.showAlert("Sincronización Fallida", `Error de sincronización: ${res.error || 'Servidor no disponible'}.\nTrabajando en modo Offline local.`, "warning");
     }
   },
 
@@ -364,6 +646,7 @@ const App = {
           <div class="flex gap-2">
             <button class="btn btn-outline" style="padding: 6px 12px; font-size: 13px;" onclick="App.openSeguimiento('${p.id}', 'cred')">📈 CRED</button>
             <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 13px;" onclick="App.openSeguimiento('${p.id}', 'anemia')">🩸 Anemia</button>
+            <button class="btn btn-outline" style="padding: 6px 12px; font-size: 13px; color: var(--primary); border-color: var(--primary);" onclick="App.openEditPacienteModal('${p.id}')">✏️ Editar</button>
           </div>
         </td>
       `;
@@ -396,7 +679,7 @@ const App = {
     };
     
     Api.savePacienteLocal(nuevoPaciente);
-    alert(`Paciente ${nombres} registrado localmente con éxito y encolado para sincronización en la nube.`);
+    Utils.showAlert("Registro Exitoso", `Paciente ${nombres} registrado localmente con éxito y encolado para sincronización.`, "success");
     
     // Resetear formulario
     document.querySelectorAll('.wizard-panel input, .wizard-panel select').forEach(input => input.value = '');
@@ -407,7 +690,7 @@ const App = {
   openSeguimiento(dni, module) {
     this.selectedPaciente = Api.getPacienteById(dni);
     if (!this.selectedPaciente) {
-      alert("Error al cargar paciente");
+      Utils.showAlert("Error", "Error al cargar paciente", "error");
       return;
     }
     if (module === 'cred') {
@@ -437,15 +720,18 @@ const App = {
     
     // Mostrar cabecera del paciente
     document.getElementById('cred-paciente-info').innerHTML = `
-      <div style="background-color: var(--primary-light); padding: 20px; border-radius: var(--radius-md); border-left: 5px solid var(--primary); margin-bottom: 25px;">
-        <h2 style="color: var(--primary); font-size: 20px; font-weight: 700;">👶 ${p.nombres}</h2>
-        <p style="margin-top: 6px; font-size: 14px; color: var(--text-main);">
-          <strong>DNI/CNV:</strong> ${p.id} | 
-          <strong>HC:</strong> ${p.hc} | 
-          <strong>F. Nacimiento:</strong> ${Utils.formatDateToShow(p.fecha_nacimiento)} | 
-          <strong>Edad Actual:</strong> ${ageInfo.text} | 
-          <strong>Tipo:</strong> ${p.tipo_seguimiento === 'termino' ? 'A Término' : 'BPN/Prematuro'}
-        </p>
+      <div style="background-color: var(--primary-light); padding: 20px; border-radius: var(--radius-md); border-left: 5px solid var(--primary); margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap;">
+        <div>
+          <h2 style="color: var(--primary); font-size: 20px; font-weight: 700;">👶 ${p.nombres}</h2>
+          <p style="margin-top: 6px; font-size: 14px; color: var(--text-main);">
+            <strong>DNI/CNV:</strong> ${p.id} | 
+            <strong>HC:</strong> ${p.hc} | 
+            <strong>F. Nacimiento:</strong> ${Utils.formatDateToShow(p.fecha_nacimiento)} | 
+            <strong>Edad Actual:</strong> ${ageInfo.text} | 
+            <strong>Tipo:</strong> ${p.tipo_seguimiento === 'termino' ? 'A Término' : 'BPN/Prematuro'}
+          </p>
+        </div>
+        <button class="btn btn-outline" style="border-color: var(--primary); color: var(--primary); padding: 8px 16px; font-size: 14px;" onclick="App.openEditPacienteModal('${p.id}')">✏️ Editar Datos</button>
       </div>
     `;
     
@@ -481,7 +767,8 @@ const App = {
     container.innerHTML = '';
     
     const p = this.selectedPaciente;
-    const actividades = this.credTerminoActividades[tab] || [];
+    const catalog = p.tipo_seguimiento === 'bpn' ? this.credPrematurosActividades : this.credTerminoActividades;
+    const actividades = catalog[tab] || [];
     
     // Si no está registrado en el catálogo (ej. 3 o 4 años de BPN), crearlo dinámicamente
     if (actividades.length === 0 && (tab === '3 AÑOS' || tab === '4 AÑOS')) {
@@ -503,12 +790,32 @@ const App = {
       const targetMesNormalized = Utils.normalizeMesControl(act.mes || "RN");
 
       // Buscar si el paciente ya tiene registrado este seguimiento
-      const segRealizado = seguimientos.find(s => 
+      let segRealizado = seguimientos.find(s => 
         Utils.normalizeActName(s.actividad) === targetActNormalized && 
         Utils.normalizeMesControl(s.mes_control) === targetMesNormalized
       );
       
-      const hasCompleted = !!(segRealizado && (segRealizado.fecha_realizada || segRealizado.valor));
+      let hasCompleted = !!(segRealizado && (segRealizado.fecha_realizada || segRealizado.valor));
+      let displayValue = segRealizado ? segRealizado.valor : "";
+      const isAuto = act.type === "auto";
+      
+      if (isAuto) {
+        const calculatedVal = this.calculateAutoDias(p, act.mes || "RN", act.name, seguimientos);
+        displayValue = calculatedVal;
+        hasCompleted = calculatedVal !== "";
+        if (hasCompleted) {
+          if (!segRealizado) {
+            segRealizado = {
+              actividad: act.name,
+              mes_control: act.mes || "RN",
+              valor: calculatedVal
+            };
+          } else {
+            segRealizado.valor = calculatedVal;
+          }
+        }
+      }
+      
       const isPending = !hasCompleted;
       
       const ev = document.createElement('div');
@@ -530,21 +837,30 @@ const App = {
               <strong>Mes sugerido:</strong> ${mesCont} | <strong>Fecha Programada:</strong> ${Utils.formatDateToShow(fechaSug)}
             </p>
             ${hasCompleted ? `
-              <p style="font-size: 13px; color: var(--secondary); font-weight: 500; margin-top: 6px;">
-                ✅ ${segRealizado.fecha_realizada ? `Realizado el: ${Utils.formatDateToShow(segRealizado.fecha_realizada)}` : 'Registrado'} 
-                ${(segRealizado.valor && segRealizado.actividad.toLowerCase() !== 'nacimiento' && !segRealizado.actividad.toLowerCase().includes('lugar')) ? `| <strong>Valor:</strong> ${segRealizado.valor}` : (segRealizado.valor ? `: ${segRealizado.valor}` : '')}
+              <p style="font-size: 13px; font-weight: 500; margin-top: 6px;">
+                ${isAuto ? `
+                  <span style="color: var(--text-main);">📊 Calculado: </span>
+                  <span class="${Utils.getDaysStatusColor(displayValue, act.mes || "RN", act.name) === 'green' ? 'text-green' : 'text-red'}">${displayValue} días</span>
+                ` : `
+                  <span style="color: var(--secondary);">✅ ${segRealizado.fecha_realizada ? `Realizado el: ${Utils.formatDateToShow(segRealizado.fecha_realizada)}` : 'Registrado'}</span>
+                  ${(segRealizado.valor && segRealizado.actividad.toLowerCase() !== 'nacimiento' && !segRealizado.actividad.toLowerCase().includes('lugar')) ? `| <strong>Valor:</strong> ${segRealizado.valor}` : (segRealizado.valor ? `: ${segRealizado.valor}` : '')}
+                `}
               </p>
-              ${segRealizado.observacion ? `<p style="font-size: 12px; font-style: italic; margin-top: 2px;">"Obs: ${segRealizado.observacion}"</p>` : ''}
+              ${(segRealizado.observacion && !isAuto) ? `<p style="font-size: 12px; font-style: italic; margin-top: 2px;">"Obs: ${segRealizado.observacion}"</p>` : ''}
             ` : `
               <p style="font-size: 13px; color: var(--warning); font-weight: 500; margin-top: 6px;">
-                ⏳ Pendiente
+                ⏳ Pendiente ${isAuto ? '(Días de control)' : ''}
               </p>
             `}
           </div>
           <div class="event-actions">
-            <button class="btn btn-primary" style="padding: 8px 16px; font-size: 13px;" onclick="App.openRegisterControlModal('${act.name}', '${act.mes || ''}', '${fechaSug}', '${segRealizado ? segRealizado.fecha_realizada : ''}', '${segRealizado ? segRealizado.valor : ''}', '${segRealizado ? segRealizado.observacion : ''}')">
-              ${hasCompleted ? '✏️ Editar' : '➕ Registrar'}
-            </button>
+            ${isAuto ? `
+              <span style="font-size: 12px; color: var(--text-muted); font-style: italic; padding: 8px 0;">Automático</span>
+            ` : `
+              <button class="btn btn-primary" style="padding: 8px 16px; font-size: 13px;" onclick="App.openRegisterControlModal('${act.name}', '${act.mes || ''}', '${fechaSug}', '${segRealizado ? segRealizado.fecha_realizada : ''}', '${segRealizado ? segRealizado.valor : ''}', '${segRealizado ? segRealizado.observacion : ''}')">
+                ${hasCompleted ? '✏️ Editar' : '➕ Registrar'}
+              </button>
+            `}
           </div>
         </div>
       `;
@@ -552,6 +868,121 @@ const App = {
     });
     
     container.appendChild(listEl);
+  },
+
+  // Calcular automáticamente los días para una actividad auto
+  calculateAutoDias(paciente, mesControl, actName, allSeguimientos) {
+    const cleanMes = Utils.normalizeMesControl(mesControl);
+    const cleanAct = Utils.normalizeActName(actName);
+    const birthDate = paciente.fecha_nacimiento;
+    
+    let pair = null;
+    
+    if (cleanMes === "RN") {
+      if (cleanAct === "DIAS") pair = ["HVB", "RN", "FECHA_NACIMIENTO", ""];
+      else if (cleanAct === "DIAS 2") pair = ["2 CRED", "RN", "FECHA_NACIMIENTO", ""];
+      else if (cleanAct === "DIAS 3") pair = ["3 CRED", "RN", "FECHA_NACIMIENTO", ""];
+      else if (cleanAct === "DIAS 5") pair = ["TAMIZAJE NEONATAL", "RN", "FECHA_NACIMIENTO", ""];
+      else if (cleanAct.includes("DIAS")) pair = ["1 CRED", "RN", "FECHA_NACIMIENTO", ""];
+    } else if (cleanMes === "1 MES") {
+      if (cleanAct === "DIAS") pair = ["CRED 1", "1 MES", "FECHA_NACIMIENTO", ""];
+    } else if (cleanMes === "2 MESES") {
+      if (cleanAct === "DIAS 2") pair = ["CRED 2", "2 MESES", "CRED 1", "1 MES"];
+    } else if (cleanMes === "3 MESES") {
+      if (cleanAct === "DIAS 3") pair = ["CRED 3", "3 MESES", "CRED 2", "2 MESES"];
+    } else if (cleanMes === "4 MESES") {
+      if (cleanAct === "DIAS 4") pair = ["CRED 4", "4 MESES", "CRED 3", "3 MESES"];
+    } else if (cleanMes === "5 MESES") {
+      if (cleanAct === "DIAS 5") pair = ["REAJUSTE DE DOSIS PO", "5 MESES", "CRED 4", "4 MESES"];
+    } else if (cleanMes === "6 MESES") {
+      if (cleanAct === "DIAS 6") pair = ["CRED 5", "6 MESES", "REAJUSTE DE DOSIS PO", "5 MESES"];
+    } else if (cleanMes === "7 MESES") {
+      if (cleanAct === "DIAS 7") pair = ["CRED 6", "7 MESES", "CRED 5", "6 MESES"];
+    } else if (cleanMes === "8 MESES") {
+      if (cleanAct === "DIAS 8") pair = ["HIERRO SF 2", "8 MESES", "CRED 6", "7 MESES"];
+    } else if (cleanMes === "9 MESES") {
+      if (cleanAct === "DIAS 9") pair = ["CRED 7", "9 MESES", "HIERRO SF 2", "8 MESES"];
+    } else if (cleanMes === "10 MESES") {
+      if (cleanAct === "DIAS 10") pair = ["HIERRO SF 3", "10 MESES", "CRED 7", "9 MESES"];
+    } else if (cleanMes === "11 MESES") {
+      if (cleanAct === "DIAS 11") pair = ["REAJUSTE DE DOSIS SF3", "11 MESES", "HIERRO SF 3", "10 MESES"];
+    } else if (cleanMes === "12 MESES") {
+      if (cleanAct === "DIAS 1") pair = ["CRED 1", "12 MESES", "REAJUSTE DE DOSIS SF3", "11 MESES"];
+    } else if (cleanMes === "15 MESES") {
+      if (cleanAct === "DIAS 2") pair = ["CRED 2", "15 MESES", "CRED 1", "12 MESES"];
+    } else if (cleanMes === "16 MESES") {
+      if (cleanAct === "DIAS 3") pair = ["HIERRO SF 2", "16 MESES", "CRED 2", "15 MESES"];
+    } else if (cleanMes === "17 MESES") {
+      if (cleanAct === "DIAS 4") pair = ["HIERRO SF 3", "17 MESES", "HIERRO SF 2", "16 MESES"];
+    } else if (cleanMes === "18 MESES") {
+      if (cleanAct === "DIAS 5") pair = ["CRED 3", "18 MESES", "HIERRO SF 3", "17 MESES"];
+    } else if (cleanMes === "19 MESES") {
+      if (cleanAct === "DIAS 6") pair = ["HIERRO SF 5", "19 MESES", "CRED 3", "18 MESES"];
+    } else if (cleanMes === "20 MESES") {
+      if (cleanAct === "DIAS 7") pair = ["4TA SESION ESTIMULACION TEMPRANA", "20 MESES", "HIERRO SF 5", "19 MESES"];
+    } else if (cleanMes === "21 MESES") {
+      if (cleanAct === "DIAS 8") pair = ["CRED 4", "21 MESES", "4TA SESION ESTIMULACION TEMPRANA", "20 MESES"];
+    } else if (cleanMes === "24 MESES") {
+      if (cleanAct === "DIAS 1") pair = ["CRED 1", "24 MESES", "CRED 4", "21 MESES"];
+    } else if (cleanMes === "25 MESES") {
+      if (cleanAct === "DIAS 2") pair = ["HIERRO SF 2", "25 MESES", "CRED 1", "24 MESES"];
+    } else if (cleanMes === "26 MESES") {
+      if (cleanAct === "DIAS 3") pair = ["HIERRO SF 3", "26 MESES", "HIERRO SF 2", "25 MESES"];
+    } else if (cleanMes === "27 MESES") {
+      if (cleanAct === "DIAS 4") pair = ["HIERRO SF4", "27 MESES", "HIERRO SF 3", "26 MESES"];
+    } else if (cleanMes === "28 MESES") {
+      if (cleanAct === "DIAS 5") pair = ["HIERRO SF5", "28 MESES", "HIERRO SF4", "27 MESES"];
+    } else if (cleanMes === "29 MESES") {
+      if (cleanAct === "DIAS 6") pair = ["HIERRO SF6", "29 MESES", "HIERRO SF5", "28 MESES"];
+    } else if (cleanMes === "30 MESES") {
+      if (cleanAct === "DIAS 7") pair = ["CRED 2", "30 MESES", "HIERRO SF6", "29 MESES"];
+    } else if (cleanMes === "36 MESES") {
+      if (cleanAct === "DIAS 1") pair = ["CRED 1", "36 MESES", "CRED 2", "30 MESES"];
+    } else if (cleanMes === "37 MESES") {
+      if (cleanAct === "DIAS 2") pair = ["HIERRO SF2", "37 MESES", "CRED 1", "36 MESES"];
+    } else if (cleanMes === "38 MESES") {
+      if (cleanAct === "DIAS 3") pair = ["HIERRO SF3", "38 MESES", "HIERRO SF2", "37 MESES"];
+    } else if (cleanMes === "39 MESES") {
+      if (cleanAct === "DIAS 4") pair = ["DOSAJE HB C1", "39 MESES", "HIERRO SF3", "38 MESES"];
+    } else if (cleanMes === "42 MESES") {
+      if (cleanAct === "DIAS 5") pair = ["CRED 2", "42 MESES", "DOSAJE HB C1", "39 MESES"];
+    } else if (cleanMes === "48 MESES") {
+      if (cleanAct === "DIAS 1") pair = ["CRED 1", "48 MESES", "CRED 2", "42 MESES"];
+    } else if (cleanMes === "49 MESES") {
+      if (cleanAct === "DIAS 2") pair = ["HIERRO SF2", "49 MESES", "CRED 1", "48 MESES"];
+    } else if (cleanMes === "50 MESES") {
+      if (cleanAct === "DIAS 3") pair = ["HIERRO SF3", "50 MESES", "HIERRO SF2", "49 MESES"];
+    } else if (cleanMes === "51 MESES") {
+      if (cleanAct === "DIAS 4") pair = ["DOSAJE HB C1", "51 MESES", "HIERRO SF3", "50 MESES"];
+    } else if (cleanMes === "54 MESES") {
+      if (cleanAct === "DIAS 5") pair = ["CRED 2", "54 MESES", "DOSAJE HB C1", "51 MESES"];
+    }
+    
+    if (!pair) return "";
+    
+    const [actAct, mesAct, actPrev, mesPrev] = pair;
+    
+    const segAct = allSeguimientos.find(s => 
+      Utils.normalizeActName(s.actividad) === Utils.normalizeActName(actAct) && 
+      Utils.normalizeMesControl(s.mes_control) === Utils.normalizeMesControl(mesAct)
+    );
+    const dateAct = segAct ? segAct.fecha_realizada : "";
+    
+    let datePrev = "";
+    if (actPrev === "FECHA_NACIMIENTO") {
+      datePrev = birthDate;
+    } else {
+      const segPrev = allSeguimientos.find(s => 
+        Utils.normalizeActName(s.actividad) === Utils.normalizeActName(actPrev) && 
+        Utils.normalizeMesControl(s.mes_control) === Utils.normalizeMesControl(mesPrev)
+      );
+      datePrev = segPrev ? segPrev.fecha_realizada : "";
+    }
+    
+    if (dateAct && datePrev) {
+      return Utils.daysBetween(datePrev, dateAct);
+    }
+    return "";
   },
 
   // ABRIR MODAL REGISTRO CONTROL CRED
@@ -592,7 +1023,7 @@ const App = {
     const obs = document.getElementById('modal-obs').value;
     
     if (!fechaReal) {
-      alert("Por favor indica la fecha de realización");
+      Utils.showAlert("Fecha Requerida", "Por favor indica la fecha de realización", "warning");
       return;
     }
     
@@ -607,8 +1038,32 @@ const App = {
     };
     
     Api.saveSeguimientoCredLocal(seguimiento);
+
+    // Guardar también cualquier actividad auto-días asociada a este mes/control
+    const catalog = this.selectedPaciente.tipo_seguimiento === 'bpn' ? this.credPrematurosActividades : this.credTerminoActividades;
+    const currentTabActs = catalog[this.activeTimelineTab] || [];
+    currentTabActs.forEach(act => {
+      if (act.type === "auto" && Utils.normalizeMesControl(act.mes || "RN") === Utils.normalizeMesControl(mes)) {
+        const updatedSeguimientos = Api.getSeguimientoCredByPaciente(this.selectedPaciente.id);
+        const diasVal = this.calculateAutoDias(this.selectedPaciente, act.mes || "RN", act.name, updatedSeguimientos);
+        
+        if (diasVal !== "") {
+          const autoSeguimiento = {
+            dni_paciente: this.selectedPaciente.id,
+            mes_control: act.mes || "RN",
+            actividad: act.name,
+            fecha_programada: "",
+            fecha_realizada: "",
+            valor: diasVal,
+            observacion: "Calculado automáticamente"
+          };
+          Api.saveSeguimientoCredLocal(autoSeguimiento);
+        }
+      }
+    });
+
     document.getElementById('control-dialog').classList.remove('active');
-    alert("¡Control guardado correctamente!");
+    Utils.showToast("¡Control guardado correctamente!", "success");
     
     // Recargar timeline
     this.renderTimelineCred(this.activeTimelineTab);
@@ -630,14 +1085,17 @@ const App = {
     const ageInfo = Utils.calculateExactAge(p.fecha_nacimiento);
     
     document.getElementById('anemia-paciente-info').innerHTML = `
-      <div style="background-color: var(--accent-light); padding: 20px; border-radius: var(--radius-md); border-left: 5px solid var(--accent); margin-bottom: 25px;">
-        <h2 style="color: var(--accent-hover); font-size: 20px; font-weight: 700;">🩸 Seguimiento de Anemia: ${p.nombres}</h2>
-        <p style="margin-top: 6px; font-size: 14px; color: var(--text-main);">
-          <strong>DNI/CNV:</strong> ${p.id} | 
-          <strong>HC:</strong> ${p.hc} | 
-          <strong>F. Nacimiento:</strong> ${Utils.formatDateToShow(p.fecha_nacimiento)} | 
-          <strong>Edad Actual:</strong> ${ageInfo.text}
-        </p>
+      <div style="background-color: var(--accent-light); padding: 20px; border-radius: var(--radius-md); border-left: 5px solid var(--accent); margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap;">
+        <div>
+          <h2 style="color: var(--accent-hover); font-size: 20px; font-weight: 700;">🩸 Seguimiento de Anemia: ${p.nombres}</h2>
+          <p style="margin-top: 6px; font-size: 14px; color: var(--text-main);">
+            <strong>DNI/CNV:</strong> ${p.id} | 
+            <strong>HC:</strong> ${p.hc} | 
+            <strong>F. Nacimiento:</strong> ${Utils.formatDateToShow(p.fecha_nacimiento)} | 
+            <strong>Edad Actual:</strong> ${ageInfo.text}
+          </p>
+        </div>
+        <button class="btn btn-outline" style="border-color: var(--accent); color: var(--accent); padding: 8px 16px; font-size: 14px;" onclick="App.openEditPacienteModal('${p.id}')">✏️ Editar Datos</button>
       </div>
     `;
     
@@ -784,7 +1242,7 @@ const App = {
     const obs = document.getElementById('modal-anemia-obs').value;
     
     if (!fechaReal) {
-      alert("Por favor indica la fecha de realización");
+      Utils.showAlert("Fecha Requerida", "Por favor indica la fecha de realización", "warning");
       return;
     }
     
@@ -800,7 +1258,7 @@ const App = {
     
     Api.saveSeguimientoAnemiaLocal(seguimiento);
     document.getElementById('anemia-dialog').classList.remove('active');
-    alert("¡Control de anemia guardado correctamente!");
+    Utils.showToast("¡Control de anemia guardado correctamente!", "success");
     
     this.renderTimelineAnemia(fase);
   },
@@ -848,75 +1306,93 @@ const App = {
     updateStatus();
   },
 
-  // EXPORTAR A EXCEL EN EL FORMATO MINSA DE 290 COLUMNAS
+  // EXPORTAR A EXCEL EN EL FORMATO MINSA DE 290 COLUMNAS (PROFESIONAL Y CON COLORES)
   exportToMinsaExcel() {
     const db = Api.getLocalDb();
     const pacientes = db.pacientes;
     const seguimientosCred = db.seguimientoCred;
     
     if (pacientes.length === 0) {
-      alert("No hay pacientes para exportar.");
+      Utils.showAlert("Exportación Vacía", "No hay pacientes para exportar.", "info");
       return;
     }
 
     try {
-      // 1. Obtener la plantilla original (si el usuario la subiera o la creamos dinámicamente)
-      // Como estamos haciéndolo cliente-side, usaremos SheetJS para construir las tablas
-      const wb = XLSX.utils.book_new();
-      
-      // Hoja de Niños a Término
-      const terminoPacientes = pacientes.filter(p => p.tipo_seguimiento === 'termino');
-      const terminoRows = this.buildFlatRows(terminoPacientes, seguimientosCred, 'termino');
-      const wsTermino = XLSX.utils.json_to_sheet(terminoRows);
-      XLSX.utils.book_append_sheet(wb, wsTermino, "SEGUIMIENTO NIÑOS A TERMINO");
-      
-      // Hoja de BPN Prematuros
-      const bpnPacientes = pacientes.filter(p => p.tipo_seguimiento === 'bpn');
-      const bpnRows = this.buildFlatRows(bpnPacientes, seguimientosCred, 'bpn');
-      const wsBpn = XLSX.utils.json_to_sheet(bpnRows);
-      XLSX.utils.book_append_sheet(wb, wsBpn, "SEGUIMIENTO NIÑ@ BPN PREMATUROS");
-      
-      // Guardar
-      XLSX.writeFile(wb, `REPORTE_CRED_MINSA_${new Date().toISOString().split('T')[0]}.xlsx`);
-      alert("Archivo Excel exportado correctamente con formato compatible.");
+      ExcelExporter.exportExcel(pacientes, seguimientosCred);
     } catch (e) {
       console.error(e);
-      alert("Error al exportar a Excel: " + e.message + "\n¿Se ha cargado la librería de Excel correctamente?");
+      Utils.showAlert("Error de Exportación", "Error al exportar a Excel: " + e.message, "error");
     }
   },
-  
-  // Aplanar estructura relacional a filas horizontales para exportación clásica
-  buildFlatRows(pacientes, seguimientos, tipo) {
-    return pacientes.map((p, idx) => {
-      const row = {
-        "N°": idx + 1,
-        "DISTRITO": p.distrito,
-        "E.E.S.S PADRON": p.eess,
-        "HC": p.hc,
-        "TIPO DOC": p.tipo_doc,
-        "N° DOCUMENTO": p.id,
-        "NOMBRES Y APELLIDOS": p.nombres,
-        "SEXO": p.sexo,
-        "PESO": p.peso_nacer,
-        "SEM GEST": p.sem_gest,
-        "FECHA DE NACIMIENTO": p.fecha_nacimiento,
-        "COMUNIDAD": p.comunidad,
-        "DNI MADRE": p.dni_madre,
-        "NOMBRES Y APELLIDOS MADRE": p.nombres_madre,
-        "CELULAR": p.celular_madre
-      };
-      
-      // Buscar y asignar actividades del paciente
-      const pacSeg = seguimientos.filter(s => String(s.dni_paciente) === String(p.id));
-      
-      pacSeg.forEach(seg => {
-        // Construimos una columna dinámica para cada actividad
-        // Ej: "RN - BCG" o "1 MES - CRED 1º"
-        const colKey = `${seg.mes_control ? seg.mes_control + ' - ' : ''}${seg.actividad}`;
-        row[colKey] = seg.fecha_realizada || seg.valor || '';
-      });
-      
-      return row;
-    });
+
+  openEditPacienteModal(dni) {
+    const p = Api.getPacienteById(dni);
+    if (!p) {
+      Utils.showAlert("Error", "No se pudo cargar la información del paciente.", "error");
+      return;
+    }
+    
+    document.getElementById('edit-p-id').value = p.id;
+    document.getElementById('edit-p-hc').value = p.hc || '';
+    document.getElementById('edit-p-dni').value = p.id || '';
+    document.getElementById('edit-p-nombres').value = p.nombres || '';
+    let cleanFechaNac = '';
+    if (p.fecha_nacimiento) {
+      cleanFechaNac = String(p.fecha_nacimiento).split(' ')[0].split('T')[0];
+    }
+    document.getElementById('edit-p-fecha-nac').value = cleanFechaNac;
+    document.getElementById('edit-p-sexo').value = p.sexo || '';
+    document.getElementById('edit-p-peso').value = p.peso_nacer || '';
+    document.getElementById('edit-p-sem-gest').value = p.sem_gest || '';
+    document.getElementById('edit-p-distrito').value = p.distrito || 'SAN SEBASTIAN';
+    document.getElementById('edit-p-comunidad').value = p.comunidad || '';
+    document.getElementById('edit-p-dni-madre').value = p.dni_madre || '';
+    document.getElementById('edit-p-nombre-madre').value = p.nombres_madre || '';
+    document.getElementById('edit-p-celular-madre').value = p.celular_madre || '';
+    document.getElementById('edit-p-tipo-seguimiento').value = p.tipo_seguimiento || 'termino';
+    
+    document.getElementById('edit-paciente-dialog').classList.add('active');
+  },
+
+  savePacienteEdited() {
+    const id = document.getElementById('edit-p-id').value;
+    const nombres = document.getElementById('edit-p-nombres').value.toUpperCase().trim();
+    
+    const p = Api.getPacienteById(id);
+    if (!p) {
+      Utils.showAlert("Error", "No se encontró el paciente a actualizar.", "error");
+      return;
+    }
+    
+    const updatedPaciente = {
+      ...p,
+      hc: document.getElementById('edit-p-hc').value.trim(),
+      nombres: nombres,
+      fecha_nacimiento: document.getElementById('edit-p-fecha-nac').value,
+      sexo: document.getElementById('edit-p-sexo').value,
+      peso_nacer: document.getElementById('edit-p-peso').value || "",
+      sem_gest: document.getElementById('edit-p-sem-gest').value || "",
+      distrito: document.getElementById('edit-p-distrito').value,
+      comunidad: document.getElementById('edit-p-comunidad').value.trim(),
+      dni_madre: document.getElementById('edit-p-dni-madre').value.trim(),
+      nombres_madre: document.getElementById('edit-p-nombre-madre').value.toUpperCase().trim(),
+      celular_madre: document.getElementById('edit-p-celular-madre').value.trim(),
+      tipo_seguimiento: document.getElementById('edit-p-tipo-seguimiento').value
+    };
+    
+    Api.savePacienteLocal(updatedPaciente);
+    
+    document.getElementById('edit-paciente-dialog').classList.remove('active');
+    Utils.showToast("Datos actualizados correctamente", "success");
+    
+    // Recargar vista actual para reflejar cambios
+    if (this.currentView === 'dashboard') {
+      this.updateDashboardStats();
+      this.renderPacientesList(document.getElementById('global-search').value);
+    } else if (this.currentView === 'seguimiento-cred') {
+      this.initSeguimientoCredView();
+    } else if (this.currentView === 'seguimiento-anemia') {
+      this.initSeguimientoAnemiaView();
+    }
   }
 };

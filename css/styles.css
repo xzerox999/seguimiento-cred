@@ -741,6 +741,8 @@ input:focus, select:focus, textarea:focus {
 .items-center { align-items: center; }
 .justify-between { justify-content: space-between; }
 .w-full { width: 100%; }
+.text-green { color: #27ae60 !important; font-weight: 600; }
+.text-red { color: #c0392b !important; font-weight: 600; }
 
 /* OFFLINE NOTIFICATION */
 .offline-banner {

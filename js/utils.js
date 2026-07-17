@@ -267,6 +267,83 @@ const Utils = {
 
     // Por defecto, retornar el valor limpio
     return clean;
+  },
+
+  // Obtener color del estado de días (green o red) según el mes de control y el valor
+  getDaysStatusColor(diasVal, mesControl, actName) {
+    const dias = parseInt(diasVal, 10);
+    if (isNaN(dias)) return "neutral";
+    
+    const cleanMes = this.normalizeMesControl(mesControl);
+    const cleanAct = this.normalizeActName(actName);
+    
+    let minG = 30, maxG = 37; // default mensual
+    
+    if (cleanMes === "RN") {
+      if (cleanAct === "DIAS") { // BCG / HVB
+        minG = 0; maxG = 1;
+      } else if (cleanAct === "DIAS 2") { // 2 CRED
+        minG = 7; maxG = 14;
+      } else if (cleanAct === "DIAS 3") { // 3 CRED
+        minG = 15; maxG = 21;
+      } else if (cleanAct === "DIAS 5") { // Tamizaje
+        minG = 2; maxG = 6;
+      } else { // 1 CRED
+        minG = 3; maxG = 6;
+      }
+    } else if (["15 MESES", "18 MESES", "39 MESES", "42 MESES", "51 MESES", "54 MESES"].includes(cleanMes)) {
+      if (cleanAct.includes("DIAS")) {
+        minG = 90; maxG = 97;
+      }
+    } else if (["24 MESES", "30 MESES", "36 MESES", "48 MESES"].includes(cleanMes)) {
+      if (cleanAct.includes("DIAS")) {
+        minG = 180; maxG = 187;
+      }
+    }
+    
+    if (dias >= minG && dias <= maxG) {
+      return "green";
+    } else {
+      return "red";
+    }
+  },
+
+  // Mostrar una alerta profesional usando SweetAlert2
+  showAlert(title, text, icon = 'info') {
+    if (window.Swal) {
+      return Swal.fire({
+        title: title,
+        html: text.replace(/\n/g, '<br>'), // permitir saltos de línea
+        icon: icon,
+        confirmButtonColor: '#1F4E79'
+      });
+    } else {
+      alert(`${title}\n\n${text}`);
+      return Promise.resolve();
+    }
+  },
+
+  showToast(title, icon = 'success') {
+    if (window.Swal) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3500,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      return Toast.fire({
+        icon: icon,
+        title: title
+      });
+    } else {
+      console.log("Toast:", title);
+      return Promise.resolve();
+    }
   }
 };
 

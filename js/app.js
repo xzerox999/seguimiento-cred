@@ -434,8 +434,8 @@ const App = {
       Utils.showAlert("Configuración Requerida", "Por favor, configure la URL de su API de Google Sheets en la sección de 'Ajustes' para permitir la sincronización en la nube.", "warning");
       window.location.hash = "#ajustes";
     } else {
-      // Intentar sincronizar al iniciar
-      this.syncData();
+      // Sincronización automática no bloqueante al ingresar a la página
+      this.syncData(true);
     }
   },
 
@@ -643,16 +643,21 @@ const App = {
     });
   },
 
-  // Sincronizar datos
-  async syncData() {
+  // Sincronizar datos con progreso en tiempo real
+  async syncData(isAuto = false) {
     const btn = document.getElementById('sync-sidebar-btn');
     const statusText = document.getElementById('sync-time');
     
     btn.disabled = true;
     btn.innerHTML = '🔄 Sincronizando...';
-    statusText.innerText = 'Sincronizando...';
+    statusText.innerText = isAuto ? 'Sincronizando...' : 'Iniciando...';
     
-    const res = await Api.sync();
+    const onProgress = (msg) => {
+      btn.innerHTML = `🔄 ${msg}`;
+      statusText.innerText = msg;
+    };
+    
+    const res = await Api.sync(onProgress);
     
     btn.disabled = false;
     btn.innerHTML = '🔄 Sincronizar';
@@ -661,11 +666,19 @@ const App = {
       statusText.innerText = 'Sincronizado hoy';
       this.updateDashboardStats();
       this.renderPacientesList('');
-      // Mostrar toast sutil
-      Utils.showAlert("Sincronización Exitosa", `Datos subidos: ${res.uploaded} registros.\nTotal pacientes en base de datos: ${res.downloaded}.`, "success");
+      
+      if (isAuto) {
+        Utils.showToast(`✅ Sincronizado: ${res.downloaded} pacientes y ${res.countCred || 0} controles cargados.`, "success");
+      } else {
+        Utils.showAlert("Sincronización Exitosa", `Total pacientes: ${res.downloaded}.\nControles CRED procesados: ${res.countCred || 0}.\nCambios locales subidos: ${res.uploaded}.`, "success");
+      }
     } else {
-      statusText.innerText = 'Error al sincronizar';
-      Utils.showAlert("Sincronización Fallida", `Error de sincronización: ${res.error || 'Servidor no disponible'}.\nTrabajando en modo Offline local.`, "warning");
+      statusText.innerText = 'Modo Local (Offline)';
+      if (isAuto) {
+        Utils.showToast("Modo Offline: trabajando con datos guardados en esta PC.", "info");
+      } else {
+        Utils.showAlert("Sincronización Fallida", `Error de sincronización: ${res.error || 'Servidor no disponible'}.\nTrabajando en modo Offline local.`, "warning");
+      }
     }
   },
 

@@ -4,7 +4,7 @@
 
 const Api = {
   // URL por defecto para que funcione automáticamente en cualquier PC sin necesidad de configuración previa
-  DEFAULT_API_URL: 'https://script.google.com/macros/s/AKfycbz2KogEKULG-T3DMHBqPKBP0Gh4448O93EVWywiab3l344WcAb57sWtwYLVZwwArshaNQ/exec',
+  DEFAULT_API_URL: 'https://script.google.com/macros/s/AKfycbwBJhO80aV4gO1CkuprApn-TlDdh6_QCn9GKY7e7nv1fwiwIQdHgVMRzwS8a2Ix9a0DjQ/exec',
 
   // CONFIGURACIÓN DE LA URL DE GOOGLE APPS SCRIPT
   // Se lee de localStorage; si está vacío, usa la URL predeterminada del proyecto.
@@ -63,9 +63,26 @@ const Api = {
     return this.getApiUrl() !== '';
   },
 
+  // Desempaqueta datos ya sea que vengan en formato compacto {headers, rows} o en objetos
+  _unpackRows(raw) {
+    if (!raw) return [];
+    if (Array.isArray(raw)) return raw;
+    if (raw.headers && Array.isArray(raw.rows)) {
+      const { headers, rows } = raw;
+      return rows.map(r => {
+        const obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = r[i] !== undefined ? r[i] : "";
+        });
+        return obj;
+      });
+    }
+    return [];
+  },
+
   // CLIENTE HTTP ROBUSTO CON REDIRECTS DE GOOGLE, TIMEOUT Y REINTENTOS
   async _fetchWithRetry(url, options = {}, maxRetries = 2) {
-    const timeoutMs = 45000; // 45 segundos de margen
+    const timeoutMs = 90000; // 90 segundos para dar amplio margen en conexiones lentas
     let lastError = null;
 
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
@@ -88,7 +105,7 @@ const Api = {
         }
 
         if (response.status === 404) {
-          throw new Error("Error 404: La URL de la Web App no existe o el despliegue fue eliminado.");
+          throw new Error("Error 404: El servidor de Google Apps Script tardó demasiado en procesar o la URL es incorrecta.");
         }
 
         if (!response.ok) {
@@ -115,10 +132,9 @@ const Api = {
         lastError = err;
 
         if (err.name === 'AbortError') {
-          lastError = new Error("Tiempo de espera agotado (45s). El servidor de Google Sheets tardó demasiado en responder.");
+          lastError = new Error("Tiempo de espera agotado. El servidor de Google Sheets tardó demasiado en responder.");
         }
 
-        // Si es 403 o configuración de permisos, no tiene sentido reintentar en bucle
         if (lastError.message.includes("403") || lastError.message.includes("Acceso Denegado")) {
           throw lastError;
         }
@@ -148,23 +164,90 @@ const Api = {
     }
   },
 
-  // DESCARGAR TODOS LOS DATOS DESDE GOOGLE SHEETS (Sincronización de bajada)
-  async downloadAll() {
+  // DESCARGAR TODOS LOS DATOS DESDE GOOGLE SHEETS (Modular, por Chunks para +11,000 filas y ultra-rápido)
+  async downloadAll(progressCb) {
     if (!this.hasConfiguredApi()) {
       return { success: false, error: "API no configurada. Por favor, revisa la URL en Ajustes." };
     }
 
     try {
-      const url = `${this.getApiUrl()}?action=getAll&_t=${Date.now()}`;
-      const data = await this._fetchWithRetry(url, { method: 'GET' });
-      
-      if (data.error) throw new Error(data.error);
-
-      // Guardar en local con timestamp
+      const baseUrl = this.getApiUrl();
       const db = this.getLocalDb();
-      db.pacientes = Array.isArray(data.pacientes) ? data.pacientes : [];
-      db.seguimientoCred = Array.isArray(data.seguimientoCred) ? data.seguimientoCred : [];
-      db.seguimientoAnemia = Array.isArray(data.seguimientoAnemia) ? data.seguimientoAnemia : [];
+
+      // Fase 1: Descargar Pacientes (~1-2s)
+      if (progressCb) progressCb('Descargando pacientes...');
+      const pRes = await this._fetchWithRetry(`${baseUrl}?action=getPacientes&_t=${Date.now()}`);
+      if (pRes.error) throw new Error(pRes.error);
+      const pacientes = this._unpackRows(pRes.pacientes);
+
+      // Fase 2: Descargar Seguimiento CRED por Chunks (Ultra-rápido y seguro para +11,000 registros)
+      let seguimientoCred = [];
+      let credHeaders = [];
+      let credRows = [];
+      let chunk = 1;
+      const chunkSize = 5000;
+      let hasMoreChunks = true;
+
+      while (hasMoreChunks) {
+        if (progressCb) progressCb(`Descargando controles CRED (bloque ${chunk})...`);
+        try {
+          const credRes = await this._fetchWithRetry(`${baseUrl}?action=getSeguimientoCred&chunk=${chunk}&chunkSize=${chunkSize}&_t=${Date.now()}`);
+          if (credRes && credRes.seguimientoCred) {
+            const raw = credRes.seguimientoCred;
+            if (raw.headers && Array.isArray(raw.rows)) {
+              credHeaders = raw.headers;
+              credRows.push(...raw.rows);
+              hasMoreChunks = raw.hasMore === true;
+              chunk++;
+            } else if (Array.isArray(raw)) {
+              seguimientoCred = raw;
+              hasMoreChunks = false;
+            } else {
+              hasMoreChunks = false;
+            }
+          } else {
+            hasMoreChunks = false;
+          }
+        } catch (credErr) {
+          console.warn(`Chunk ${chunk} no respondió por bloques:`, credErr.message);
+          hasMoreChunks = false;
+        }
+      }
+
+      if (credRows.length > 0) {
+        seguimientoCred = this._unpackRows({ headers: credHeaders, rows: credRows });
+      }
+
+      // Fase 3: Descargar Seguimiento Anemia (0.1s porque la hoja es ligera)
+      if (progressCb) progressCb('Descargando controles anemia...');
+      let seguimientoAnemia = [];
+      try {
+        const anemiaRes = await this._fetchWithRetry(`${baseUrl}?action=getSeguimientoAnemia&_t=${Date.now()}`);
+        if (!anemiaRes.error && anemiaRes.seguimientoAnemia) {
+          seguimientoAnemia = this._unpackRows(anemiaRes.seguimientoAnemia);
+        }
+      } catch (anemiaErr) {
+        console.warn("Fallo getSeguimientoAnemia modular:", anemiaErr.message);
+      }
+
+      // Si por alguna razón ambas listas de seguimiento vinieron vacías, intentar fallback getAll
+      if (seguimientoCred.length === 0 && seguimientoAnemia.length === 0) {
+        try {
+          if (progressCb) progressCb('Descargando base de datos completa...');
+          const allRes = await this._fetchWithRetry(`${baseUrl}?action=getAll&_t=${Date.now()}`);
+          if (allRes) {
+            if (allRes.seguimientoCred) seguimientoCred = this._unpackRows(allRes.seguimientoCred);
+            if (allRes.seguimientoAnemia) seguimientoAnemia = this._unpackRows(allRes.seguimientoAnemia);
+          }
+        } catch (e) {
+          console.warn("Fallback getAll no respondió:", e.message);
+        }
+      }
+
+      // Guardar en base de datos local
+      db.pacientes = pacientes.length > 0 ? pacientes : db.pacientes;
+      db.seguimientoCred = seguimientoCred.length > 0 ? seguimientoCred : db.seguimientoCred;
+      db.seguimientoAnemia = seguimientoAnemia.length > 0 ? seguimientoAnemia : db.seguimientoAnemia;
       db.lastSync = new Date().toISOString();
       this.saveLocalDb(db);
       
@@ -197,7 +280,6 @@ const Api = {
         data: queue
       };
       
-      // Enviamos con text/plain para evitar bloqueos por Preflight OPTIONS en Apps Script
       const result = await this._fetchWithRetry(this.getApiUrl(), {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -206,7 +288,6 @@ const Api = {
       
       if (result.error) throw new Error(result.error);
       
-      // Limpiar la cola de sincronización local al completarse
       this.saveSyncQueue({
         pacientes: [],
         seguimientoCred: [],
@@ -220,18 +301,18 @@ const Api = {
     }
   },
 
-  // SINCRONIZACIÓN COMPLETA (Subir pendientes -> Descargar todo)
-  async sync() {
-    // 1. Intentar subir cambios pendientes primero si hay alguno
+  // SINCRONIZACIÓN COMPLETA (Subir pendientes -> Descargar todo con progreso)
+  async sync(progressCb) {
+    if (progressCb) progressCb('Subiendo cambios pendientes...');
     const uploadRes = await this.uploadPending();
     
-    // 2. Descargar últimos cambios del servidor
-    const downloadRes = await this.downloadAll();
+    const downloadRes = await this.downloadAll(progressCb);
     
     return {
       success: downloadRes.success,
       uploaded: uploadRes.success ? (uploadRes.uploaded || 0) : 0,
       downloaded: downloadRes.success ? downloadRes.countPacientes : 0,
+      countCred: downloadRes.success ? downloadRes.countCred : 0,
       error: downloadRes.error || uploadRes.error
     };
   },

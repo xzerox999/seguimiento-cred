@@ -426,7 +426,7 @@ const App = {
     Api.initLocalDb();
     this.setupRouter();
     this.setupEvents();
-    this.updateDashboardStats();
+    this.Dashboard.init();
     this.checkOnlineStatus();
     
     // Si no tiene la API configurada, sugerir configurarla en los ajustes
@@ -462,8 +462,10 @@ const App = {
         activeMenuItem.parentElement.classList.add('active');
       }
 
-      // Inicializar vistas específicas si es necesario
       if (viewId === 'dashboard') {
+        if (this.Dashboard) {
+          this.Dashboard.populateCommunities();
+        }
         this.updateDashboardStats();
         this.renderPacientesList('');
       } else if (viewId === 'seguimiento-cred') {
@@ -491,6 +493,29 @@ const App = {
       this.renderPacientesList(e.target.value);
     });
 
+    // Filtros del Dashboard en tiempo real
+    const filterTipo = document.getElementById('filter-tipo');
+    const filterSexo = document.getElementById('filter-sexo');
+    const filterComunidad = document.getElementById('filter-comunidad');
+    
+    const triggerDashboardUpdate = () => {
+      this.Dashboard.update();
+    };
+
+    if (filterTipo) filterTipo.addEventListener('change', triggerDashboardUpdate);
+    if (filterSexo) filterSexo.addEventListener('change', triggerDashboardUpdate);
+    if (filterComunidad) filterComunidad.addEventListener('change', triggerDashboardUpdate);
+
+    const clearFiltersBtn = document.getElementById('clear-filters-btn');
+    if (clearFiltersBtn) {
+      clearFiltersBtn.addEventListener('click', () => {
+        if (filterTipo) filterTipo.value = 'all';
+        if (filterSexo) filterSexo.value = 'all';
+        if (filterComunidad) filterComunidad.value = 'all';
+        this.Dashboard.update();
+      });
+    }
+
     // Guardar URL de API en Ajustes
     document.getElementById('save-api-btn').addEventListener('click', () => {
       const url = document.getElementById('api-url-input').value.trim();
@@ -499,6 +524,53 @@ const App = {
       window.location.hash = "#dashboard";
       this.syncData();
     });
+
+    // Probar conexión a la API desde Ajustes
+    const testApiBtn = document.getElementById('test-api-btn');
+    if (testApiBtn) {
+      testApiBtn.addEventListener('click', async () => {
+        const resultContainer = document.getElementById('connection-test-result');
+        const inputUrl = document.getElementById('api-url-input').value.trim();
+        if (inputUrl) {
+          Api.setApiUrl(inputUrl);
+        }
+
+        testApiBtn.disabled = true;
+        testApiBtn.innerText = '⏳ Probando...';
+        if (resultContainer) {
+          resultContainer.style.display = 'block';
+          resultContainer.innerHTML = '<div style="padding: 12px; background: #e0f2fe; color: #0369a1; border-radius: 8px; font-size: 13px;">🔄 Contactando con la API de Google Apps Script...</div>';
+        }
+
+        const res = await Api.testConnection();
+        testApiBtn.disabled = false;
+        testApiBtn.innerText = '🔍 Probar Conexión';
+
+        if (resultContainer) {
+          if (res.success) {
+            resultContainer.innerHTML = `
+              <div style="padding: 14px; background: #dcfce7; color: #166534; border: 1px solid #86efac; border-radius: 8px; font-size: 14px; line-height: 1.5;">
+                <strong>✅ ¡Conexión Exitosa!</strong><br>
+                La Web App respondió correctamente a la prueba. Tu sistema está listo para sincronizar en esta computadora.
+              </div>
+            `;
+          } else {
+            resultContainer.innerHTML = `
+              <div style="padding: 14px; background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; border-radius: 8px; font-size: 13px; line-height: 1.5;">
+                <strong>❌ No se pudo conectar a la API:</strong><br>
+                <span>${res.error}</span>
+                <div style="margin-top: 8px; font-size: 12px; color: #7f1d1d;">
+                  <strong>Puntos a revisar:</strong><br>
+                  1. En Apps Script, verifica que la implementación esté en <em>Quién tiene acceso: <strong>Cualquiera</strong></em>.<br>
+                  2. Si actualizaste el código en Apps Script, crea una <em>Nueva implementación</em>.<br>
+                  3. Verifica que la PC tenga acceso a internet sin bloqueos de firewall.
+                </div>
+              </div>
+            `;
+          }
+        }
+      });
+    }
 
     // WIZARD REGISTRO PACIENTE
     let currentStep = 1;
@@ -599,21 +671,360 @@ const App = {
 
   // Actualizar estadísticas en el Dashboard
   updateDashboardStats() {
-    const db = Api.getLocalDb();
-    const pacientes = db.pacientes;
-    const seguimientos = db.seguimientoCred;
-    
-    document.getElementById('stat-total-pacientes').innerText = pacientes.length;
-    
-    const terminoCount = pacientes.filter(p => p.tipo_seguimiento === 'termino').length;
-    document.getElementById('stat-termino').innerText = terminoCount;
-    
-    const bpnCount = pacientes.filter(p => p.tipo_seguimiento === 'bpn').length;
-    document.getElementById('stat-bpn').innerText = bpnCount;
-    
-    // Controles pendientes de hoy o retrasados
-    const pendingCount = seguimientos.filter(s => !s.fecha_realizada && s.fecha_programada).length;
-    document.getElementById('stat-pendientes').innerText = pendingCount;
+    this.Dashboard.update();
+  },
+
+  // Sub-namespace encargado de la visualización y filtrado de gráficos
+  Dashboard: {
+    charts: {
+      demografia: null,
+      anemia: null,
+      vacunas: null,
+      cred: null
+    },
+
+    init() {
+      this.populateCommunities();
+      this.initCharts();
+      this.update();
+    },
+
+    populateCommunities() {
+      const select = document.getElementById('filter-comunidad');
+      if (!select) return;
+
+      select.innerHTML = '<option value="all">Todas las Comunidades</option>';
+
+      const db = Api.getLocalDb();
+      const comunidades = [...new Set(db.pacientes
+        .map(p => (p.comunidad || '').trim().toUpperCase())
+        .filter(c => c !== '')
+      )].sort();
+
+      comunidades.forEach(com => {
+        const opt = document.createElement('option');
+        opt.value = com;
+        opt.innerText = com;
+        select.appendChild(opt);
+      });
+    },
+
+    initCharts() {
+      // 1. Distribución por Programa y Sexo
+      const ctxDem = document.getElementById('chart-demografia')?.getContext('2d');
+      if (ctxDem) {
+        if (this.charts.demografia) this.charts.demografia.destroy();
+        this.charts.demografia = new Chart(ctxDem, {
+          type: 'bar',
+          data: {
+            labels: ['Niños a Término', 'BPN / Prematuros'],
+            datasets: [
+              {
+                label: 'Masculino (M)',
+                data: [0, 0],
+                backgroundColor: 'rgba(43, 122, 140, 0.75)',
+                borderColor: '#2b7a8c',
+                borderWidth: 1.5,
+                borderRadius: 4
+              },
+              {
+                label: 'Femenino (F)',
+                data: [0, 0],
+                backgroundColor: 'rgba(255, 118, 117, 0.75)',
+                borderColor: '#ff7675',
+                borderWidth: 1.5,
+                borderRadius: 4
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'top' }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: { stepSize: 1 }
+              }
+            }
+          }
+        });
+      }
+
+      // 2. Prevalencia de Anemia
+      const ctxAne = document.getElementById('chart-anemia')?.getContext('2d');
+      if (ctxAne) {
+        if (this.charts.anemia) this.charts.anemia.destroy();
+        this.charts.anemia = new Chart(ctxAne, {
+          type: 'doughnut',
+          data: {
+            labels: ['Sin Anemia (NO)', 'Con Anemia (SI)', 'Observado'],
+            datasets: [{
+              data: [0, 0, 0],
+              backgroundColor: [
+                'rgba(26, 188, 156, 0.75)',
+                'rgba(231, 76, 60, 0.75)',
+                'rgba(243, 156, 18, 0.75)'
+              ],
+              borderColor: [
+                '#1abc9c',
+                '#e74c3c',
+                '#f39c12'
+              ],
+              borderWidth: 1.5
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'bottom' },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                    const val = context.raw;
+                    const pct = total > 0 ? ((val / total) * 100).toFixed(1) : 0;
+                    return `${context.label}: ${val} (${pct}%)`;
+                  }
+                }
+              }
+            },
+            cutout: '65%'
+          }
+        });
+      }
+
+      // 3. Cobertura de Vacunación
+      const ctxVac = document.getElementById('chart-vacunas')?.getContext('2d');
+      if (ctxVac) {
+        if (this.charts.vacunas) this.charts.vacunas.destroy();
+        this.charts.vacunas = new Chart(ctxVac, {
+          type: 'bar',
+          data: {
+            labels: ['BCG', 'HVB', 'Rota 1°', 'Rota 2°', 'Penta 1°', 'Penta 2°', 'Penta 3°', 'Varicela'],
+            datasets: [{
+              label: 'Cobertura %',
+              data: [0, 0, 0, 0, 0, 0, 0, 0],
+              backgroundColor: 'rgba(30, 88, 101, 0.75)',
+              borderColor: '#1e5865',
+              borderWidth: 1.5,
+              borderRadius: 4
+            }]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return `Cobertura: ${context.raw.toFixed(1)}%`;
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                beginAtZero: true,
+                max: 100,
+                ticks: {
+                  callback: function(value) { return value + "%"; }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // 4. Avance de Controles CRED
+      const ctxCred = document.getElementById('chart-cred')?.getContext('2d');
+      if (ctxCred) {
+        if (this.charts.cred) this.charts.cred.destroy();
+        this.charts.cred = new Chart(ctxCred, {
+          type: 'bar',
+          data: {
+            labels: ['RN', '1-11 m', '1 Año', '2 Años', '3 Años', '4 Años'],
+            datasets: [{
+              label: 'Avance %',
+              data: [0, 0, 0, 0, 0, 0],
+              backgroundColor: 'rgba(26, 188, 156, 0.75)',
+              borderColor: '#1abc9c',
+              borderWidth: 1.5,
+              borderRadius: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return `Avance: ${context.raw.toFixed(1)}%`;
+                  }
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 100,
+                ticks: {
+                  callback: function(value) { return value + "%"; }
+                }
+              }
+            }
+          }
+        });
+      }
+    },
+
+    update() {
+      const db = Api.getLocalDb();
+      const filterTipo = document.getElementById('filter-tipo')?.value || 'all';
+      const filterSexo = document.getElementById('filter-sexo')?.value || 'all';
+      const filterComunidad = document.getElementById('filter-comunidad')?.value || 'all';
+
+      // Filtrar pacientes
+      const filteredPacientes = db.pacientes.filter(p => {
+        if (filterTipo !== 'all' && p.tipo_seguimiento !== filterTipo) return false;
+        if (filterSexo !== 'all' && p.sexo !== filterSexo) return false;
+        if (filterComunidad !== 'all' && (p.comunidad || '').trim().toUpperCase() !== filterComunidad) return false;
+        return true;
+      });
+
+      const filteredDnis = new Set(filteredPacientes.map(p => String(p.id)));
+
+      // Filtrar seguimientos
+      const filteredSeguimientosCred = db.seguimientoCred.filter(s => filteredDnis.has(String(s.dni_paciente)));
+      const filteredSeguimientosAnemia = db.seguimientoAnemia.filter(s => filteredDnis.has(String(s.dni_paciente)));
+
+      // Actualizar KPIs en la UI
+      const totalPacEl = document.getElementById('stat-total-pacientes');
+      if (totalPacEl) totalPacEl.innerText = filteredPacientes.length;
+
+      const termEl = document.getElementById('stat-termino');
+      if (termEl) termEl.innerText = filteredPacientes.filter(p => p.tipo_seguimiento === 'termino').length;
+
+      const bpnEl = document.getElementById('stat-bpn');
+      if (bpnEl) bpnEl.innerText = filteredPacientes.filter(p => p.tipo_seguimiento === 'bpn').length;
+
+      const pendEl = document.getElementById('stat-pendientes');
+      if (pendEl) pendEl.innerText = filteredSeguimientosCred.filter(s => !s.fecha_realizada && s.fecha_programada).length;
+
+      // 1. Actualizar Gráfico Demografía
+      const termM = filteredPacientes.filter(p => p.tipo_seguimiento === 'termino' && p.sexo === 'M').length;
+      const termF = filteredPacientes.filter(p => p.tipo_seguimiento === 'termino' && p.sexo === 'F').length;
+      const bpnM = filteredPacientes.filter(p => p.tipo_seguimiento === 'bpn' && p.sexo === 'M').length;
+      const bpnF = filteredPacientes.filter(p => p.tipo_seguimiento === 'bpn' && p.sexo === 'F').length;
+
+      if (this.charts.demografia) {
+        this.charts.demografia.data.datasets[0].data = [termM, bpnM];
+        this.charts.demografia.data.datasets[1].data = [termF, bpnF];
+        this.charts.demografia.update();
+      }
+
+      // 2. Actualizar Gráfico Anemia
+      let anemiaNo = 0;
+      let anemiaSi = 0;
+      let anemiaObs = 0;
+
+      filteredSeguimientosAnemia.forEach(s => {
+        if (s.actividad === 'DX ANEMIA DEFINITIVO' && s.valor) {
+          const val = String(s.valor).toUpperCase().trim();
+          if (val.includes('SI')) anemiaSi++;
+          else if (val.includes('NO')) anemiaNo++;
+          else if (val.includes('OBSERVADO')) anemiaObs++;
+        }
+      });
+
+      filteredSeguimientosCred.forEach(s => {
+        if (s.actividad.includes('DX ANEMIA') && s.valor) {
+          const val = String(s.valor).toUpperCase().trim();
+          if (val.includes('SI')) anemiaSi++;
+          else if (val.includes('NO')) anemiaNo++;
+          else if (val.includes('OBSERVADO')) anemiaObs++;
+        }
+      });
+
+      if (this.charts.anemia) {
+        this.charts.anemia.data.datasets[0].data = [anemiaNo, anemiaSi, anemiaObs];
+        this.charts.anemia.update();
+      }
+
+      // 3. Actualizar Gráfico Vacunas
+      const countVaccine = (actName) => {
+        const normalizedTarget = Utils.normalizeActName(actName);
+        let countRealized = 0;
+        let countEligible = 0;
+
+        filteredPacientes.forEach(p => {
+          countEligible++;
+          const hasVac = filteredSeguimientosCred.some(s => 
+            String(s.dni_paciente) === String(p.id) &&
+            Utils.normalizeActName(s.actividad).startsWith(normalizedTarget) &&
+            s.fecha_realizada
+          );
+          if (hasVac) countRealized++;
+        });
+
+        return countEligible > 0 ? (countRealized / countEligible) * 100 : 0;
+      };
+
+      const bcgPct = countVaccine('BCG');
+      const hvbPct = countVaccine('HVB');
+      const rota1Pct = countVaccine('ROTA 1');
+      const rota2Pct = countVaccine('ROTA 2');
+      const penta1Pct = countVaccine('PENTA 1');
+      const penta2Pct = countVaccine('PENTA 2');
+      const penta3Pct = countVaccine('PENTA 3');
+      const varicelaPct = countVaccine('VARICELA');
+
+      if (this.charts.vacunas) {
+        this.charts.vacunas.data.datasets[0].data = [
+          bcgPct, hvbPct, rota1Pct, rota2Pct, penta1Pct, penta2Pct, penta3Pct, varicelaPct
+        ];
+        this.charts.vacunas.update();
+      }
+
+      // 4. Actualizar Gráfico CRED
+      const getCredProgress = (mesGroup) => {
+        let totalScheduled = 0;
+        let totalRealized = 0;
+
+        filteredSeguimientosCred.forEach(s => {
+          if (Utils.normalizeMesControl(s.mes_control) === Utils.normalizeMesControl(mesGroup) && 
+              s.actividad.includes('CRED')) {
+            totalScheduled++;
+            if (s.fecha_realizada) {
+              totalRealized++;
+            }
+          }
+        });
+
+        return totalScheduled > 0 ? (totalRealized / totalScheduled) * 100 : 0;
+      };
+
+      const rnProgress = getCredProgress('RN');
+      const m11Progress = getCredProgress('1-11 MESES');
+      const y1Progress = getCredProgress('CRED 1 AÑO');
+      const y2Progress = getCredProgress('CRED  2 AÑOS');
+      const y3Progress = getCredProgress('CRED 3 AÑOS');
+      const y4Progress = getCredProgress('CRED 4 AÑOS');
+
+      if (this.charts.cred) {
+        this.charts.cred.data.datasets[0].data = [
+          rnProgress, m11Progress, y1Progress, y2Progress, y3Progress, y4Progress
+        ];
+        this.charts.cred.update();
+      }
+    }
   },
 
   // Renderizar la tabla de pacientes con filtros

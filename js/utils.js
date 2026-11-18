@@ -103,43 +103,48 @@ const Utils = {
   },
 
   // Obtener fecha límite programada para cada control CRED basado en fecha de nacimiento
-  calculateScheduledDate(birthDateStr, mesControl) {
+  calculateScheduledDate(birthDateStr, mesControl, actName = '') {
     if (!birthDateStr) return "";
     const str = String(birthDateStr).trim();
     if (!str || str === "None" || str === "null") return "";
-    const birth = new Date(str.split('T')[0]);
+    const datePart = str.split('T')[0];
+    const parts = datePart.split('-');
+    if (parts.length !== 3) return "";
+    const birth = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10), 12, 0, 0);
+    if (isNaN(birth.getTime())) return "";
     
-    // Mapear los meses de control a cantidad de días o meses
+    const cleanMes = String(mesControl || "RN").toUpperCase().trim();
+    const cleanAct = this.normalizeActName(actName);
     let targetDate = new Date(birth);
     
-    if (mesControl === "RN") {
-      // Retorna fecha del nacimiento
-      return str.split('T')[0];
+    if (["RN", "LUGAR", "VACUNA", "CONTROL RN", "TAMIZAJES EN EL RECIEN NACIDO", "VISITA DOMICIL.", "OBSERVACION"].includes(cleanMes)) {
+      if (cleanAct.includes("27 DIAS")) targetDate.setDate(targetDate.getDate() + 7);
+      else if (cleanAct.includes("1 CRED")) targetDate.setDate(targetDate.getDate() + 3);
+      else if (cleanAct.includes("2 CRED")) targetDate.setDate(targetDate.getDate() + 7);
+      else if (cleanAct.includes("3 CRED")) targetDate.setDate(targetDate.getDate() + 15);
+      else if (cleanAct.includes("TAMIZAJE NEONATAL")) targetDate.setDate(targetDate.getDate() + 2);
+      return targetDate.toISOString().split('T')[0];
     }
-    
-    // Analizar el string del mes de control
-    // Ejemplos: "1 MES", "2 MESES", "1 AÑO", "1 AÑO 3 MESES", "2 AÑOS", etc.
-    const cleanMes = String(mesControl).toUpperCase().trim();
     
     let addMonths = 0;
     
-    if (cleanMes.includes("1 MES")) addMonths = 1;
-    else if (cleanMes.includes("2 MESES")) addMonths = 2;
-    else if (cleanMes.includes("3 MESES")) addMonths = 3;
-    else if (cleanMes.includes("4 MESES")) addMonths = 4;
-    else if (cleanMes.includes("5 MESES")) addMonths = 5;
-    else if (cleanMes.includes("6 MESES")) addMonths = 6;
-    else if (cleanMes.includes("7 MESES")) addMonths = 7;
-    else if (cleanMes.includes("8 MESES")) addMonths = 8;
-    else if (cleanMes.includes("9 MESES")) addMonths = 9;
+    if (cleanMes.includes("1 MES") && !cleanMes.includes("AÑO")) addMonths = 1;
+    else if (cleanMes.includes("2 MESES") && !cleanMes.includes("AÑO")) addMonths = 2;
+    else if (cleanMes.includes("3 MESES") && !cleanMes.includes("AÑO")) addMonths = 3;
+    else if (cleanMes.includes("4 MESES") && !cleanMes.includes("AÑO")) addMonths = 4;
+    else if (cleanMes.includes("5 MESES") && !cleanMes.includes("AÑO")) addMonths = 5;
+    else if (cleanMes.includes("6 MESES") && !cleanMes.includes("AÑO")) addMonths = 6;
+    else if (cleanMes.includes("7 MESES") && !cleanMes.includes("AÑO")) addMonths = 7;
+    else if (cleanMes.includes("8 MESES") && !cleanMes.includes("AÑO")) addMonths = 8;
+    else if (cleanMes.includes("9 MESES") && !cleanMes.includes("AÑO")) addMonths = 9;
     else if (cleanMes.includes("10 MESES")) addMonths = 10;
     else if (cleanMes.includes("11 MESES")) addMonths = 11;
     else if (cleanMes.includes("1 AÑO") && cleanMes.includes("3 MESES")) addMonths = 15;
     else if (cleanMes.includes("1 AÑO") && cleanMes.includes("4 MESES")) addMonths = 16;
     else if (cleanMes.includes("1 AÑO") && cleanMes.includes("5 MESES")) addMonths = 17;
-    else if (cleanMes.includes("1 AÑO") && cleanMes.includes("6 MESES")) addMonths = 18;
+    else if ((cleanMes.includes("1 AÑO") || cleanMes.includes("1AÑO")) && cleanMes.includes("6 MESES")) addMonths = 18;
     else if (cleanMes.includes("1 AÑO") && cleanMes.includes("7 MESES")) addMonths = 19;
-    else if (cleanMes.includes("1 AÑO") && cleanMes.includes("8 MESES")) addMonths = 20;
+    else if ((cleanMes.includes("1 AÑO") || cleanMes.includes("1AÑO")) && cleanMes.includes("8 MESES")) addMonths = 20;
     else if (cleanMes.includes("1 AÑO") && cleanMes.includes("9 MESES")) addMonths = 21;
     else if (cleanMes.includes("1 AÑO")) addMonths = 12;
     else if (cleanMes.includes("2 AÑOS") && cleanMes.includes("1 MES")) addMonths = 25;
@@ -161,7 +166,16 @@ const Utils = {
     else if (cleanMes.includes("4 AÑOS")) addMonths = 48;
     
     targetDate.setMonth(targetDate.getMonth() + addMonths);
+    if (cleanAct.includes("DESPUES DE 7 DIAS")) {
+      targetDate.setDate(targetDate.getDate() + 7);
+    }
     return targetDate.toISOString().split('T')[0];
+  },
+
+  // Determinar si una actividad es exclusivamente una columna automática de conteo de días
+  isAutoDaysActivity(name) {
+    const clean = this.normalizeActName(name);
+    return /^DIAS(\s+\d+)?$/.test(clean);
   },
 
   // Normalizar nombre de actividad para comparaciones robustas
@@ -274,13 +288,14 @@ const Utils = {
     const dias = parseInt(diasVal, 10);
     if (isNaN(dias)) return "neutral";
     
+    const rawMes = String(mesControl || "").toUpperCase().trim();
     const cleanMes = this.normalizeMesControl(mesControl);
     const cleanAct = this.normalizeActName(actName);
     
     let minG = 30, maxG = 37; // default mensual
     
     if (cleanMes === "RN") {
-      if (cleanAct === "DIAS") { // BCG / HVB
+      if (cleanAct === "DIAS" && rawMes.includes("VACUNA")) { // BCG / HVB
         minG = 0; maxG = 1;
       } else if (cleanAct === "DIAS 2") { // 2 CRED
         minG = 7; maxG = 14;
@@ -288,7 +303,7 @@ const Utils = {
         minG = 15; maxG = 21;
       } else if (cleanAct === "DIAS 5") { // Tamizaje
         minG = 2; maxG = 6;
-      } else { // 1 CRED
+      } else { // 1 CRED (DIAS en CONTROL RN)
         minG = 3; maxG = 6;
       }
     } else if (["15 MESES", "18 MESES", "39 MESES", "42 MESES", "51 MESES", "54 MESES"].includes(cleanMes)) {

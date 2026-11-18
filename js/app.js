@@ -33,12 +33,15 @@ const shared1Anio = [
   { name: 'DOSAJE  HB  Dx', type: 'date', mes: '1 AÑO   3 MESES', desc: 'Registro DOSAJE  HB  Dx' },
   { name: 'HIERRO SF 1', type: 'date', mes: '1 AÑO   3 MESES', desc: 'Registro HIERRO SF 1' },
   { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)        1', type: 'date', mes: '1 AÑO   3 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)        1' },
+  { name: 'DESPUES DE 7 DIAS DEL SF       V.D. 1', type: 'date', mes: '1 AÑO   3 MESES', desc: 'Visita Domiciliaria 1 (Después de 7 días del SF)' },
   { name: 'dias 3', type: 'auto', mes: '1 AÑO  4 MESES', desc: 'Registro dias 3' },
   { name: 'HIERRO SF 2', type: 'date', mes: '1 AÑO  4 MESES', desc: 'Registro HIERRO SF 2' },
   { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)         2', type: 'date', mes: '1 AÑO  4 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)         2' },
+  { name: 'DESPUES DE 7 DIAS DEL REAJUSTE  SF      V.D. 2', type: 'date', mes: '1 AÑO  4 MESES', desc: 'Visita Domiciliaria / Teleorientación 2 (Después de 7 días del reajuste SF)' },
   { name: 'dias 4', type: 'auto', mes: '1 AÑO  5 MESES', desc: 'Registro dias 4' },
   { name: 'HIERRO SF 3', type: 'date', mes: '1 AÑO  5 MESES', desc: 'Registro HIERRO SF 3' },
   { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)           3', type: 'date', mes: '1 AÑO  5 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)           3' },
+  { name: 'DESPUES DE 7 DIAS DEL REAJUSTE  SF       V,D.3', type: 'date', mes: '1 AÑO  5 MESES', desc: 'Visita Domiciliaria / Teleorientación 3 (Después de 7 días del reajuste SF)' },
   { name: 'dias       5', type: 'auto', mes: '1AÑO 6 MESES', desc: 'Registro dias       5' },
   { name: 'CRED 3°', type: 'date', mes: '1AÑO 6 MESES', desc: 'Fecha CRED 3°' },
   { name: '3ra  Sesion estimulacion temprana', type: 'date', mes: '1AÑO 6 MESES', desc: 'Registro 3ra  Sesion estimulacion temprana' },
@@ -86,12 +89,14 @@ const shared2Anios = [
   { name: 'HIERRO SF  1', type: 'date', mes: 'CRED  2 AÑOS', desc: 'Registro HIERRO SF  1' },
   { name: 'DX ANEMIA SI O NO', type: 'select', mes: 'CRED  2 AÑOS', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] },
   { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          1', type: 'date', mes: 'CRED  2 AÑOS', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          1' },
+  { name: 'DESPUES DE 7 DIAS DEL SF       V.D. 1', type: 'date', mes: 'CRED  2 AÑOS', desc: 'Visita Domiciliaria / Teleorientación 1 (Después de 7 días del SF)' },
   { name: 'dias           2', type: 'auto', mes: '2 AÑOS  1 MES', desc: 'Registro dias           2' },
   { name: 'HIERRO SF  2', type: 'date', mes: '2 AÑOS  1 MES', desc: 'Registro HIERRO SF  2' },
   { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          2', type: 'date', mes: '2 AÑOS  1 MES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          2' },
   { name: 'dias            3', type: 'auto', mes: '2 AÑOS 2 MESES', desc: 'Registro dias            3' },
   { name: 'HIERRO SF  3', type: 'date', mes: '2 AÑOS 2 MESES', desc: 'Registro HIERRO SF  3' },
   { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          3', type: 'date', mes: '2 AÑOS 2 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)          3' },
+  { name: 'DESPUES DE 7 DIAS DEL REAJUSTE  SF           V.D. 2', type: 'date', mes: '2 AÑOS 2 MESES', desc: 'Visita Domiciliaria / Teleorientación 2 (Después de 7 días del reajuste SF)' },
   { name: 'dias       4', type: 'auto', mes: '2 AÑOS  3 MESES', desc: 'Registro dias       4' },
   { name: 'HIERRO SF4', type: 'date', mes: '2 AÑOS  3 MESES', desc: 'Registro HIERRO SF4' },
   { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)         4', type: 'date', mes: '2 AÑOS  3 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)         4' },
@@ -133,12 +138,15 @@ const shared3Anios = [
   { name: 'HIERRO  SF1', type: 'date', mes: 'CRED 3 AÑOS', desc: 'Registro HIERRO  SF1' },
   { name: 'DX ANEMIA SI O NO', type: 'select', mes: 'CRED 3 AÑOS', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] },
   { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)              1', type: 'date', mes: 'CRED 3 AÑOS', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)              1' },
+  { name: 'DESPUES DE 7 DIAS DEL SF               V.D. 1', type: 'date', mes: 'CRED 3 AÑOS', desc: 'Visita Domiciliaria / Teleorientación 1 (Después de 7 días del SF)' },
   { name: 'dias                                 2', type: 'auto', mes: '3 AÑOS 1 MES', desc: 'Registro dias                                 2' },
   { name: 'HIERRO  SF2', type: 'date', mes: '3 AÑOS 1 MES', desc: 'Registro HIERRO  SF2' },
   { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)               2', type: 'date', mes: '3 AÑOS 1 MES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)               2' },
+  { name: 'DESPUES DE 7 DIAS DEL REAJUSTE   SF 2  V.D. 2', type: 'date', mes: '3 AÑOS 1 MES', desc: 'Visita Domiciliaria / Teleorientación 2 (Después de 7 días del reajuste SF)' },
   { name: 'dias                3', type: 'auto', mes: '3 AÑOS 2 MESES', desc: 'Registro dias                3' },
   { name: 'HIERRO  SF3', type: 'date', mes: '3 AÑOS 2 MESES', desc: 'Registro HIERRO  SF3' },
   { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)                3', type: 'date', mes: '3 AÑOS 2 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)                3' },
+  { name: 'DESPUES DE 7 DIAS DEL REAJUSTE   SF    V.D. 3', type: 'date', mes: '3 AÑOS 2 MESES', desc: 'Visita Domiciliaria / Teleorientación 3 (Después de 7 días del reajuste SF)' },
   { name: 'dias              4', type: 'auto', mes: '3 AÑOS 3 MESES', desc: 'Registro dias              4' },
   { name: 'DOSAJE  HB  c1', type: 'date', mes: '3 AÑOS 3 MESES', desc: 'Registro DOSAJE  HB  c1' },
   { name: 'TA suplementacion', type: 'date', mes: '3 AÑOS 3 MESES', desc: 'Registro TA suplementacion' },
@@ -170,12 +178,15 @@ const shared4Anios = [
   { name: 'HIERRO  SF1', type: 'date', mes: 'CRED 4 AÑOS', desc: 'Registro HIERRO  SF1' },
   { name: 'DX ANEMIA SI O NO', type: 'select', mes: 'CRED 4 AÑOS', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] },
   { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)              1', type: 'date', mes: 'CRED 4 AÑOS', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)              1' },
+  { name: 'DESPUES DE 7 DIAS DEL SF               V.D. 1', type: 'date', mes: 'CRED 4 AÑOS', desc: 'Visita Domiciliaria / Teleorientación 1 (Después de 7 días del SF)' },
   { name: 'dias                                 2', type: 'auto', mes: '4 AÑOS 1 MES', desc: 'Registro dias                                 2' },
   { name: 'HIERRO  SF2', type: 'date', mes: '4 AÑOS 1 MES', desc: 'Registro HIERRO  SF2' },
   { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)               2', type: 'date', mes: '4 AÑOS 1 MES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)               2' },
+  { name: 'DESPUES DE 7 DIAS DEL REAJUSTE   SF 2 V.D. 2', type: 'date', mes: '4 AÑOS 1 MES', desc: 'Visita Domiciliaria / Teleorientación 2 (Después de 7 días del reajuste SF)' },
   { name: 'dias                3', type: 'auto', mes: '4 AÑOS 2 MESES', desc: 'Registro dias                3' },
   { name: 'HIERRO  SF3', type: 'date', mes: '4 AÑOS 2 MESES', desc: 'Registro HIERRO  SF3' },
   { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)                3', type: 'date', mes: '4 AÑOS 2 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)                3' },
+  { name: 'DESPUES DE 7 DIAS DEL REAJUSTE   SF    V.D. 3', type: 'date', mes: '4 AÑOS 2 MESES', desc: 'Visita Domiciliaria / Teleorientación 3 (Después de 7 días del reajuste SF)' },
   { name: 'dias              4', type: 'auto', mes: '4 AÑOS 3 MESES', desc: 'Registro dias              4' },
   { name: 'DOSAJE  HB  c1', type: 'date', mes: '4 AÑOS 3 MESES', desc: 'Registro DOSAJE  HB  c1' },
   { name: 'TA suplementacion', type: 'date', mes: '4 AÑOS 3 MESES', desc: 'Registro TA suplementacion' },
@@ -218,25 +229,8 @@ const App = {
       { name: 'TAMIZAJE HIPOACUSIA', type: 'select', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro TAMIZAJE HIPOACUSIA', options: ["NO", "SI", "OBSERVADO"] },
       { name: 'TAMIZAJE CATARATA', type: 'select', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro TAMIZAJE CATARATA', options: ["NO", "SI", "OBSERVADO"] },
       { name: 'TAMIZAJE CARDIACO', type: 'select', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro TAMIZAJE CARDIACO', options: ["NO", "SI", "OBSERVADO"] },
-      { name: 'DE 2-7 DIAS  RN', type: 'auto', mes: 'VISITA DOMICIL.', desc: 'Registro DE 2-7 DIAS  RN' },
-      { name: 'ATENCION EN OTRO EESS', type: 'date', mes: 'OBSERVACION', desc: 'Registro ATENCION EN OTRO EESS' },
-      { name: 'DESPUES DE 7 DIAS DEL  SF  V.D. 1', type: 'auto', mes: 'VISITA DOMICIL.  1', desc: 'Registro DESPUES DE 7 DIAS DEL  SF  V.D. 1' },
-      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE    SF   V.D. 2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE    SF   V.D. 2' },
-      { name: 'DESPUES DE 7 DIAS DEL SF   V.D. 1', type: 'auto', mes: 'VISITA DOMICIL. 1', desc: 'Registro DESPUES DE 7 DIAS DEL SF   V.D. 1' },
-      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE   SF   V.D.2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE   SF   V.D.2' },
-      { name: 'DESPUES DE 7 DIAS DEL SF    V.D.3', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  3', desc: 'Registro DESPUES DE 7 DIAS DEL SF    V.D.3' },
-      { name: 'DESPUES DE 7 DIAS DEL SF       V.D. 1', type: 'auto', mes: 'VISITA DOMICIL.  1', desc: 'Registro DESPUES DE 7 DIAS DEL SF       V.D. 1' },
-      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE  SF      V.D. 2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION 2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE  SF      V.D. 2' },
-      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE  SF       V,D.3', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  3', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE  SF       V,D.3' },
-      { name: 'DESPUES DE 7 DIAS DEL SF       V.D. 1', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION 1', desc: 'Registro DESPUES DE 7 DIAS DEL SF       V.D. 1' },
-      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE  SF           V.D. 2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE  SF           V.D. 2' },
-      { name: 'DESPUES DE 7 DIAS DEL SF               V.D. 1', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION   1', desc: 'Registro DESPUES DE 7 DIAS DEL SF               V.D. 1' },
-      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE   SF 2  V.D. 2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION   2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE   SF 2  V.D. 2' },
-      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE   SF    V.D. 3', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION   3', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE   SF    V.D. 3' },
-      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE   SF 2 V.D. 2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION   2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE   SF 2 V.D. 2' },
-      { name: 'DESPUES DE 7 DIAS DEL SF  V.D.1', type: 'auto', mes: 'VISITA DOMICIL. 1', desc: 'Registro DESPUES DE 7 DIAS DEL SF  V.D.1' },
-      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE  SF   V.D.2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE  SF   V.D.2' },
-      { name: 'DESPUES DE 7 DIAS DEL  SF  V.D. 1', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  3', desc: 'Registro DESPUES DE 7 DIAS DEL  SF  V.D. 1' }
+      { name: 'DE 2-7 DIAS  RN', type: 'date', mes: 'VISITA DOMICIL.', desc: 'Visita Domiciliaria RN (2 a 7 días)' },
+      { name: 'ATENCION EN OTRO EESS', type: 'date', mes: 'OBSERVACION', desc: 'Registro ATENCION EN OTRO EESS' }
     ],
     '1-11 MESES': [
       { name: 'PAIS  1', type: 'date', mes: '1 MES', desc: 'Registro PAIS  1' },
@@ -267,9 +261,11 @@ const App = {
       { name: 'ROTA  2°', type: 'date', mes: '4 MESES', desc: 'Fecha ROTA  2°' },
       { name: 'HIERRO  SF 1', type: 'date', mes: '4 MESES', desc: 'Registro HIERRO  SF 1' },
       { name: 'CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  4', type: 'date', mes: '4 MESES', desc: 'Registro CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  4' },
+      { name: 'DESPUES DE 7 DIAS DEL  SF  V.D. 1', type: 'date', mes: '4 MESES', desc: 'Visita Domiciliaria 1 (Después de 7 días del SF)' },
       { name: 'dias  5', type: 'auto', mes: '5 MESES', desc: 'Registro dias  5' },
       { name: 'REAJUSTE DE DOSIS  PO', type: 'date', mes: '5 MESES', desc: 'Registro REAJUSTE DE DOSIS  PO' },
       { name: 'CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  5', type: 'date', mes: '5 MESES', desc: 'Registro CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  5' },
+      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE    SF   V.D. 2', type: 'date', mes: '5 MESES', desc: 'Visita Domiciliaria / Teleorientación 2 (Después de 7 días del reajuste SF)' },
       { name: 'dias  6', type: 'auto', mes: '6 MESES', desc: 'Registro dias  6' },
       { name: 'CRED 5°', type: 'date', mes: '6 MESES', desc: 'Fecha CRED 5°' },
       { name: '4ta  Sesion estimulacion temprana', type: 'date', mes: '6 MESES', desc: 'Registro 4ta  Sesion estimulacion temprana' },
@@ -283,20 +279,23 @@ const App = {
       { name: 'HIERRO  SF 12', type: 'date', mes: '6 MESES', desc: 'Registro HIERRO  SF 12' },
       { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)  1', type: 'date', mes: '6 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)  1' },
       { name: 'DX ANEMIA SI O NO', type: 'select', mes: '6 MESES', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] },
+      { name: 'DESPUES DE 7 DIAS DEL SF   V.D. 1', type: 'date', mes: '6 MESES', desc: 'Visita Domiciliaria 1 (Después de 7 días del SF)' },
       { name: 'dias  7', type: 'auto', mes: '7 MESES', desc: 'Registro dias  7' },
       { name: 'CRED 6°', type: 'date', mes: '7 MESES', desc: 'Fecha CRED 6°' },
       { name: '5ta  Sesion estimulacion temprana', type: 'date', mes: '7 MESES', desc: 'Registro 5ta  Sesion estimulacion temprana' },
       { name: 'INFLUENZA PEDIATRICA  2°', type: 'date', mes: '7 MESES', desc: 'Registro INFLUENZA PEDIATRICA  2°' },
       { name: 'TAM. VIF', type: 'date', mes: '7 MESES', desc: 'Registro TAM. VIF' },
       { name: 'REAJUSTE DE DOSIS  SF1', type: 'date', mes: '7 MESES', desc: 'Registro REAJUSTE DE DOSIS  SF1' },
+      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE   SF   V.D.2', type: 'date', mes: '7 MESES', desc: 'Visita Domiciliaria / Teleorientación 2 (Después de 7 días del reajuste SF)' },
       { name: 'dias  8', type: 'auto', mes: '8 MESES', desc: 'Registro dias  8' },
       { name: 'HIERRO  SF 2', type: 'date', mes: '8 MESES', desc: 'Registro HIERRO  SF 2' },
       { name: 'EX. OJOS', type: 'date', mes: '8 MESES', desc: 'Registro EX. OJOS' },
       { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)    2', type: 'date', mes: '8 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)    2' },
+      { name: 'DESPUES DE 7 DIAS DEL SF    V.D.3', type: 'date', mes: '8 MESES', desc: 'Visita Domiciliaria / Teleorientación 3 (Después de 7 días del SF)' },
       { name: 'dias  9', type: 'auto', mes: '9 MESES', desc: 'Registro dias  9' },
       { name: 'CRED 7°', type: 'date', mes: '9 MESES', desc: 'Fecha CRED 7°' },
       { name: '6ta  Sesion estimulacion temprana2', type: 'date', mes: '9 MESES', desc: 'Registro 6ta  Sesion estimulacion temprana2' },
-      { name: 'DOSAJE HB c1 a los 90 dias del CRED de 6 meses', type: 'auto', mes: '9 MESES', desc: 'Fecha DOSAJE HB c1 a los 90 dias del CRED de 6 meses' },
+      { name: 'DOSAJE HB c1 a los 90 dias del CRED de 6 meses', type: 'date', mes: '9 MESES', desc: 'Fecha DOSAJE HB c1 a los 90 dias del CRED de 6 meses' },
       { name: 'REAJUSTE DE DOSIS SF2', type: 'date', mes: '9 MESES', desc: 'Registro REAJUSTE DE DOSIS SF2' },
       { name: 'DX ANEMIA SI O NO', type: 'select', mes: '9 MESES', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] },
       { name: 'dias  10', type: 'auto', mes: '10 MESES', desc: 'Registro dias  10' },
@@ -335,7 +334,7 @@ const App = {
       { name: 'TAMIZAJE HIPOACUSIA', type: 'select', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro TAMIZAJE HIPOACUSIA', options: ["NO", "SI", "OBSERVADO"] },
       { name: 'TAMIZAJE CATARATA', type: 'select', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro TAMIZAJE CATARATA', options: ["NO", "SI", "OBSERVADO"] },
       { name: 'TAMIZAJE CARDIACO', type: 'select', mes: 'TAMIZAJES EN EL RECIEN NACIDO', desc: 'Registro TAMIZAJE CARDIACO', options: ["NO", "SI", "OBSERVADO"] },
-      { name: 'DE 2-7 DIAS  RN', type: 'auto', mes: 'VISITA DOMICIL.', desc: 'Registro DE 2-7 DIAS  RN' },
+      { name: 'DE 2-7 DIAS  RN', type: 'date', mes: 'VISITA DOMICIL.', desc: 'Visita Domiciliaria RN (2 a 7 días)' },
       { name: 'ATENCION EN OTRO EESS', type: 'date', mes: 'OBSERVACION', desc: 'Registro ATENCION EN OTRO EESS' }
     ],
     '1-11 MESES': [
@@ -345,10 +344,10 @@ const App = {
       { name: '1ra  Sesion estimulacion temprana', type: 'date', mes: '1 MES', desc: 'Registro 1ra  Sesion estimulacion temprana' },
       { name: 'TAM. VIF', type: 'date', mes: '1 MES', desc: 'Registro TAM. VIF' },
       { name: 'EV. ODONTOLOGICA', type: 'date', mes: '1 MES', desc: 'Registro EV. ODONTOLOGICA' },
-      { name: 'DOSAJE HB  a los 30 dias  de vida', type: 'auto', mes: '1 MES', desc: 'Registro DOSAJE HB  a los 30 dias  de vida' },
+      { name: 'DOSAJE HB  a los 30 dias  de vida', type: 'date', mes: '1 MES', desc: 'Registro DOSAJE HB  a los 30 dias  de vida' },
       { name: 'HIERRO   PO1', type: 'date', mes: '1 MES', desc: 'Registro HIERRO   PO1' },
       { name: 'CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  1', type: 'date', mes: '1 MES', desc: 'Registro CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  1' },
-      { name: 'DESPUES DE 7 DIAS DEL SF  V.D.1', type: 'auto', mes: 'VISITA DOMICIL. 1', desc: 'Registro DESPUES DE 7 DIAS DEL SF  V.D.1' },
+      { name: 'DESPUES DE 7 DIAS DEL SF  V.D.1', type: 'date', mes: '1 MES', desc: 'Visita Domiciliaria 1 (Después de 7 días del SF)' },
       { name: 'dias  2', type: 'auto', mes: '2 MESES', desc: 'Registro dias  2' },
       { name: 'CRED  2°', type: 'date', mes: '2 MESES', desc: 'Fecha CRED  2°' },
       { name: '2da  Sesion estimulacion temprana', type: 'date', mes: '2 MESES', desc: 'Registro 2da  Sesion estimulacion temprana' },
@@ -358,7 +357,7 @@ const App = {
       { name: 'ROTA  1°', type: 'date', mes: '2 MESES', desc: 'Fecha ROTA  1°' },
       { name: 'REAJUSTE DE DOSIS PO', type: 'date', mes: '2 MESES', desc: 'Registro REAJUSTE DE DOSIS PO' },
       { name: 'CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  2', type: 'date', mes: '2 MESES', desc: 'Registro CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  2' },
-      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE  SF   V.D.2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE  SF   V.D.2' },
+      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE  SF   V.D.2', type: 'date', mes: '2 MESES', desc: 'Visita Domiciliaria / Teleorientación 2 (Después de 7 días del reajuste SF)' },
       { name: 'dias  3', type: 'auto', mes: '3 MESES', desc: 'Registro dias  3' },
       { name: 'CRED 3°', type: 'date', mes: '3 MESES', desc: 'Fecha CRED 3°' },
       { name: 'REAJUSTE DE DOSIS PO', type: 'date', mes: '3 MESES', desc: 'Registro REAJUSTE DE DOSIS PO' },
@@ -370,10 +369,10 @@ const App = {
       { name: 'IPV  2°', type: 'date', mes: '4 MESES', desc: 'Registro IPV  2°' },
       { name: 'NEUMO 2°', type: 'date', mes: '4 MESES', desc: 'Fecha NEUMO 2°' },
       { name: 'ROTA  2°', type: 'date', mes: '4 MESES', desc: 'Fecha ROTA  2°' },
-      { name: 'DOSAJE  HB a los 90 dias despues de CRED  de 1 mes', type: 'auto', mes: '4 MESES', desc: 'Fecha DOSAJE  HB a los 90 dias despues de CRED  de 1 mes' },
+      { name: 'DOSAJE  HB a los 90 dias despues de CRED  de 1 mes', type: 'date', mes: '4 MESES', desc: 'Fecha DOSAJE  HB a los 90 dias despues de CRED  de 1 mes' },
       { name: 'HIERRO  PO 2', type: 'date', mes: '4 MESES', desc: 'Registro HIERRO  PO 2' },
       { name: 'CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  4', type: 'date', mes: '4 MESES', desc: 'Registro CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  4' },
-      { name: 'DESPUES DE 7 DIAS DEL  SF  V.D. 1', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  3', desc: 'Registro DESPUES DE 7 DIAS DEL  SF  V.D. 1' },
+      { name: 'DESPUES DE 7 DIAS DEL  SF  V.D. 1', type: 'date', mes: '4 MESES', desc: 'Visita Domiciliaria / Teleorientación 3 (Después de 7 días del SF)' },
       { name: 'dias  5', type: 'auto', mes: '5 MESES', desc: 'Registro dias  5' },
       { name: 'REAJUSTE DE DOSIS  PO', type: 'date', mes: '5 MESES', desc: 'Registro REAJUSTE DE DOSIS  PO' },
       { name: 'CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  5', type: 'date', mes: '5 MESES', desc: 'Registro CONSEJERIA  LACTANCIA MATERNA EXCLUSIVA  5' },
@@ -390,23 +389,23 @@ const App = {
       { name: 'HIERRO  SF 1', type: 'date', mes: '6 MESES', desc: 'Registro HIERRO  SF 1' },
       { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)  1', type: 'date', mes: '6 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)  1' },
       { name: 'DX ANEMIA SI O NO', type: 'select', mes: '6 MESES', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] },
-      { name: 'DESPUES DE 7 DIAS DEL SF   V.D. 1', type: 'auto', mes: 'VISITA DOMICIL. 1', desc: 'Registro DESPUES DE 7 DIAS DEL SF   V.D. 1' },
+      { name: 'DESPUES DE 7 DIAS DEL SF   V.D. 1', type: 'date', mes: '6 MESES', desc: 'Visita Domiciliaria 1 (Después de 7 días del SF)' },
       { name: 'dias  7', type: 'auto', mes: '7 MESES', desc: 'Registro dias  7' },
       { name: 'CRED 6°', type: 'date', mes: '7 MESES', desc: 'Fecha CRED 6°' },
       { name: '5ta  Sesion estimulacion temprana', type: 'date', mes: '7 MESES', desc: 'Registro 5ta  Sesion estimulacion temprana' },
       { name: 'INFLUENZA PEDIATRICA  2°', type: 'date', mes: '7 MESES', desc: 'Registro INFLUENZA PEDIATRICA  2°' },
       { name: 'TAM. VIF', type: 'date', mes: '7 MESES', desc: 'Registro TAM. VIF' },
       { name: 'REAJUSTE DE DOSIS  SF1', type: 'date', mes: '7 MESES', desc: 'Registro REAJUSTE DE DOSIS  SF1' },
-      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE   SF   V.D.2', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  2', desc: 'Registro DESPUES DE 7 DIAS DEL REAJUSTE   SF   V.D.2' },
+      { name: 'DESPUES DE 7 DIAS DEL REAJUSTE   SF   V.D.2', type: 'date', mes: '7 MESES', desc: 'Visita Domiciliaria / Teleorientación 2 (Después de 7 días del reajuste SF)' },
       { name: 'dias  8', type: 'auto', mes: '8 MESES', desc: 'Registro dias  8' },
       { name: 'HIERRO  SF 2', type: 'date', mes: '8 MESES', desc: 'Registro HIERRO  SF 2' },
       { name: 'EX. OJOS', type: 'date', mes: '8 MESES', desc: 'Registro EX. OJOS' },
       { name: 'CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)    2', type: 'date', mes: '8 MESES', desc: 'Registro CONSEJERIA / ORIENTACION NUTRICIONAL (RIESGO NUTRICIONAL / SUPLEMENTACION / TRATAMIENTO CON HIERRO)    2' },
-      { name: 'DESPUES DE 7 DIAS DEL SF    V.D.3', type: 'auto', mes: 'VISITA DOMICIL. / TELEORIENTACION  3', desc: 'Registro DESPUES DE 7 DIAS DEL SF    V.D.3' },
+      { name: 'DESPUES DE 7 DIAS DEL SF    V.D.3', type: 'date', mes: '8 MESES', desc: 'Visita Domiciliaria / Teleorientación 3 (Después de 7 días del SF)' },
       { name: 'dias  9', type: 'auto', mes: '9 MESES', desc: 'Registro dias  9' },
       { name: 'CRED 7°', type: 'date', mes: '9 MESES', desc: 'Fecha CRED 7°' },
       { name: '6ta  Sesion estimulacion temprana2', type: 'date', mes: '9 MESES', desc: 'Registro 6ta  Sesion estimulacion temprana2' },
-      { name: 'DOSAJE HB c1 a los 90 dias del CRED de 6 meses', type: 'auto', mes: '9 MESES', desc: 'Fecha DOSAJE HB c1 a los 90 dias del CRED de 6 meses' },
+      { name: 'DOSAJE HB c1 a los 90 dias del CRED de 6 meses', type: 'date', mes: '9 MESES', desc: 'Fecha DOSAJE HB c1 a los 90 dias del CRED de 6 meses' },
       { name: 'REAJUSTE DE DOSIS SF2', type: 'date', mes: '9 MESES', desc: 'Registro REAJUSTE DE DOSIS SF2' },
       { name: 'DX ANEMIA SI O NO', type: 'select', mes: '9 MESES', desc: 'Registro DX ANEMIA SI O NO', options: ["NO", "SI", "OBSERVADO"] },
       { name: 'dias  10', type: 'auto', mes: '10 MESES', desc: 'Registro dias  10' },
@@ -421,13 +420,18 @@ const App = {
     '4 AÑOS': shared4Anios
   },
 
+  pacientesPage: 1,
+  pacientesPageSize: 25,
+
   // Inicialización de la App
   init() {
+    window.App = this;
     Api.initLocalDb();
     this.setupRouter();
     this.setupEvents();
     this.Dashboard.init();
     this.checkOnlineStatus();
+    this.updateSyncBadge();
     
     // Si no tiene la API configurada, sugerir configurarla en los ajustes
     if (!Api.hasConfiguredApi()) {
@@ -436,6 +440,18 @@ const App = {
     } else {
       // Sincronización automática no bloqueante al ingresar a la página
       this.syncData(true);
+    }
+  },
+
+  updateSyncBadge() {
+    const badge = document.getElementById('sync-pending-badge');
+    if (!badge) return;
+    const count = Api.getPendingSyncCount();
+    if (count > 0) {
+      badge.innerText = count;
+      badge.style.display = 'inline-block';
+    } else {
+      badge.style.display = 'none';
     }
   },
 
@@ -467,7 +483,9 @@ const App = {
           this.Dashboard.populateCommunities();
         }
         this.updateDashboardStats();
-        this.renderPacientesList('');
+        this.renderPacientesList(document.getElementById('global-search')?.value || '');
+      } else if (viewId === 'agenda') {
+        this.initAgendaView();
       } else if (viewId === 'seguimiento-cred') {
         this.initSeguimientoCredView();
       } else if (viewId === 'seguimiento-anemia') {
@@ -490,6 +508,7 @@ const App = {
 
     // Buscador global en el dashboard
     document.getElementById('global-search').addEventListener('input', (e) => {
+      this.pacientesPage = 1;
       this.renderPacientesList(e.target.value);
     });
 
@@ -497,14 +516,21 @@ const App = {
     const filterTipo = document.getElementById('filter-tipo');
     const filterSexo = document.getElementById('filter-sexo');
     const filterComunidad = document.getElementById('filter-comunidad');
+    const filterEtapa = document.getElementById('filter-etapa');
     
     const triggerDashboardUpdate = () => {
+      this.pacientesPage = 1;
       this.Dashboard.update();
+      this.renderPacientesList(document.getElementById('global-search')?.value || '');
     };
 
     if (filterTipo) filterTipo.addEventListener('change', triggerDashboardUpdate);
     if (filterSexo) filterSexo.addEventListener('change', triggerDashboardUpdate);
     if (filterComunidad) filterComunidad.addEventListener('change', triggerDashboardUpdate);
+    if (filterEtapa) filterEtapa.addEventListener('change', () => {
+      this.pacientesPage = 1;
+      this.renderPacientesList(document.getElementById('global-search')?.value || '');
+    });
 
     const clearFiltersBtn = document.getElementById('clear-filters-btn');
     if (clearFiltersBtn) {
@@ -512,9 +538,18 @@ const App = {
         if (filterTipo) filterTipo.value = 'all';
         if (filterSexo) filterSexo.value = 'all';
         if (filterComunidad) filterComunidad.value = 'all';
+        if (filterEtapa) filterEtapa.value = 'all';
+        this.pacientesPage = 1;
         this.Dashboard.update();
+        this.renderPacientesList(document.getElementById('global-search')?.value || '');
       });
     }
+
+    // Filtros de Agenda
+    const agendaSearch = document.getElementById('agenda-search');
+    const agendaRange = document.getElementById('agenda-filter-range');
+    if (agendaSearch) agendaSearch.addEventListener('input', () => this.renderAgendaList());
+    if (agendaRange) agendaRange.addEventListener('change', () => this.renderAgendaList());
 
     // Guardar URL de API en Ajustes
     document.getElementById('save-api-btn').addEventListener('click', () => {
@@ -660,7 +695,8 @@ const App = {
     const res = await Api.sync(onProgress);
     
     btn.disabled = false;
-    btn.innerHTML = '🔄 Sincronizar';
+    btn.innerHTML = '<span>🔄</span> Sincronizar <span id="sync-pending-badge" class="sync-pending-badge" style="display: none;">0</span>';
+    this.updateSyncBadge();
     
     if (res.success) {
       statusText.innerText = 'Sincronizado hoy';
@@ -1040,19 +1076,62 @@ const App = {
     }
   },
 
-  // Renderizar la tabla de pacientes con filtros
+  // Renderizar la tabla de pacientes con filtros conectados y paginación
   renderPacientesList(query) {
     const tableBody = document.getElementById('pacientes-table-body');
+    const paginationEl = document.getElementById('pacientes-pagination');
+    if (!tableBody) return;
     tableBody.innerHTML = '';
-    
-    const pacientes = Api.getPacientes(query);
+
+    const db = Api.getLocalDb();
+    const filterTipo = document.getElementById('filter-tipo')?.value || 'all';
+    const filterSexo = document.getElementById('filter-sexo')?.value || 'all';
+    const filterComunidad = document.getElementById('filter-comunidad')?.value || 'all';
+    const filterEtapa = document.getElementById('filter-etapa')?.value || 'all';
+
+    let anemiaSiDnis = null;
+    if (filterEtapa === 'anemia_si') {
+      anemiaSiDnis = new Set();
+      db.seguimientoAnemia.forEach(s => {
+        if (s.actividad === 'DX ANEMIA DEFINITIVO' && String(s.valor || '').toUpperCase().includes('SI')) {
+          anemiaSiDnis.add(String(s.dni_paciente));
+        }
+      });
+      db.seguimientoCred.forEach(s => {
+        if (String(s.actividad || '').includes('DX ANEMIA') && String(s.valor || '').toUpperCase().includes('SI')) {
+          anemiaSiDnis.add(String(s.dni_paciente));
+        }
+      });
+    }
+
+    const pacientes = Api.getPacientes(query).filter(p => {
+      if (filterTipo !== 'all' && p.tipo_seguimiento !== filterTipo) return false;
+      if (filterSexo !== 'all' && p.sexo !== filterSexo) return false;
+      if (filterComunidad !== 'all' && (p.comunidad || '').trim().toUpperCase() !== filterComunidad) return false;
+      if (filterEtapa !== 'all') {
+        const ageInfo = Utils.calculateExactAge(p.fecha_nacimiento);
+        if (filterEtapa === 'rn' && ageInfo.totalDays > 29) return false;
+        if (filterEtapa === '1_11m' && (ageInfo.years > 0 || ageInfo.totalDays <= 29)) return false;
+        if (filterEtapa === '1_4a' && ageInfo.years < 1) return false;
+        if (filterEtapa === 'anemia_si' && !anemiaSiDnis.has(String(p.id))) return false;
+      }
+      return true;
+    });
     
     if (pacientes.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="7" class="text-center" style="color: var(--text-muted); padding: 30px;">Ningún niño encontrado con la búsqueda.</td></tr>`;
+      tableBody.innerHTML = `<tr><td colspan="8" class="text-center" style="color: var(--text-muted); padding: 30px;">Ningún niño encontrado con los filtros aplicados.</td></tr>`;
+      if (paginationEl) paginationEl.style.display = 'none';
       return;
     }
+
+    const total = pacientes.length;
+    const totalPages = Math.max(1, Math.ceil(total / this.pacientesPageSize));
+    if (this.pacientesPage > totalPages) this.pacientesPage = totalPages;
+    const startIdx = (this.pacientesPage - 1) * this.pacientesPageSize;
+    const endIdx = Math.min(startIdx + this.pacientesPageSize, total);
+    const pageItems = pacientes.slice(startIdx, endIdx);
     
-    pacientes.forEach(p => {
+    pageItems.forEach(p => {
       const ageInfo = Utils.calculateExactAge(p.fecha_nacimiento);
       const badgeClass = p.tipo_seguimiento === 'termino' ? 'badge-success' : 'badge-warning';
       const badgeText = p.tipo_seguimiento === 'termino' ? 'A Término' : 'BPN/Prematuro';
@@ -1075,6 +1154,150 @@ const App = {
         </td>
       `;
       tableBody.appendChild(tr);
+    });
+
+    if (paginationEl) {
+      if (total > this.pacientesPageSize) {
+        paginationEl.style.display = 'flex';
+        paginationEl.innerHTML = `
+          <span>Mostrando <strong>${startIdx + 1}-${endIdx}</strong> de <strong>${total}</strong> niños</span>
+          <div class="pagination-controls">
+            <button class="btn btn-outline btn-sm" ${this.pacientesPage <= 1 ? 'disabled' : ''} onclick="App.changePacientesPage(-1)">⬅️ Anterior</button>
+            <span>Página <strong>${this.pacientesPage}</strong> / ${totalPages}</span>
+            <button class="btn btn-outline btn-sm" ${this.pacientesPage >= totalPages ? 'disabled' : ''} onclick="App.changePacientesPage(1)">Siguiente ➡️</button>
+          </div>
+        `;
+      } else {
+        paginationEl.style.display = 'flex';
+        paginationEl.innerHTML = `<span>Mostrando <strong>${total}</strong> niño${total === 1 ? '' : 's'}</span>`;
+      }
+    }
+  },
+
+  changePacientesPage(delta) {
+    this.pacientesPage = Math.max(1, this.pacientesPage + delta);
+    this.renderPacientesList(document.getElementById('global-search')?.value || '');
+  },
+
+  // VISTA: AGENDA Y ALERTAS DE SEGUIMIENTO
+  initAgendaView() {
+    this.renderAgendaList();
+  },
+
+  renderAgendaList() {
+    const tbody = document.getElementById('agenda-table-body');
+    const summaryEl = document.getElementById('agenda-summary');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const rangeFilter = document.getElementById('agenda-filter-range')?.value || 'vencidos_y_proximos';
+    const searchQuery = (document.getElementById('agenda-search')?.value || '').toLowerCase().trim();
+
+    const db = Api.getLocalDb();
+    const today = new Date();
+    today.setHours(12, 0, 0, 0);
+
+    // Indexar seguimientos por paciente para consulta O(1)
+    const segByDni = new Map();
+    db.seguimientoCred.forEach(s => {
+      const key = String(s.dni_paciente);
+      if (!segByDni.has(key)) segByDni.set(key, []);
+      segByDni.get(key).push(s);
+    });
+
+    const alerts = [];
+
+    db.pacientes.forEach(p => {
+      if (!p.fecha_nacimiento) return;
+      const catalog = p.tipo_seguimiento === 'bpn' ? this.credPrematurosActividades : this.credTerminoActividades;
+      const pSegs = segByDni.get(String(p.id)) || [];
+
+      Object.keys(catalog).forEach(tab => {
+        (catalog[tab] || []).forEach(act => {
+          if (act.type === 'auto' || Utils.isAutoDaysActivity(act.name)) return;
+          // Enfocarse en controles clave, vacunas, dosajes, hierro y visitas domiciliarias
+          const actUpper = act.name.toUpperCase();
+          const isKeyControl = actUpper.includes('CRED') || actUpper.includes('VISITA') || actUpper.includes('V.D') || actUpper.includes('2-7 DIAS') || actUpper.includes('TAMIZAJE NEONATAL') || actUpper.includes('DOSAJE') || actUpper.includes('HIERRO') || actUpper.includes('PENTA') || actUpper.includes('SPR') || actUpper.includes('BCG') || actUpper.includes('HVB');
+          if (!isKeyControl) return;
+
+          const targetAct = Utils.normalizeActName(act.name);
+          const targetMes = Utils.normalizeMesControl(act.mes || 'RN');
+          const done = pSegs.some(s =>
+            Utils.normalizeActName(s.actividad) === targetAct &&
+            Utils.normalizeMesControl(s.mes_control) === targetMes &&
+            (s.fecha_realizada || s.valor)
+          );
+          if (done) return;
+
+          const fechaSug = Utils.calculateScheduledDate(p.fecha_nacimiento, act.mes || 'RN', act.name);
+          if (!fechaSug) return;
+          const parts = fechaSug.split('-');
+          if (parts.length !== 3) return;
+          const sugDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10), 12, 0, 0);
+          const diffDays = Math.round((sugDate - today) / (1000 * 60 * 60 * 24));
+
+          let include = false;
+          if (rangeFilter === 'vencidos_y_proximos') include = diffDays >= -90 && diffDays <= 7;
+          else if (rangeFilter === 'solo_vencidos') include = diffDays >= -90 && diffDays < 0;
+          else if (rangeFilter === 'proximos_7') include = diffDays >= 0 && diffDays <= 7;
+          else if (rangeFilter === 'proximos_15') include = diffDays >= 0 && diffDays <= 15;
+
+          if (!include) return;
+
+          if (searchQuery) {
+            const haystack = `${p.nombres} ${p.hc} ${p.comunidad || ''} ${act.name}`.toLowerCase();
+            if (!haystack.includes(searchQuery)) return;
+          }
+
+          alerts.push({ paciente: p, tab, act, fechaSug, diffDays });
+        });
+      });
+    });
+
+    // Ordenar: los que vencen hoy / más cercanos primero, luego vencidos recientes
+    alerts.sort((a, b) => a.diffDays - b.diffDays);
+
+    if (summaryEl) {
+      const vencidosCount = alerts.filter(a => a.diffDays < 0).length;
+      const proximosCount = alerts.filter(a => a.diffDays >= 0).length;
+      summaryEl.innerHTML = `Se encontraron <strong>${alerts.length}</strong> atenciones pendientes en este rango (<strong>${vencidosCount}</strong> vencidas, <strong>${proximosCount}</strong> próximas).`;
+    }
+
+    if (alerts.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" class="text-center" style="color: var(--text-muted); padding: 30px;">🎉 No hay alertas pendientes en este rango.</td></tr>`;
+      return;
+    }
+
+    alerts.slice(0, 150).forEach(({ paciente: p, tab, act, fechaSug, diffDays }) => {
+      const ageInfo = Utils.calculateExactAge(p.fecha_nacimiento);
+      let estadoBadge = '';
+      if (diffDays < 0) {
+        estadoBadge = `<span class="badge badge-danger">🔴 Vencido hace ${Math.abs(diffDays)} d</span>`;
+      } else if (diffDays === 0) {
+        estadoBadge = `<span class="badge badge-warning">🟡 Toca HOY</span>`;
+      } else {
+        estadoBadge = `<span class="badge badge-info">🟢 En ${diffDays} día${diffDays === 1 ? '' : 's'}</span>`;
+      }
+
+      const rawPhone = String(p.celular_madre || '').replace(/\D/g, '');
+      const waMsg = encodeURIComponent(`Hola, le escribimos del C.S. San Sebastián (CRED) para recordarle el control "${act.name}" de ${p.nombres} programado para el ${Utils.formatDateToShow(fechaSug)}.`);
+      const phoneHtml = rawPhone.length >= 9
+        ? `<div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;"><span>${rawPhone}</span><a href="https://wa.me/51${rawPhone.slice(-9)}?text=${waMsg}" target="_blank" class="btn btn-secondary btn-sm" style="text-decoration:none;">📱 WhatsApp</a></div>`
+        : `<span style="color: var(--text-muted);">${p.celular_madre || 'Sin celular'}</span>`;
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><strong>${p.nombres}</strong><br><span style="font-size:12px; color:var(--text-muted);">HC: ${p.hc} ${p.comunidad ? `| ${p.comunidad}` : ''}</span></td>
+        <td>${ageInfo.text}</td>
+        <td><strong>${act.name}</strong><br><span style="font-size:12px; color:var(--text-muted);">${act.mes}</span></td>
+        <td>${Utils.formatDateToShow(fechaSug)}</td>
+        <td>${estadoBadge}</td>
+        <td>${phoneHtml}</td>
+        <td>
+          <button class="btn btn-primary btn-sm" onclick="App.activeTimelineTab='${tab}'; App.openSeguimiento('${p.id}', 'cred')">📈 Ir al CRED</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
     });
   },
 
@@ -1155,19 +1378,18 @@ const App = {
             <strong>Tipo:</strong> ${p.tipo_seguimiento === 'termino' ? 'A Término' : 'BPN/Prematuro'}
           </p>
         </div>
-        <button class="btn btn-outline" style="border-color: var(--primary); color: var(--primary); padding: 8px 16px; font-size: 14px;" onclick="App.openEditPacienteModal('${p.id}')">✏️ Editar Datos</button>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button class="btn btn-outline" style="border-color: var(--primary); color: var(--primary); padding: 8px 16px; font-size: 14px;" onclick="window.print()">🖨️ Imprimir Ficha</button>
+          <button class="btn btn-outline" style="border-color: var(--primary); color: var(--primary); padding: 8px 16px; font-size: 14px;" onclick="App.openEditPacienteModal('${p.id}')">✏️ Editar Datos</button>
+        </div>
       </div>
     `;
     
-    // Renderizar las pestañas de edad de acuerdo al tipo de paciente
+    // Renderizar las pestañas de edad (habilitadas para Término y BPN)
     const tabContainer = document.getElementById('cred-tabs');
     tabContainer.innerHTML = '';
     
-    const tabs = ['RN', '1-11 MESES', '1 AÑO', '2 AÑOS'];
-    // Si es BPN, habilitar 3 y 4 años
-    if (p.tipo_seguimiento === 'bpn') {
-      tabs.push('3 AÑOS', '4 AÑOS');
-    }
+    const tabs = ['RN', '1-11 MESES', '1 AÑO', '2 AÑOS', '3 AÑOS', '4 AÑOS'];
     
     tabs.forEach(tab => {
       const btn = document.createElement('button');
@@ -1247,9 +1469,11 @@ const App = {
       
       // Calcular fecha límite sugerida
       const mesCont = act.mes || "RN";
-      const fechaSug = Utils.calculateScheduledDate(p.fecha_nacimiento, mesCont);
+      const fechaSug = Utils.calculateScheduledDate(p.fecha_nacimiento, mesCont, act.name);
       
       let badgeInfo = `<div class="timeline-badge"></div>`;
+      const safeActName = String(act.name).replace(/'/g, "\\'");
+      const safeMes = String(act.mes || '').replace(/'/g, "\\'");
       
       ev.innerHTML = `
         ${badgeInfo}
@@ -1277,13 +1501,18 @@ const App = {
               </p>
             `}
           </div>
-          <div class="event-actions">
+          <div class="event-actions" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
             ${isAuto ? `
               <span style="font-size: 12px; color: var(--text-muted); font-style: italic; padding: 8px 0;">Automático</span>
             ` : `
-              <button class="btn btn-primary" style="padding: 8px 16px; font-size: 13px;" onclick="App.openRegisterControlModal('${act.name}', '${act.mes || ''}', '${fechaSug}', '${segRealizado ? segRealizado.fecha_realizada : ''}', '${segRealizado ? segRealizado.valor : ''}', '${segRealizado ? segRealizado.observacion : ''}')">
+              <button class="btn btn-primary" style="padding: 8px 16px; font-size: 13px;" onclick="App.openRegisterControlModal('${safeActName}', '${safeMes}', '${fechaSug}', '${segRealizado ? segRealizado.fecha_realizada : ''}', '${segRealizado ? segRealizado.valor : ''}', '${segRealizado ? segRealizado.observacion : ''}')">
                 ${hasCompleted ? '✏️ Editar' : '➕ Registrar'}
               </button>
+              ${hasCompleted ? `
+                <button class="btn btn-outline" style="padding: 8px 14px; font-size: 13px; color: #dc2626; border-color: #fca5a5; background-color: #fef2f2;" onclick="App.confirmDeleteControlCred('${safeActName}', '${safeMes}')">
+                  🗑️ Eliminar
+                </button>
+              ` : ''}
             `}
           </div>
         </div>
@@ -1296,6 +1525,7 @@ const App = {
 
   // Calcular automáticamente los días para una actividad auto
   calculateAutoDias(paciente, mesControl, actName, allSeguimientos) {
+    const rawMes = String(mesControl || "").toUpperCase().trim();
     const cleanMes = Utils.normalizeMesControl(mesControl);
     const cleanAct = Utils.normalizeActName(actName);
     const birthDate = paciente.fecha_nacimiento;
@@ -1303,7 +1533,8 @@ const App = {
     let pair = null;
     
     if (cleanMes === "RN") {
-      if (cleanAct === "DIAS") pair = ["HVB", "RN", "FECHA_NACIMIENTO", ""];
+      if (cleanAct === "DIAS" && rawMes.includes("VACUNA")) pair = ["HVB", "RN", "FECHA_NACIMIENTO", ""];
+      else if (cleanAct === "DIAS") pair = ["1 CRED", "RN", "FECHA_NACIMIENTO", ""];
       else if (cleanAct === "DIAS 2") pair = ["2 CRED", "RN", "FECHA_NACIMIENTO", ""];
       else if (cleanAct === "DIAS 3") pair = ["3 CRED", "RN", "FECHA_NACIMIENTO", ""];
       else if (cleanAct === "DIAS 5") pair = ["TAMIZAJE NEONATAL", "RN", "FECHA_NACIMIENTO", ""];
@@ -1386,10 +1617,16 @@ const App = {
     
     const [actAct, mesAct, actPrev, mesPrev] = pair;
     
-    const segAct = allSeguimientos.find(s => 
+    let segAct = allSeguimientos.find(s => 
       Utils.normalizeActName(s.actividad) === Utils.normalizeActName(actAct) && 
       Utils.normalizeMesControl(s.mes_control) === Utils.normalizeMesControl(mesAct)
     );
+    if (!segAct && Utils.normalizeActName(actAct) === "TAMIZAJE NEONATAL") {
+      segAct = allSeguimientos.find(s => 
+        Utils.normalizeActName(s.actividad) === "TAMIZAJE NEONATAL PRIMERA" && 
+        Utils.normalizeMesControl(s.mes_control) === Utils.normalizeMesControl(mesAct)
+      );
+    }
     const dateAct = segAct ? segAct.fecha_realizada : "";
     
     let datePrev = "";
@@ -1409,30 +1646,65 @@ const App = {
     return "";
   },
 
+  // Buscar definición de una actividad en el catálogo para adaptar el modal dinámicamente
+  getActivityDef(paciente, mesControl, actividadName) {
+    const catalog = paciente.tipo_seguimiento === 'bpn' ? this.credPrematurosActividades : this.credTerminoActividades;
+    const targetAct = Utils.normalizeActName(actividadName);
+    const targetMes = Utils.normalizeMesControl(mesControl || 'RN');
+    for (const tab of Object.keys(catalog)) {
+      const found = (catalog[tab] || []).find(a =>
+        Utils.normalizeActName(a.name) === targetAct &&
+        Utils.normalizeMesControl(a.mes || 'RN') === targetMes
+      );
+      if (found) return found;
+    }
+    return { name: actividadName, type: 'date', mes: mesControl };
+  },
+
   // ABRIR MODAL REGISTRO CONTROL CRED
   openRegisterControlModal(actividadName, mesControl, fechaProgramada, fechaRealizada = '', valor = '', observacion = '') {
+    const actDef = this.getActivityDef(this.selectedPaciente, mesControl, actividadName);
+    const actType = actDef.type || 'date';
+
     document.getElementById('modal-actividad-title').innerText = actividadName;
     document.getElementById('modal-mes-control').value = mesControl;
     document.getElementById('modal-fecha-prog').value = fechaProgramada;
-    document.getElementById('modal-fecha-real').value = fechaRealizada ? Utils.formatDateToInput(fechaRealizada) : Utils.formatDateToInput(new Date().toISOString());
-    document.getElementById('modal-valor').value = valor;
+    document.getElementById('modal-act-type').value = actType;
     document.getElementById('modal-obs').value = observacion;
-    
-    // Si la actividad tiene campo especial 'días' calculados, podemos automatizarlo al cambiar la fecha realizada
-    const recalculateDays = () => {
-      const birthDate = this.selectedPaciente.fecha_nacimiento;
-      const realDate = document.getElementById('modal-fecha-real').value;
-      if (birthDate && realDate) {
-        const diff = Utils.daysBetween(birthDate, realDate);
-        // Si la actividad requiere guardar días
-        if (actividadName.toLowerCase().includes('dias') || actividadName.toLowerCase().includes('días')) {
-          document.getElementById('modal-valor').value = diff;
-        }
-      }
-    };
-    
-    document.getElementById('modal-fecha-real').addEventListener('change', recalculateDays);
-    recalculateDays(); // calcular inicialmente
+
+    const fechaLabel = document.getElementById('modal-fecha-real-label');
+    const fechaInput = document.getElementById('modal-fecha-real');
+    const selectGroup = document.getElementById('modal-valor-select-group');
+    const selectInput = document.getElementById('modal-valor-select');
+    const textGroup = document.getElementById('modal-valor-text-group');
+    const textLabel = document.getElementById('modal-valor-label');
+    const textInput = document.getElementById('modal-valor');
+
+    if (actType === 'select') {
+      fechaLabel.innerText = 'Fecha de Realización (Opcional)';
+      fechaInput.value = fechaRealizada ? Utils.formatDateToInput(fechaRealizada) : '';
+      selectGroup.style.display = 'flex';
+      textGroup.style.display = 'none';
+      const opts = actDef.options || ['NO', 'SI', 'OBSERVADO'];
+      selectInput.innerHTML = '<option value="">Seleccione...</option>' + opts.map(o => `<option value="${o}">${o}</option>`).join('');
+      selectInput.value = valor ? String(valor).toUpperCase().trim() : '';
+    } else if (actType === 'text') {
+      fechaLabel.innerText = 'Fecha (Opcional)';
+      fechaInput.value = fechaRealizada ? Utils.formatDateToInput(fechaRealizada) : '';
+      selectGroup.style.display = 'none';
+      textGroup.style.display = 'flex';
+      textLabel.innerText = 'Lugar / Descripción *';
+      textInput.placeholder = 'Ej: H. REGIONAL, CS. SAN SEBASTIAN';
+      textInput.value = valor || '';
+    } else {
+      fechaLabel.innerText = 'Fecha de Realización *';
+      fechaInput.value = fechaRealizada ? Utils.formatDateToInput(fechaRealizada) : Utils.formatDateToInput(new Date().toISOString());
+      selectGroup.style.display = 'none';
+      textGroup.style.display = 'flex';
+      textLabel.innerText = 'Valor / Nota (Opcional: TA / PR / Resultado)';
+      textInput.placeholder = 'Ej: TA, PR, Hb 11.5';
+      textInput.value = valor || '';
+    }
     
     document.getElementById('control-dialog').classList.add('active');
   },
@@ -1442,12 +1714,23 @@ const App = {
     const actName = document.getElementById('modal-actividad-title').innerText;
     const mes = document.getElementById('modal-mes-control').value;
     const fechaProg = document.getElementById('modal-fecha-prog').value;
+    const actType = document.getElementById('modal-act-type').value || 'date';
     const fechaReal = document.getElementById('modal-fecha-real').value;
-    const valor = document.getElementById('modal-valor').value;
+    const valor = actType === 'select'
+      ? document.getElementById('modal-valor-select').value
+      : document.getElementById('modal-valor').value.trim();
     const obs = document.getElementById('modal-obs').value;
     
-    if (!fechaReal) {
+    if (actType === 'date' && !fechaReal) {
       Utils.showAlert("Fecha Requerida", "Por favor indica la fecha de realización", "warning");
+      return;
+    }
+    if (actType === 'select' && !valor) {
+      Utils.showAlert("Resultado Requerido", "Por favor selecciona una opción (NO / SI / OBSERVADO)", "warning");
+      return;
+    }
+    if (actType === 'text' && !valor && !fechaReal) {
+      Utils.showAlert("Dato Requerido", "Por favor ingresa el lugar o descripción", "warning");
       return;
     }
     
@@ -1493,6 +1776,69 @@ const App = {
     this.renderTimelineCred(this.activeTimelineTab);
   },
 
+  // Solicitar contraseña de autorización antes de eliminar una atención
+  async promptDeletePassword(itemLabel) {
+    if (window.Swal) {
+      const { value: password, isConfirmed } = await Swal.fire({
+        title: 'Eliminar Atención',
+        html: `Estás por eliminar el registro:<br><strong>${itemLabel}</strong><br><br>Ingresa la contraseña de autorización:`,
+        input: 'password',
+        inputPlaceholder: 'Contraseña',
+        inputAttributes: {
+          autocapitalize: 'off',
+          autocorrect: 'off'
+        },
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '🗑️ Eliminar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#64748b'
+      });
+
+      if (!isConfirmed) return false;
+      if (password !== Api.getDeletePassword()) {
+        Utils.showAlert("Contraseña Incorrecta", "La contraseña ingresada no es válida. No se eliminó la atención.", "error");
+        return false;
+      }
+      return true;
+    } else {
+      const pwd = prompt(`Ingresa la contraseña para eliminar "${itemLabel}":`);
+      if (pwd === null) return false;
+      if (pwd !== Api.getDeletePassword()) {
+        alert("Contraseña incorrecta. No se eliminó la atención.");
+        return false;
+      }
+      return true;
+    }
+  },
+
+  // Confirmar y eliminar una atención CRED
+  async confirmDeleteControlCred(actividadName, mesControl) {
+    const authorized = await this.promptDeletePassword(actividadName);
+    if (!authorized) return;
+
+    const p = this.selectedPaciente;
+    Api.deleteSeguimientoCredLocal(p.id, mesControl, actividadName);
+
+    // Recalcular o limpiar actividades auto-días del mismo mes
+    const catalog = p.tipo_seguimiento === 'bpn' ? this.credPrematurosActividades : this.credTerminoActividades;
+    const currentTabActs = catalog[this.activeTimelineTab] || [];
+    currentTabActs.forEach(act => {
+      if (act.type === "auto" && Utils.normalizeMesControl(act.mes || "RN") === Utils.normalizeMesControl(mesControl)) {
+        const updatedSeguimientos = Api.getSeguimientoCredByPaciente(p.id);
+        const diasVal = this.calculateAutoDias(p, act.mes || "RN", act.name, updatedSeguimientos);
+        if (diasVal === "") {
+          Api.deleteSeguimientoCredLocal(p.id, act.mes || "RN", act.name);
+        }
+      }
+    });
+
+    Utils.showToast("Atención eliminada correctamente", "success");
+    this.renderTimelineCred(this.activeTimelineTab);
+    this.updateDashboardStats();
+  },
+
   // INICIALIZAR VISTA ANEMIA
   initSeguimientoAnemiaView() {
     const urlParams = new URLSearchParams(window.location.hash.split('?')[1] || '');
@@ -1519,7 +1865,10 @@ const App = {
             <strong>Edad Actual:</strong> ${ageInfo.text}
           </p>
         </div>
-        <button class="btn btn-outline" style="border-color: var(--accent); color: var(--accent); padding: 8px 16px; font-size: 14px;" onclick="App.openEditPacienteModal('${p.id}')">✏️ Editar Datos</button>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button class="btn btn-outline" style="border-color: var(--accent); color: var(--accent); padding: 8px 16px; font-size: 14px;" onclick="window.print()">🖨️ Imprimir Ficha</button>
+          <button class="btn btn-outline" style="border-color: var(--accent); color: var(--accent); padding: 8px 16px; font-size: 14px;" onclick="App.openEditPacienteModal('${p.id}')">✏️ Editar Datos</button>
+        </div>
       </div>
     `;
     
@@ -1530,6 +1879,7 @@ const App = {
       <button class="tab-btn" onclick="App.changeAnemiaTab('SUPLEMENTACION PREVENTIVA')">Suplementación Preventiva (Post-Recuperación)</button>
     `;
     
+    this.openAnemiaCiclos.clear();
     this.renderTimelineAnemia('TRATAMIENTO DE ANEMIA');
   },
 
@@ -1544,7 +1894,9 @@ const App = {
     this.renderTimelineAnemia(fase);
   },
 
-  // RENDERIZAR TIMELINE ANEMIA
+  // RENDERIZAR TIMELINE ANEMIA (Acordeones colapsables con indicador de avance)
+  openAnemiaCiclos: new Set(),
+
   renderTimelineAnemia(fase) {
     const container = document.getElementById('anemia-timeline-container');
     container.innerHTML = '';
@@ -1553,11 +1905,11 @@ const App = {
     const seguimientos = Api.getSeguimientoAnemiaByPaciente(p.id);
     
     let ciclos = [];
-    let actividades = [];
+    let baseActividades = [];
     
     if (fase === 'TRATAMIENTO DE ANEMIA') {
       ciclos = ['PRIMER TRATAMIENTO', 'SEGUNDO TRATAMIENTO', 'TERCER TRATAMIENTO', 'CUARTO TRATAMIENTO', 'QUINTO TRATAMIENTO', 'SEXTO TRATAMIENTO', 'TERMINO DE TRATAMIENTO', 'ANEMIA REPETITIVO'];
-      actividades = [
+      baseActividades = [
         "EVALUACION / CONSULTA MEDICA",
         "CONSULTA NUTRICIONAL SINCRONA / ASINCRONA",
         "DX ANEMIA DEFINITIVO",
@@ -1568,7 +1920,7 @@ const App = {
     } else {
       // Suplementación Preventiva
       ciclos = ['PRIMER MES', 'SEGUNDO MES', 'TERCER MES', 'CUARTO MES', 'QUINTO MES', 'SEXTO MES', 'SETIMO MES'];
-      actividades = [
+      baseActividades = [
         "DOSAJE HB",
         "HIERRO SF",
         "CONSEJERIA / ORIENTACION NUTRICIONAL",
@@ -1576,28 +1928,24 @@ const App = {
       ];
     }
 
-    const listEl = document.createElement('div');
-    listEl.className = 'timeline';
-    
-    ciclos.forEach(ciclo => {
-      // Crear una cabecera para cada ciclo (ej: Primer Tratamiento)
-      const groupHeader = document.createElement('div');
-      groupHeader.style = "margin: 30px 0 15px 15px; font-weight: 700; font-size: 16px; color: var(--primary); border-bottom: 1.5px solid var(--border-color); padding-bottom: 6px;";
-      groupHeader.innerText = ciclo;
-      container.appendChild(groupHeader);
-      
-      actividades.forEach(act => {
-        // En Anemia Repetitivo o Término, cambian las actividades
+    // Construir los grupos primero para saber cuál abrir por defecto si no hay ninguno abierto
+    const grupos = ciclos.map(ciclo => {
+      const items = [];
+      baseActividades.forEach(rawAct => {
+        let act = rawAct;
         if (ciclo === 'TERMINO DE TRATAMIENTO' && !["DOSAJE HB", "PACIENTE RECUPERADO", "TA / PR", "OBSERV"].includes(act)) {
-          // Filtrar actividades de Término
           if (act === "DX ANEMIA DEFINITIVO") act = "TA / PR";
           else if (act === "EVALUACION / CONSULTA MEDICA") act = "PACIENTE RECUPERADO";
           else return;
         }
-        
-        if (ciclo === 'ANEMIA REPETITIVO' && act !== "EVALUACION / CONSULTA MEDICA") {
-          if (act === "DX ANEMIA DEFINITIVO") act = "PACIENTE RECUPERADO";
-          else return;
+        if (ciclo === 'ANEMIA REPETITIVO') {
+          if (act === "EVALUACION / CONSULTA MEDICA") {
+            // mantener
+          } else if (act === "DX ANEMIA DEFINITIVO") {
+            act = "PACIENTE RECUPERADO";
+          } else {
+            return;
+          }
         }
 
         const targetActNormalized = Utils.normalizeActName(act);
@@ -1606,9 +1954,70 @@ const App = {
           String(s.ciclo) === String(ciclo) && 
           Utils.normalizeActName(s.actividad).startsWith(targetActNormalized)
         );
-        
         const hasCompleted = !!(segRealizado && (segRealizado.fecha_realizada || segRealizado.valor));
-        
+        items.push({ act, segRealizado, hasCompleted });
+      });
+
+      const completedCount = items.filter(i => i.hasCompleted).length;
+      return { ciclo, items, completedCount, totalCount: items.length };
+    });
+
+    // Si el usuario aún no abrió ningún acordeón manualmente en esta fase, abrir el primero incompleto (o el primero)
+    const hasAnyOpenInFase = grupos.some(g => this.openAnemiaCiclos.has(`${fase}::${g.ciclo}`));
+    if (!hasAnyOpenInFase && grupos.length > 0) {
+      const firstInProgress = grupos.find(g => g.completedCount > 0 && g.completedCount < g.totalCount) || grupos.find(g => g.completedCount === 0) || grupos[0];
+      this.openAnemiaCiclos.add(`${fase}::${firstInProgress.ciclo}`);
+    }
+
+    grupos.forEach(({ ciclo, items, completedCount, totalCount }) => {
+      const stateKey = `${fase}::${ciclo}`;
+      const isOpen = this.openAnemiaCiclos.has(stateKey);
+
+      let badgeStyle = 'background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1;';
+      let badgeText = `Sin iniciar (0/${totalCount})`;
+      if (completedCount === totalCount && totalCount > 0) {
+        badgeStyle = 'background: #dcfce7; color: #166534; border: 1px solid #86efac;';
+        badgeText = `✅ ${completedCount}/${totalCount} completados`;
+      } else if (completedCount > 0) {
+        badgeStyle = 'background: #fef3c7; color: #92400e; border: 1px solid #fcd34d;';
+        badgeText = `⏳ ${completedCount}/${totalCount} completados`;
+      }
+
+      const accordionEl = document.createElement('div');
+      accordionEl.className = 'anemia-accordion';
+
+      const headerBtn = document.createElement('button');
+      headerBtn.type = 'button';
+      headerBtn.className = 'anemia-accordion-header';
+      headerBtn.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span class="acc-arrow" style="font-size: 12px; color: var(--primary); transition: transform 0.2s;">${isOpen ? '▼' : '▶'}</span>
+          <span style="font-weight: 700; font-size: 15px; color: var(--primary);">${ciclo}</span>
+        </div>
+        <span style="font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; ${badgeStyle}">${badgeText}</span>
+      `;
+
+      const bodyEl = document.createElement('div');
+      bodyEl.className = 'anemia-accordion-body';
+      bodyEl.style.display = isOpen ? 'block' : 'none';
+
+      headerBtn.addEventListener('click', () => {
+        const currentlyOpen = bodyEl.style.display === 'block';
+        if (currentlyOpen) {
+          bodyEl.style.display = 'none';
+          headerBtn.querySelector('.acc-arrow').innerText = '▶';
+          this.openAnemiaCiclos.delete(stateKey);
+        } else {
+          bodyEl.style.display = 'block';
+          headerBtn.querySelector('.acc-arrow').innerText = '▼';
+          this.openAnemiaCiclos.add(stateKey);
+        }
+      });
+
+      const listEl = document.createElement('div');
+      listEl.className = 'timeline';
+
+      items.forEach(({ act, segRealizado, hasCompleted }) => {
         const ev = document.createElement('div');
         ev.className = `timeline-event ${hasCompleted ? 'completed' : 'pending'}`;
         
@@ -1630,18 +2039,26 @@ const App = {
                 </p>
               `}
             </div>
-            <div class="event-actions">
+            <div class="event-actions" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
               <button class="btn btn-primary" style="padding: 8px 16px; font-size: 13px;" onclick="App.openRegisterAnemiaModal('${fase}', '${ciclo}', '${act}', '${segRealizado ? segRealizado.fecha_realizada : ''}', '${segRealizado ? segRealizado.valor : ''}', '${segRealizado ? segRealizado.observacion : ''}')">
                 ${hasCompleted ? '✏️ Editar' : '➕ Registrar'}
               </button>
+              ${hasCompleted ? `
+                <button class="btn btn-outline" style="padding: 8px 14px; font-size: 13px; color: #dc2626; border-color: #fca5a5; background-color: #fef2f2;" onclick="App.confirmDeleteControlAnemia('${fase}', '${ciclo}', '${act}')">
+                  🗑️ Eliminar
+                </button>
+              ` : ''}
             </div>
           </div>
         `;
         listEl.appendChild(ev);
       });
+
+      bodyEl.appendChild(listEl);
+      accordionEl.appendChild(headerBtn);
+      accordionEl.appendChild(bodyEl);
+      container.appendChild(accordionEl);
     });
-    
-    container.appendChild(listEl);
   },
 
   // ABRIR MODAL ANEMIA
@@ -1685,6 +2102,17 @@ const App = {
     Utils.showToast("¡Control de anemia guardado correctamente!", "success");
     
     this.renderTimelineAnemia(fase);
+  },
+
+  // Confirmar y eliminar una atención de Anemia
+  async confirmDeleteControlAnemia(fase, ciclo, actividadName) {
+    const authorized = await this.promptDeletePassword(`${actividadName} (${ciclo})`);
+    if (!authorized) return;
+
+    Api.deleteSeguimientoAnemiaLocal(this.selectedPaciente.id, fase, ciclo, actividadName);
+    Utils.showToast("Atención de anemia eliminada correctamente", "success");
+    this.renderTimelineAnemia(fase);
+    this.updateDashboardStats();
   },
 
   // INICIALIZAR VISTA REPORTES
@@ -1735,6 +2163,7 @@ const App = {
     const db = Api.getLocalDb();
     const pacientes = db.pacientes;
     const seguimientosCred = db.seguimientoCred;
+    const seguimientosAnemia = db.seguimientoAnemia || [];
     
     if (pacientes.length === 0) {
       Utils.showAlert("Exportación Vacía", "No hay pacientes para exportar.", "info");
@@ -1742,7 +2171,7 @@ const App = {
     }
 
     try {
-      ExcelExporter.exportExcel(pacientes, seguimientosCred);
+      ExcelExporter.exportExcel(pacientes, seguimientosCred, seguimientosAnemia);
     } catch (e) {
       console.error(e);
       Utils.showAlert("Error de Exportación", "Error al exportar a Excel: " + e.message, "error");

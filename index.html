@@ -31,6 +31,11 @@
             </a>
           </li>
           <li class="menu-item">
+            <a href="#agenda">
+              <span>📅</span> Agenda y Alertas
+            </a>
+          </li>
+          <li class="menu-item">
             <a href="#registro-paciente">
               <span>👶</span> Registrar Niño
             </a>
@@ -53,7 +58,7 @@
           <span>📡</span> <span id="sync-time">Sincronizado localmente</span>
         </div>
         <button class="btn-sync" id="sync-sidebar-btn">
-          <span>🔄</span> Sincronizar
+          <span>🔄</span> Sincronizar <span id="sync-pending-badge" class="sync-pending-badge" style="display: none;">0</span>
         </button>
       </div>
     </aside>
@@ -193,6 +198,15 @@
               <span class="search-icon">🔍</span>
               <input type="text" class="search-input" id="global-search" placeholder="Buscar por DNI, Nombres y Apellidos, o Historia Clínica...">
             </div>
+            <div style="min-width: 190px;">
+              <select id="filter-etapa" style="height: 100%; padding: 12px 14px; border-radius: var(--radius-md); border: 1.5px solid var(--border-color); width: 100%;">
+                <option value="all">Todas las Etapas</option>
+                <option value="rn">Recién Nacido (&lt; 1 mes)</option>
+                <option value="1_11m">1 a 11 Meses</option>
+                <option value="1_4a">1 a 4 Años</option>
+                <option value="anemia_si">Con Anemia (Dx: SI)</option>
+              </select>
+            </div>
           </div>
           
           <div class="table-container">
@@ -210,6 +224,58 @@
                 </tr>
               </thead>
               <tbody id="pacientes-table-body">
+                <!-- Se rellena dinámicamente con JavaScript -->
+              </tbody>
+            </table>
+          </div>
+          <div id="pacientes-pagination" class="pagination-bar" style="display: none;"></div>
+        </div>
+      </section>
+
+      <!-- ==================== VISTA: AGENDA Y ALERTAS ==================== -->
+      <section id="agenda" class="view-section">
+        <div class="page-header">
+          <div class="page-title">
+            <h1>📅 Agenda y Alertas de Seguimiento</h1>
+            <p>Controles CRED y Visitas Domiciliarias vencidas o próximas a vencer</p>
+          </div>
+          <a href="#dashboard" class="btn btn-outline">
+            <span>⬅️</span> Volver al Panel
+          </a>
+        </div>
+
+        <div class="card">
+          <div class="action-bar" style="align-items: center;">
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" class="search-input" id="agenda-search" placeholder="Buscar niño, HC, comunidad o actividad...">
+            </div>
+            <div style="min-width: 230px;">
+              <select id="agenda-filter-range" style="padding: 12px 14px; border-radius: var(--radius-md); border: 1.5px solid var(--border-color); width: 100%;">
+                <option value="vencidos_y_proximos">🚨 Vencidos y Próximos (7 días)</option>
+                <option value="solo_vencidos">🔴 Solo Vencidos (últimos 90 días)</option>
+                <option value="proximos_7">🟡 Próximos 7 días</option>
+                <option value="proximos_15">🟢 Próximos 15 días</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="agenda-summary" style="margin-bottom: 15px; font-size: 14px; color: var(--text-muted);"></div>
+
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Niño (HC)</th>
+                  <th>Edad</th>
+                  <th>Actividad Pendiente</th>
+                  <th>Fecha Programada</th>
+                  <th>Estado</th>
+                  <th>Celular Madre</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="agenda-table-body">
                 <!-- Se rellena dinámicamente con JavaScript -->
               </tbody>
             </table>
@@ -336,7 +402,7 @@
                 </div>
               </div>
               <div style="margin-top: 20px; background-color: var(--primary-light); padding: 15px; border-radius: var(--radius-md); font-size: 14px; color: var(--primary);">
-                💡 El tipo de seguimiento determinará los controles programados en su línea de tiempo (por ejemplo, los controles de 3 y 4 años solo aplican a BPN/Prematuros).
+                💡 El tipo de seguimiento determinará los controles específicos programados en su línea de tiempo (como los controles diferenciados de 1 a 11 meses para BPN/Prematuros).
               </div>
             </div>
 
@@ -488,15 +554,23 @@
         <!-- Inputs ocultos informativos -->
         <input type="hidden" id="modal-mes-control">
         <input type="hidden" id="modal-fecha-prog">
+        <input type="hidden" id="modal-act-type">
         
-        <div class="form-group">
-          <label for="modal-fecha-real">Fecha de Realización *</label>
-          <input type="date" id="modal-fecha-real" required>
+        <div class="form-group" id="modal-fecha-real-group">
+          <label for="modal-fecha-real" id="modal-fecha-real-label">Fecha de Realización *</label>
+          <input type="date" id="modal-fecha-real">
         </div>
         
-        <div class="form-group">
-          <label for="modal-valor">Valor (Días / Resultado / TA / PR)</label>
-          <input type="text" id="modal-valor" placeholder="Ej: 7 días, TA, PR, SI, NO">
+        <div class="form-group" id="modal-valor-select-group" style="display: none;">
+          <label for="modal-valor-select">Resultado *</label>
+          <select id="modal-valor-select">
+            <option value="">Seleccione...</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="modal-valor-text-group">
+          <label for="modal-valor" id="modal-valor-label">Valor (Días / Resultado / TA / PR)</label>
+          <input type="text" id="modal-valor" placeholder="Ej: TA, PR, H. REGIONAL">
         </div>
         
         <div class="form-group">

@@ -681,7 +681,7 @@ const ExcelExporter = {
   },
 
   // Exportar base de datos a Excel completo
-  exportExcel(pacientes, seguimientos) {
+  exportExcel(pacientes, seguimientos, seguimientosAnemia = []) {
     if (!pacientes || pacientes.length === 0) {
       Utils.showAlert("Exportación Vacía", "No hay pacientes registrados en el sistema.", "info");
       return;
@@ -699,6 +699,10 @@ const ExcelExporter = {
       const bpnPacientes = pacientes.filter(p => p.tipo_seguimiento === 'bpn');
       const wsBpn = this.buildSheet(bpnPacientes, seguimientos, EXPORT_COLUMNS_BPN, "bpn");
       XLSX.utils.book_append_sheet(wb, wsBpn, "SEGUIMIENTO NIÑ@ BPN PREMATUROS");
+
+      // 3. Hoja de Seguimiento Anemia y Suplementación
+      const wsAnemia = this.buildAnemiaSheet(pacientes, seguimientosAnemia || []);
+      XLSX.utils.book_append_sheet(wb, wsAnemia, "SEGUIMIENTO ANEMIA");
 
       // Guardar archivo
       const filename = `SEGUIMIENTO_CRED_MINSA_${new Date().toISOString().split('T')[0]}.xlsx`;
@@ -834,6 +838,8 @@ const ExcelExporter = {
       rowHeights.push({ hpt: 20 }); // Altura de fila de datos
       
       const pSeguimientos = seguimientos.filter(s => s.dni_paciente === p.id);
+      const diasMap = tipo === "bpn" ? dias_map_1 : dias_map_0;
+      let lastRealMes = "RN";
 
       columnsMap.forEach((col, colIdx) => {
         const cLetter = col.letter;
@@ -907,48 +913,51 @@ const ExcelExporter = {
         // 2. Columnas de Seguimiento
         else {
           const actNameNormalized = Utils.normalizeActName(col.row4);
-          const mesNormalized = Utils.normalizeMesControl(col.row3);
-          const isDiasCol = actNameNormalized.includes("DIAS");
+          const rawRow3 = String(col.row3 || "").toUpperCase();
+          if (!rawRow3.includes("VISITA") && !rawRow3.includes("OBSERVACION")) {
+            lastRealMes = col.row3 || "RN";
+          }
+          const effectiveRow3 = rawRow3.includes("VISITA")
+            ? (actNameNormalized.includes("27 DIAS") ? "RN" : lastRealMes)
+            : col.row3;
+          const mesNormalized = Utils.normalizeMesControl(effectiveRow3);
+          const isDiasCol = col.num in diasMap;
 
           cellObj.s.alignment.horizontal = "center";
 
           if (isDiasCol) {
             // Escribir Fórmula de días!
-            const diasMap = tipo === "bpn" ? dias_map_1 : dias_map_0;
-            if (col.num in diasMap) {
-              const [actCol, prevCol] = diasMap[col.num];
-              const actLetter = columnsMap[actCol - 1].letter;
-              const prevLetter = columnsMap[prevCol - 1].letter;
+            const [actCol, prevCol] = diasMap[col.num];
+            const actLetter = columnsMap[actCol - 1].letter;
+            const prevLetter = columnsMap[prevCol - 1].letter;
+            
+            // Formula: =IF(AND(ACT_CELL<>"", PREV_CELL<>""), DAYS(ACT_CELL, PREV_CELL), "")
+            cellObj.f = `IF(AND(${actLetter}${rIdx}<>"",${prevLetter}${rIdx}<>""), ${actLetter}${rIdx}-${prevLetter}${rIdx}, "")`;
+            cellObj.t = "n";
+            
+            // Calcular valor real en JS para aplicar color condicional
+            const segAct = pSeguimientos.find(s => Utils.normalizeActName(s.actividad) === Utils.normalizeActName(columnsMap[actCol - 1].row4) && Utils.normalizeMesControl(s.mes_control) === Utils.normalizeMesControl(columnsMap[actCol - 1].row3));
+            let prevVal = "";
+            if (columnsMap[prevCol - 1].row4 === "FECHA DE NACIMIENTO") {
+              prevVal = p.fecha_nacimiento;
+            } else {
+              const segPrev = pSeguimientos.find(s => Utils.normalizeActName(s.actividad) === Utils.normalizeActName(columnsMap[prevCol - 1].row4) && Utils.normalizeMesControl(s.mes_control) === Utils.normalizeMesControl(columnsMap[prevCol - 1].row3));
+              prevVal = segPrev ? segPrev.fecha_realizada : "";
+            }
+            const actVal = segAct ? segAct.fecha_realizada : "";
+            
+            if (actVal && prevVal) {
+              const daysDiff = Utils.daysBetween(prevVal, actVal);
+              const colorStatus = Utils.getDaysStatusColor(daysDiff, col.row3, col.row4);
               
-              // Formula: =IF(AND(ACT_CELL<>"", PREV_CELL<>""), DAYS(ACT_CELL, PREV_CELL), "")
-              // En openpyxl/Excel se puede usar DAYS o restar directamente: ACT_CELL - PREV_CELL
-              cellObj.f = `IF(AND(${actLetter}${rIdx}<>"",${prevLetter}${rIdx}<>""), ${actLetter}${rIdx}-${prevLetter}${rIdx}, "")`;
-              cellObj.t = "n";
-              
-              // Calcular valor real en JS para aplicar color condicional
-              const segAct = pSeguimientos.find(s => Utils.normalizeActName(s.actividad) === Utils.normalizeActName(columnsMap[actCol - 1].row4) && Utils.normalizeMesControl(s.mes_control) === Utils.normalizeMesControl(columnsMap[actCol - 1].row3));
-              let prevVal = "";
-              if (columnsMap[prevCol - 1].row4 === "FECHA DE NACIMIENTO") {
-                prevVal = p.fecha_nacimiento;
-              } else {
-                const segPrev = pSeguimientos.find(s => Utils.normalizeActName(s.actividad) === Utils.normalizeActName(columnsMap[prevCol - 1].row4) && Utils.normalizeMesControl(s.mes_control) === Utils.normalizeMesControl(columnsMap[prevCol - 1].row3));
-                prevVal = segPrev ? segPrev.fecha_realizada : "";
-              }
-              const actVal = segAct ? segAct.fecha_realizada : "";
-              
-              if (actVal && prevVal) {
-                const daysDiff = Utils.daysBetween(prevVal, actVal);
-                const colorStatus = Utils.getDaysStatusColor(daysDiff, col.row3, col.row4);
-                
-                if (colorStatus === "green") {
-                  cellObj.s.fill = { fgColor: { rgb: "E8F8F5" } }; // Verde suave
-                  cellObj.s.font.color = { rgb: "27AE60" };
-                  cellObj.s.font.bold = true;
-                } else if (colorStatus === "red") {
-                  cellObj.s.fill = { fgColor: { rgb: "FDEDEC" } }; // Rojo suave
-                  cellObj.s.font.color = { rgb: "C0392B" };
-                  cellObj.s.font.bold = true;
-                }
+              if (colorStatus === "green") {
+                cellObj.s.fill = { fgColor: { rgb: "E8F8F5" } }; // Verde suave
+                cellObj.s.font.color = { rgb: "27AE60" };
+                cellObj.s.font.bold = true;
+              } else if (colorStatus === "red") {
+                cellObj.s.fill = { fgColor: { rgb: "FDEDEC" } }; // Rojo suave
+                cellObj.s.font.color = { rgb: "C0392B" };
+                cellObj.s.font.bold = true;
               }
             }
           } else {
@@ -1057,6 +1066,110 @@ const ExcelExporter = {
     });
     ws["!cols"] = wscols;
 
+    return ws;
+  },
+
+  // Construir hoja de Seguimiento de Anemia y Suplementación
+  buildAnemiaSheet(pacientes, seguimientosAnemia) {
+    const ws = {};
+    const getColLetter = (idx) => {
+      let s = '';
+      let n = idx + 1;
+      while (n > 0) {
+        let mod = (n - 1) % 26;
+        s = String.fromCharCode(65 + mod) + s;
+        n = Math.floor((n - 1) / 26);
+      }
+      return s;
+    };
+
+    const cols = [
+      { key: '_num', fase: 'DATOS', ciclo: 'NIÑO', label: 'N°', wch: 5 },
+      { key: 'hc', fase: 'DATOS', ciclo: 'NIÑO', label: 'HC', wch: 12 },
+      { key: 'id', fase: 'DATOS', ciclo: 'NIÑO', label: 'DNI / CNV', wch: 13 },
+      { key: 'nombres', fase: 'DATOS', ciclo: 'NIÑO', label: 'NOMBRES Y APELLIDOS', wch: 30 },
+      { key: 'sexo', fase: 'DATOS', ciclo: 'NIÑO', label: 'SEXO', wch: 7 },
+      { key: 'fecha_nacimiento', fase: 'DATOS', ciclo: 'NIÑO', label: 'F. NACIMIENTO', wch: 14 },
+      { key: 'comunidad', fase: 'DATOS', ciclo: 'NIÑO', label: 'COMUNIDAD', wch: 16 },
+      { key: 'celular_madre', fase: 'DATOS', ciclo: 'NIÑO', label: 'CELULAR MADRE', wch: 14 }
+    ];
+
+    const ttoCiclos = ['PRIMER TRATAMIENTO', 'SEGUNDO TRATAMIENTO', 'TERCER TRATAMIENTO', 'CUARTO TRATAMIENTO', 'QUINTO TRATAMIENTO', 'SEXTO TRATAMIENTO', 'TERMINO DE TRATAMIENTO', 'ANEMIA REPETITIVO'];
+    const ttoActs = ['EVALUACION / CONSULTA MEDICA', 'CONSULTA NUTRICIONAL SINCRONA / ASINCRONA', 'DX ANEMIA DEFINITIVO', 'DOSAJE HB', 'HIERRO SF', 'VISITA DOMICIL'];
+    ttoCiclos.forEach(ciclo => {
+      ttoActs.forEach(rawAct => {
+        let act = rawAct;
+        if (ciclo === 'TERMINO DE TRATAMIENTO' && !['DOSAJE HB', 'PACIENTE RECUPERADO', 'TA / PR', 'OBSERV'].includes(act)) {
+          if (act === 'DX ANEMIA DEFINITIVO') act = 'TA / PR';
+          else if (act === 'EVALUACION / CONSULTA MEDICA') act = 'PACIENTE RECUPERADO';
+          else return;
+        }
+        if (ciclo === 'ANEMIA REPETITIVO') {
+          if (act === 'DX ANEMIA DEFINITIVO') act = 'PACIENTE RECUPERADO';
+          else if (act !== 'EVALUACION / CONSULTA MEDICA') return;
+        }
+        cols.push({ fase: 'TRATAMIENTO DE ANEMIA', ciclo, act, label: act, wch: 16 });
+      });
+    });
+
+    const supCiclos = ['PRIMER MES', 'SEGUNDO MES', 'TERCER MES', 'CUARTO MES', 'QUINTO MES', 'SEXTO MES', 'SETIMO MES'];
+    const supActs = ['DOSAJE HB', 'HIERRO SF', 'CONSEJERIA / ORIENTACION NUTRICIONAL', 'VISITA DOMICIL'];
+    supCiclos.forEach(ciclo => {
+      supActs.forEach(act => {
+        cols.push({ fase: 'SUPLEMENTACION PREVENTIVA', ciclo, act, label: act, wch: 16 });
+      });
+    });
+
+    ws['A1'] = {
+      v: 'REPORTE DE SEGUIMIENTO DE ANEMIA Y SUPLEMENTACIÓN - IPRESS SAN SEBASTIAN',
+      t: 's',
+      s: { font: { name: 'Calibri', sz: 13, bold: true, color: { rgb: 'FFFFFF' } }, fill: { fgColor: { rgb: '991B1B' } }, alignment: { vertical: 'center', horizontal: 'left' } }
+    };
+
+    cols.forEach((col, cIdx) => {
+      const letter = getColLetter(cIdx);
+      const isTto = col.fase === 'TRATAMIENTO DE ANEMIA';
+      const isSup = col.fase === 'SUPLEMENTACION PREVENTIVA';
+      const bgMain = isTto ? 'B91C1C' : (isSup ? '0F766E' : '1F4E79');
+      const bgLight = isTto ? 'FEE2E2' : (isSup ? 'CCFBF1' : 'D9E1F2');
+
+      ws[letter + '2'] = { v: col.fase, t: 's', s: { fill: { fgColor: { rgb: bgMain } }, font: { name: 'Calibri', sz: 10, bold: true, color: { rgb: 'FFFFFF' } }, alignment: { vertical: 'center', horizontal: 'center' } } };
+      ws[letter + '3'] = { v: col.ciclo, t: 's', s: { fill: { fgColor: { rgb: bgLight } }, font: { name: 'Calibri', sz: 9, bold: true, color: { rgb: '000000' } }, alignment: { vertical: 'center', horizontal: 'center' } } };
+      ws[letter + '4'] = { v: col.label, t: 's', s: { fill: { fgColor: { rgb: 'F2F2F2' } }, font: { name: 'Calibri', sz: 8.5, bold: true, color: { rgb: '333333' } }, alignment: { vertical: 'center', horizontal: 'center', wrapText: true } } };
+    });
+
+    // Filtrar pacientes que tengan algún registro de anemia (o mostrar todos si nadie tiene aún)
+    const dnisConAnemia = new Set(seguimientosAnemia.map(s => String(s.dni_paciente)));
+    const targetPacientes = dnisConAnemia.size > 0 ? pacientes.filter(p => dnisConAnemia.has(String(p.id))) : pacientes;
+
+    targetPacientes.forEach((p, pIdx) => {
+      const rIdx = pIdx + 5;
+      const pAnemia = seguimientosAnemia.filter(s => String(s.dni_paciente) === String(p.id));
+      cols.forEach((col, cIdx) => {
+        const cellRef = getColLetter(cIdx) + rIdx;
+        let val = '';
+        if (col.key === '_num') val = pIdx + 1;
+        else if (col.key) val = p[col.key] || '';
+        else {
+          const targetAct = Utils.normalizeActName(col.act);
+          const seg = pAnemia.find(s => String(s.fase) === String(col.fase) && String(s.ciclo) === String(col.ciclo) && Utils.normalizeActName(s.actividad).startsWith(targetAct));
+          if (seg) {
+            if (seg.fecha_realizada && seg.valor) val = `${seg.fecha_realizada} (${seg.valor})`;
+            else val = seg.fecha_realizada || seg.valor || '';
+          }
+        }
+        ws[cellRef] = {
+          t: typeof val === 'number' ? 'n' : 's',
+          v: val,
+          s: { font: { name: 'Calibri', sz: 10 }, alignment: { vertical: 'center', horizontal: col.key === 'nombres' ? 'left' : 'center' } }
+        };
+      });
+    });
+
+    const maxLetter = getColLetter(cols.length - 1);
+    ws['!ref'] = `A1:${maxLetter}${Math.max(5, targetPacientes.length + 4)}`;
+    ws['!cols'] = cols.map(c => ({ wch: c.wch }));
+    ws['!rows'] = [{ hpt: 28 }, { hpt: 22 }, { hpt: 22 }, { hpt: 32 }];
     return ws;
   }
 };

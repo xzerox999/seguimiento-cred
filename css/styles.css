@@ -868,7 +868,7 @@ input:focus, select:focus, textarea:focus {
   body {
     background: white;
   }
-  .sidebar, .offline-banner, .action-bar, .dashboard-filters-card, .btn, .btn-primary, .btn-sync {
+  .sidebar, .offline-banner, .action-bar, .dashboard-filters-card, .btn, .btn-primary, .btn-secondary, .btn-outline, .btn-sync, .tab-container, .event-actions, .dialog-overlay, .pagination-bar {
     display: none !important;
   }
   .main-content {
@@ -885,4 +885,92 @@ input:focus, select:focus, textarea:focus {
     box-shadow: none !important;
     border: 1px solid #ccc !important;
   }
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    padding: 15px !important;
+  }
+}
+
+/* MICRO-INTERACCIONES, ACORDEONES, PAGINACIÓN Y BADGE SYNC */
+.sync-pending-badge {
+  background-color: var(--warning);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  margin-left: 4px;
+  animation: pulseGlow 1.8s infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.5); }
+  50% { transform: scale(1.06); box-shadow: 0 0 0 6px rgba(243, 156, 18, 0); }
+}
+
+.anemia-accordion {
+  margin-bottom: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #fff;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.anemia-accordion:hover {
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.anemia-accordion-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: #f8fafc;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  gap: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.anemia-accordion-header:hover {
+  background: #f1f5f9;
+}
+
+.anemia-accordion-body {
+  padding: 16px 18px;
+  border-top: 1px solid var(--border-color);
+  animation: fadeIn 0.22s ease-out;
+}
+
+.timeline-event {
+  animation: fadeIn 0.25s ease-out;
+}
+
+.pagination-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-color);
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-sm {
+  padding: 6px 12px !important;
+  font-size: 13px !important;
 }

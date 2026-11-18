@@ -16,6 +16,17 @@ const Api = {
     localStorage.setItem('cred_api_url', (url || '').trim());
   },
 
+  // Contraseña de autorización para eliminar atenciones (por defecto: s123)
+  getDeletePassword() {
+    return localStorage.getItem('cred_delete_password') || 's123';
+  },
+
+  setDeletePassword(pwd) {
+    if (pwd && String(pwd).trim()) {
+      localStorage.setItem('cred_delete_password', String(pwd).trim());
+    }
+  },
+
   // Inicializar base de datos local vacía si no existe
   initLocalDb() {
     if (!localStorage.getItem('cred_db')) {
@@ -56,6 +67,17 @@ const Api = {
   // Guardar cola de sincronización
   saveSyncQueue(queue) {
     localStorage.setItem('cred_sync_queue', JSON.stringify(queue));
+    if (typeof window !== 'undefined' && window.App && typeof window.App.updateSyncBadge === 'function') {
+      window.App.updateSyncBadge();
+    }
+  },
+
+  // Contar cambios pendientes de subir
+  getPendingSyncCount() {
+    const queue = this.getSyncQueue();
+    return (queue.pacientes || []).length +
+           (queue.seguimientoCred || []).length +
+           (queue.seguimientoAnemia || []).length;
   },
 
   // COMPROBAR CONEXIÓN Y ESTADO DE LA API
@@ -414,6 +436,45 @@ const Api = {
     return seguimiento;
   },
 
+  deleteSeguimientoCredLocal(dni, mesControl, actividad) {
+    const db = this.getLocalDb();
+    const targetActNormalized = Utils.normalizeActName(actividad);
+    const targetMesNormalized = Utils.normalizeMesControl(mesControl);
+
+    db.seguimientoCred = db.seguimientoCred.filter(s => !(
+      String(s.dni_paciente) === String(dni) &&
+      Utils.normalizeMesControl(s.mes_control) === targetMesNormalized &&
+      Utils.normalizeActName(s.actividad) === targetActNormalized
+    ));
+    this.saveLocalDb(db);
+
+    const queue = this.getSyncQueue();
+    const deletePayload = {
+      dni_paciente: dni,
+      mes_control: targetMesNormalized,
+      actividad: targetActNormalized,
+      fecha_programada: "",
+      fecha_realizada: "",
+      valor: "",
+      observacion: "",
+      _deleted: true
+    };
+    const qIndex = queue.seguimientoCred.findIndex(s =>
+      String(s.dni_paciente) === String(dni) &&
+      Utils.normalizeMesControl(s.mes_control) === targetMesNormalized &&
+      Utils.normalizeActName(s.actividad) === targetActNormalized
+    );
+    if (qIndex !== -1) {
+      queue.seguimientoCred[qIndex] = deletePayload;
+    } else {
+      queue.seguimientoCred.push(deletePayload);
+    }
+    this.saveSyncQueue(queue);
+
+    this.uploadPending().catch(e => console.log("Sincronización en background pospuesta."));
+    return true;
+  },
+
   // OPERACIONES CON SEGUIMIENTO ANEMIA
   getSeguimientoAnemiaByPaciente(dni) {
     const db = this.getLocalDb();
@@ -462,5 +523,46 @@ const Api = {
     
     this.uploadPending().catch(e => console.log("Sincronización en background pospuesta."));
     return seguimiento;
+  },
+
+  deleteSeguimientoAnemiaLocal(dni, fase, ciclo, actividad) {
+    const db = this.getLocalDb();
+    const targetActNormalized = Utils.normalizeActName(actividad);
+
+    db.seguimientoAnemia = db.seguimientoAnemia.filter(s => !(
+      String(s.dni_paciente) === String(dni) &&
+      String(s.fase) === String(fase) &&
+      String(s.ciclo) === String(ciclo) &&
+      Utils.normalizeActName(s.actividad) === targetActNormalized
+    ));
+    this.saveLocalDb(db);
+
+    const queue = this.getSyncQueue();
+    const deletePayload = {
+      dni_paciente: dni,
+      fase: fase,
+      ciclo: ciclo,
+      actividad: targetActNormalized,
+      fecha_programada: "",
+      fecha_realizada: "",
+      valor: "",
+      observacion: "",
+      _deleted: true
+    };
+    const qIndex = queue.seguimientoAnemia.findIndex(s =>
+      String(s.dni_paciente) === String(dni) &&
+      String(s.fase) === String(fase) &&
+      String(s.ciclo) === String(ciclo) &&
+      Utils.normalizeActName(s.actividad) === targetActNormalized
+    );
+    if (qIndex !== -1) {
+      queue.seguimientoAnemia[qIndex] = deletePayload;
+    } else {
+      queue.seguimientoAnemia.push(deletePayload);
+    }
+    this.saveSyncQueue(queue);
+
+    this.uploadPending().catch(e => console.log("Sincronización en background pospuesta."));
+    return true;
   }
 };
